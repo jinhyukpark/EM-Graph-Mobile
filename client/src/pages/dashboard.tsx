@@ -143,7 +143,7 @@ const FearGreedGauge = () => (
     </div>
 
     {/* Gauge Positioned Absolute Center-Bottom-Leftish */}
-    <div className="absolute bottom-2 left-1/2 -translate-x-[60%] w-48 h-28">
+    <div className="absolute bottom-5 left-4 w-48 h-28">
        <svg viewBox="0 0 200 110" className="w-full h-full overflow-visible">
          <defs>
            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
