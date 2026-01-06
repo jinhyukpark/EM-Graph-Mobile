@@ -13,12 +13,21 @@ import {
   Plane,
   Clock,
   CheckCircle,
-  Crown
+  Crown,
+  ChevronDown,
+  Check
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const SkeletonDashboard = () => (
   <div className="pb-8">
@@ -255,10 +264,50 @@ const FearGreedGauge = () => (
           <Clock className="w-4 h-4" />
           <span>일주일(극도의 탐욕)</span>
         </div>
-        <Button variant="ghost" size="sm" className="h-10 text-sm rounded-full bg-[#0f1115] border border-white/5 text-white hover:bg-[#1a1d24] hover:text-white px-5 transition-all shadow-lg">
-          <CheckCircle className="w-4 h-4 mr-2" />
-          체크포인트
-        </Button>
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-10 text-sm rounded-full bg-[#0f1115] border border-white/5 text-white hover:bg-[#1a1d24] hover:text-white px-5 transition-all shadow-lg">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              체크포인트
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-[#1e232b] border-white/10 text-white max-w-sm rounded-3xl">
+            <DialogHeader className="mb-4">
+              <DialogTitle className="text-lg font-bold">공포&탐욕지수</DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-6">
+              {/* Dropdown-like selector */}
+              <button className="w-full flex items-center justify-between bg-[#151921] px-4 py-3 rounded-xl text-sm font-medium border border-white/5">
+                <span>1주일(극도의 탐욕)</span>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </button>
+
+              {/* Check Point Section */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="text-blue-400">
+                    <Check className="w-5 h-5 stroke-[3]" />
+                  </div>
+                  <h3 className="text-lg font-bold">Check Point</h3>
+                </div>
+
+                <div className="flex items-end gap-2 mb-2">
+                  <span className="text-6xl font-bold text-[#ff3b30] tracking-tighter leading-none">98</span>
+                  <div className="flex flex-col text-xs font-medium text-[#ff3b30] mb-1.5">
+                    <span>1주일</span>
+                    <span>(극도의 탐욕)</span>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  지난 1주일 동안 공포 탐욕지수는 98.76에서 36.73까지 변동하며 62.03포인트의 큰 폭의 변동을 보였습니다. 시작값 98.76은 '탐욕(70 이상)' 구간에 속했으며, 최저값 36.73은 '공포(0~29)' 구간에 해당합니다. 지수는 중반에 중립 구간으로 내려갔다가 다시 탐욕 구간으로 올라가는 움직임을 보였습니다. 이는 시장 심리가 급격하게 변동하고 있음을 나타냅니다.
+                </p>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
 
