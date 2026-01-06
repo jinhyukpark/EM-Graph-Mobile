@@ -289,13 +289,13 @@ const StrongSignalCard = ({
         <div className="flex justify-between items-end text-[10px] text-gray-400 mb-1">
           <div className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-[#ff3b30]"></span>
-            AI 점수
+            <span className="text-gray-300">AI 점수</span>
           </div>
-          <span className="text-white font-mono">{aiScore.toFixed(2)}<span className="text-gray-600">/10</span></span>
+          <span className="text-white font-mono font-bold text-xs">{aiScore.toFixed(2)}<span className="text-gray-500 text-[10px] font-normal">/10</span></span>
         </div>
         <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full"  
+            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full shadow-[0_0_10px_rgba(255,59,48,0.3)]"  
             style={{ width: `${(aiScore / 10) * 100}%` }}
           />
         </div>
