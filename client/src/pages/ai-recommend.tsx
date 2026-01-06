@@ -287,10 +287,21 @@ export default function AIRecommendPage() {
           {/* Banner for Strong Sell */}
           <div className="px-4 py-6 text-center">
              <h2 className="text-xl font-bold text-white mb-2">AI 강한 매도 시그널</h2>
-             <p className="text-sm text-gray-400 mb-3 px-8 leading-relaxed">
+             <p className="text-sm text-gray-400 mb-4 px-8 leading-relaxed">
                빅데이터 분석 결과 <span className="text-red-400 font-semibold">하락 위험이 감지된 종목</span>입니다.<br/>
                투자 판단에 각별한 유의가 필요합니다.
              </p>
+             
+             {/* Prediction Period Icons */}
+             <div className="flex justify-center gap-2 mb-2">
+               {["1주", "2주", "4주", "6주"].map((period) => (
+                 <div key={period} className="flex flex-col items-center gap-1 cursor-pointer group">
+                   <div className="w-10 h-10 rounded-full bg-[#1e232b] border border-white/10 flex items-center justify-center text-xs font-bold text-gray-400 group-hover:border-red-500/50 group-hover:text-red-400 group-hover:bg-red-500/10 transition-all">
+                     {period}
+                   </div>
+                 </div>
+               ))}
+             </div>
           </div>
 
           {/* Sort Filters */}
