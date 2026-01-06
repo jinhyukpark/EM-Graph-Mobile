@@ -836,6 +836,7 @@ export default function StockDetailPage() {
                    </div>
                 </div>
              </div>
+           </div>
              
              <div className="mt-8">
                <h3 className="text-sm font-bold text-gray-200 mb-4">일별 거래량</h3>
