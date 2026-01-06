@@ -175,19 +175,15 @@ export default function MomentumDetailPage() {
             <h3 className="text-sm font-bold text-gray-900 mb-3">AI 점수</h3>
             <div className="grid grid-cols-4 gap-2">
               {[
-                { label: "1주", score: "10.00", high: "14.738", low: "13.427" },
-                { label: "2주", score: "10.00", high: "14.738", low: "13.427" },
-                { label: "4주", score: "10.00", high: "14.738", low: "13.427" },
-                { label: "6주", score: "10.00", high: "14.738", low: "13.427" },
+                { label: "1주", score: "10.00" },
+                { label: "2주", score: "10.00" },
+                { label: "4주", score: "10.00" },
+                { label: "6주", score: "10.00" },
               ].map((item, i) => (
                 <div key={i} className="text-left">
                   <div className="text-xs text-gray-500 mb-1">{item.label}</div>
                   <div className="flex items-end gap-2">
                     <span className="text-2xl font-bold text-[#ff3b30] leading-none">{item.score}</span>
-                    <div className="text-[9px] text-gray-400 leading-tight mb-0.5">
-                      <div>최고: {item.high}</div>
-                      <div>최저: {item.low}</div>
-                    </div>
                   </div>
                 </div>
               ))}
