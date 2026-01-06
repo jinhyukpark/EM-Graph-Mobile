@@ -685,16 +685,33 @@ export default function AIRecommendPage() {
              </p>
           </div>
 
-          {/* Search Bar */}
-          <div className="px-4 mb-4 sticky top-[105px] z-30 bg-background/95 backdrop-blur-md pb-2 pt-2">
-            <div className="relative">
-              <Input 
-                placeholder="종목명 또는 종목코드 검색" 
-                className="bg-[#1e232b] border-white/10 text-white pl-4 pr-10 h-11 rounded-xl placeholder:text-gray-600"
-              />
-              <Search className="w-5 h-5 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2" />
+          {/* Search Bar & Filters */}
+          <div className="sticky top-[105px] z-30 bg-background/95 backdrop-blur-md pb-2 pt-2 border-b border-white/5">
+            <div className="px-4 mb-3">
+              <div className="relative">
+                <Input 
+                  placeholder="종목명 또는 종목코드 검색" 
+                  className="bg-[#1e232b] border-white/10 text-white pl-4 pr-10 h-11 rounded-xl placeholder:text-gray-600"
+                />
+                <Search className="w-5 h-5 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2" />
+              </div>
             </div>
-            <div className="flex justify-end mt-2">
+            
+            {/* Filters */}
+            <div className="px-4 flex gap-2 overflow-x-auto no-scrollbar items-center pb-2">
+              <FilterDrawer />
+              <div className="w-[1px] h-6 bg-white/10 mx-1 shrink-0" />
+              {["거래량", "거래대금", "시가총액", "등락률"].map((filter) => (
+                <FilterChip 
+                  key={filter} 
+                  label={filter} 
+                  isActive={activeFilter === filter} 
+                  onClick={() => setActiveFilter(filter)} 
+                />
+              ))}
+            </div>
+
+            <div className="px-4 flex justify-end mt-2">
                <div className="text-[10px] text-gray-500 flex items-center gap-1">
                  2026-01-05 기준
                </div>
