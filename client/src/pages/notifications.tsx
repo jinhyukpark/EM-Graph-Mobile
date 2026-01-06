@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ChevronLeft, Search, Bell, TrendingUp, TrendingDown, Info, Sparkles, FileText } from "lucide-react";
+import { ChevronLeft, Search, Bell, TrendingUp, TrendingDown, Info, Sparkles, FileText, CheckCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 // Mock Data for Notifications
-const notifications = [
+const initialNotifications = [
   {
     id: 1,
     category: "AI 추천",
@@ -89,10 +89,17 @@ const categories = ["전체", "AI 추천", "종목", "지수", "키워드", "공
 
 export default function NotificationsPage() {
   const [activeCategory, setActiveCategory] = useState("전체");
+  const [notifications, setNotifications] = useState(initialNotifications);
 
   const filteredNotifications = activeCategory === "전체" 
     ? notifications 
     : notifications.filter(n => n.category === activeCategory);
+
+  const handleMarkAllRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const hasUnread = notifications.some(n => !n.read);
 
   return (
     <div className="min-h-screen bg-background pb-20 text-white">
@@ -105,7 +112,15 @@ export default function NotificationsPage() {
             </Link>
             <h1 className="text-lg font-bold text-white">알림</h1>
           </div>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
+             {hasUnread && (
+               <button 
+                 onClick={handleMarkAllRead}
+                 className="text-xs text-gray-400 hover:text-white transition-colors"
+               >
+                 모두 읽음
+               </button>
+             )}
              <Search className="w-5 h-5 text-white" />
           </div>
         </div>
