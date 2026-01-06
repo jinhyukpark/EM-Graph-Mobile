@@ -1,29 +1,46 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { Route, Switch } from "wouter";
+import DashboardPage from "@/pages/dashboard";
+import MobileNav from "@/components/layout/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
+
+// Placeholder pages
+const PlaceholderPage = ({ title }: { title: string }) => (
+  <div className="min-h-screen bg-background text-foreground flex items-center justify-center pb-20">
+    <div className="text-center">
+      <h1 className="text-2xl font-bold mb-2">{title}</h1>
+      <p className="text-muted-foreground">준비 중인 페이지입니다.</p>
+    </div>
+  </div>
+);
 
 function Router() {
   return (
     <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
-      <Route component={NotFound} />
+      <Route path="/" component={DashboardPage} />
+      <Route path="/favorites">
+        <PlaceholderPage title="즐겨찾기" />
+      </Route>
+      <Route path="/ai-recommend">
+        <PlaceholderPage title="AI 추천" />
+      </Route>
+      <Route path="/trends">
+        <PlaceholderPage title="트렌드" />
+      </Route>
+      <Route path="/my-page">
+        <PlaceholderPage title="마이페이지" />
+      </Route>
+      <Route>404 Not Found</Route>
     </Switch>
   );
 }
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <div className="min-h-screen bg-background font-sans text-foreground pb-20">
+      <Router />
+      <MobileNav />
+      <Toaster />
+    </div>
   );
 }
 

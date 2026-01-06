@@ -1,0 +1,403 @@
+import { motion } from "framer-motion";
+import { 
+  Bell, 
+  Search, 
+  ChevronRight, 
+  TrendingUp, 
+  TrendingDown, 
+  Star,
+  Building2,
+  Puzzle,
+  Plane
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+const StockCard = ({ 
+  code, 
+  name, 
+  price, 
+  diff, 
+  percent, 
+  isUp, 
+  badge 
+}: { 
+  code: string, 
+  name: string, 
+  price: string, 
+  diff: string, 
+  percent: string, 
+  isUp: boolean,
+  badge?: string
+}) => (
+  <Card className="min-w-[160px] p-4 bg-[#1e232b] border-none shadow-md rounded-xl relative overflow-hidden group">
+    {/* Background gradient effect */}
+    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${isUp ? 'from-red-500/10' : 'from-blue-500/10'} to-transparent blur-2xl -mr-8 -mt-8`} />
+    
+    <div className="flex justify-between items-start mb-2 relative z-10">
+      <span className="text-xs text-muted-foreground">{code}</span>
+      <Star className="w-4 h-4 text-gray-600 fill-gray-600/20" />
+    </div>
+    
+    <h3 className="font-bold text-white mb-1 relative z-10">{name}</h3>
+    
+    {badge && (
+      <Badge variant="secondary" className="bg-gray-700/50 text-gray-300 text-[10px] px-1.5 py-0 mb-2 border-none">
+        {badge}
+      </Badge>
+    )}
+    
+    <div className="mt-2 relative z-10">
+      <div className="text-lg font-bold text-white mb-0.5">{price}원</div>
+      <div className={`text-xs flex items-center gap-1 ${isUp ? 'text-red-400' : 'text-blue-400'}`}>
+        <span>{isUp ? '+' : ''}{diff}원</span>
+        <span className="font-semibold">{isUp ? '+' : ''}{percent}%</span>
+      </div>
+    </div>
+
+    <div className="mt-3">
+      <div className={`w-full h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${
+        isUp 
+          ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white' 
+          : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+      }`}>
+        Business 업그레이드
+      </div>
+    </div>
+    
+    <div className="mt-2 text-[10px] text-gray-500">
+      뉴스 언급 횟수 <span className="text-white font-bold">263회</span>
+    </div>
+    
+    {/* Mini Chart Area (Simulated) */}
+    <div className="absolute top-4 right-8 w-12 h-6 opacity-50">
+      <svg viewBox="0 0 100 50" className="w-full h-full overflow-visible">
+        <path 
+          d={isUp ? "M0,50 C20,40 40,45 60,20 C80,5 100,10" : "M0,10 C20,15 40,40 60,45 C80,48 100,50"}
+          fill="none" 
+          stroke={isUp ? "#ef4444" : "#3b82f6"} 
+          strokeWidth="3"
+        />
+      </svg>
+    </div>
+  </Card>
+);
+
+const RealTimeRow = ({ 
+  icon, 
+  name, 
+  price, 
+  percent, 
+  amount, 
+  isUp 
+}: { 
+  icon?: React.ReactNode, 
+  name: string, 
+  price: string, 
+  percent: string, 
+  amount: string, 
+  isUp: boolean 
+}) => (
+  <div className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white overflow-hidden">
+        {icon}
+      </div>
+      <div>
+        <div className="font-bold text-sm text-white">{name}</div>
+        <div className="text-xs text-gray-400">
+          {price}원 <span className={isUp ? 'text-red-400' : 'text-blue-400'}>{percent}</span>
+        </div>
+      </div>
+    </div>
+    <div className="text-right">
+      <div className="text-sm text-gray-300 font-medium">{amount}</div>
+    </div>
+  </div>
+);
+
+const FearGreedGauge = () => (
+  <div className="relative h-40 w-full flex items-center justify-center bg-[#1e232b] rounded-2xl border border-white/5 p-4 overflow-hidden">
+    <div className="absolute top-4 right-4 text-right">
+      <div className="text-4xl font-bold text-white">98<span className="text-lg text-gray-400 font-normal">점</span></div>
+      <div className="text-xs text-gray-500">일주일(극도의 탐욕)</div>
+      <Button variant="outline" size="sm" className="h-6 text-[10px] mt-2 rounded-full border-gray-600 text-gray-300 hover:bg-gray-800">
+        체크포인트
+      </Button>
+    </div>
+    
+    <div className="absolute top-4 left-4">
+      <div className="text-sm text-gray-400">공포 & 탐욕 지수</div>
+    </div>
+
+    {/* Simple SVG Gauge */}
+    <div className="absolute bottom-[-10px] left-8 w-40 h-24">
+       <svg viewBox="0 0 200 110" className="w-full h-full">
+         <defs>
+           <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+             <stop offset="0%" stopColor="#3b82f6" />
+             <stop offset="50%" stopColor="#8b5cf6" />
+             <stop offset="100%" stopColor="#ef4444" />
+           </linearGradient>
+         </defs>
+         {/* Background Arc */}
+         <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#334155" strokeWidth="12" strokeLinecap="round" />
+         {/* Value Arc (Full for 98) */}
+         <path d="M 20 100 A 80 80 0 0 1 175 95" fill="none" stroke="url(#gaugeGradient)" strokeWidth="12" strokeLinecap="round" />
+         
+         {/* Needle */}
+         <line x1="100" y1="100" x2="160" y2="60" stroke="white" strokeWidth="4" />
+         <circle cx="100" cy="100" r="6" fill="white" />
+         
+         {/* Labels */}
+         <text x="20" y="115" fill="#64748b" fontSize="10" textAnchor="middle">EF</text>
+         <text x="180" y="115" fill="#64748b" fontSize="10" textAnchor="middle">EG</text>
+       </svg>
+    </div>
+  </div>
+);
+
+const CategoryCard = ({ 
+  icon: Icon, 
+  rank, 
+  title, 
+  total, 
+  upCount, 
+  avgPercent, 
+  bgColor = "bg-gray-800" 
+}: any) => (
+  <Card className={`min-w-[140px] p-4 ${bgColor} border-none rounded-xl text-white flex flex-col justify-between h-[180px]`}>
+    <div className="flex justify-center py-4">
+      <Icon className="w-12 h-12 opacity-80" />
+    </div>
+    <div>
+      <div className="flex justify-between items-end mb-1">
+        <span className="font-bold text-lg">{rank}위</span>
+        <span className="text-[10px] text-white/60">{total}개 중 {upCount}종목 상승</span>
+      </div>
+      <div className="font-bold mb-2 truncate">{title}</div>
+      <div className="text-xs text-red-400 font-medium">평균 등락률 {avgPercent}</div>
+    </div>
+  </Card>
+);
+
+const Bubble = ({ text, color, size, top, left }: { text: string, color: string, size: string, top: string, left: string }) => (
+  <div 
+    className={`absolute rounded-full flex items-center justify-center text-center text-[10px] font-bold text-white shadow-lg animate-float`}
+    style={{ 
+      backgroundColor: color, 
+      width: size, 
+      height: size, 
+      top: top, 
+      left: left,
+      boxShadow: `0 0 20px ${color}40`
+    }}
+  >
+    {text}
+  </div>
+);
+
+export default function DashboardPage() {
+  return (
+    <div className="pb-8">
+      {/* Header */}
+      <header className="px-4 py-3 flex items-center justify-between sticky top-0 z-40 bg-background/80 backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Stock<span className="font-light text-gray-300">link</span></span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="text-[10px] text-red-400 font-mono">
+            다우 산업 43977.18 +1.23%
+          </div>
+          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white">
+            <Search className="w-4 h-4" />
+          </Button>
+        </div>
+      </header>
+
+      <main className="px-4 space-y-6">
+        {/* Fear & Greed + Signal Counts */}
+        <section className="space-y-3">
+          <FearGreedGauge />
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center">
+              <div className="text-blue-400 text-sm font-bold mb-1">강한매도</div>
+              <div className="text-3xl font-bold text-white mb-1">345<span className="text-sm font-normal text-gray-500">개</span></div>
+              <div className="text-[10px] text-blue-500/80">7일간 이내 -0.51%</div>
+            </div>
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center">
+              <div className="text-red-400 text-sm font-bold mb-1">강한매수</div>
+              <div className="text-3xl font-bold text-white mb-1">245<span className="text-sm font-normal text-gray-500">개</span></div>
+              <div className="text-[10px] text-blue-500/80">7일간 이내 -0.30%</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Issue Stocks */}
+        <section>
+          <div className="flex justify-between items-center mb-3">
+            <div>
+              <h2 className="text-lg font-bold text-white">이슈 종목</h2>
+              <p className="text-xs text-gray-500">오늘 22:20 기준</p>
+            </div>
+            <Button variant="ghost" size="sm" className="h-7 text-xs rounded-full bg-gray-800 text-gray-300">
+              자세히보기
+            </Button>
+          </div>
+          
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
+            <StockCard 
+              code="006800"
+              name="미래에셋증권"
+              price="28,700"
+              diff="+3,200"
+              percent="+12.55"
+              isUp={true}
+              badge="사상최고치"
+            />
+            <StockCard 
+              code="001510"
+              name="SK증권"
+              price="683"
+              diff="+34"
+              percent="+5.24"
+              isUp={true}
+              badge="사상최고치"
+            />
+             <StockCard 
+              code="003530"
+              name="한화투자증권"
+              price="5,000"
+              diff="+190"
+              percent="+3.95"
+              isUp={true}
+              badge="사상최고치"
+            />
+          </div>
+        </section>
+
+        {/* Real Time Chart */}
+        <section>
+          <div className="flex justify-between items-center mb-3">
+            <div>
+              <h2 className="text-lg font-bold text-white">실시간 차트</h2>
+              <p className="text-xs text-gray-500">오늘 13:11 기준</p>
+            </div>
+            <Button variant="ghost" size="sm" className="h-7 text-xs rounded-full bg-gray-800 text-gray-300">
+              자세히보기
+            </Button>
+          </div>
+
+          <div className="flex gap-4 border-b border-gray-800 mb-4">
+            <button className="pb-2 text-sm font-bold text-white border-b-2 border-white">거래대금</button>
+            <button className="pb-2 text-sm font-medium text-gray-500">급상승</button>
+            <button className="pb-2 text-sm font-medium text-gray-500">급하락</button>
+          </div>
+
+          <div className="space-y-1">
+            <RealTimeRow 
+              icon={<div className="bg-blue-600 w-full h-full flex items-center justify-center font-bold text-[10px]">SAM</div>}
+              name="삼성전자"
+              price="138,900원"
+              percent="0.58%"
+              amount="6조 1,409억원"
+              isUp={false}
+            />
+             <RealTimeRow 
+              icon={<div className="bg-red-600 w-full h-full flex items-center justify-center font-bold text-[10px]">SK</div>}
+              name="SK하이닉스"
+              price="726,000원"
+              percent="4.31%"
+              amount="3조 3,530억원"
+              isUp={true}
+            />
+             <RealTimeRow 
+              icon={<div className="bg-gray-600 w-full h-full flex items-center justify-center font-bold text-[10px]">ETF</div>}
+              name="KODEX 레버리지"
+              price="56,375원"
+              percent="3.45%"
+              amount="1조 3,322억원"
+              isUp={true}
+            />
+             <RealTimeRow 
+              icon={<div className="bg-blue-500 w-full h-full flex items-center justify-center font-bold text-[10px]">HM</div>}
+              name="한미반도체"
+              price="183,700원"
+              percent="9.8%"
+              amount="1조 693억원"
+              isUp={true}
+            />
+          </div>
+        </section>
+
+        {/* Popular Categories */}
+        <section>
+           <div className="flex justify-between items-center mb-3">
+            <div>
+              <h2 className="text-lg font-bold text-white">인기 카테고리</h2>
+              <p className="text-xs text-gray-500">오늘 13:10 기준</p>
+            </div>
+          </div>
+          
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
+            <CategoryCard 
+              icon={Building2}
+              rank="1"
+              title="증권"
+              total="21"
+              upCount="21"
+              avgPercent="+3.99%"
+              bgColor="bg-gray-700/50"
+            />
+            <CategoryCard 
+              icon={Puzzle}
+              rank="2"
+              title="스페이스X"
+              total="11"
+              upCount="7"
+              avgPercent="+3.41%"
+              bgColor="bg-gray-700/50"
+            />
+            <CategoryCard 
+              icon={Plane}
+              rank="3"
+              title="항공기부품"
+              total="14"
+              upCount="11"
+              avgPercent="+3.09%"
+              bgColor="bg-blue-600/80"
+            />
+          </div>
+        </section>
+
+        {/* Popular Keywords (Bubble Chart Mock) */}
+        <section>
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-bold text-white">인기 키워드</h2>
+            <div className="flex gap-2 text-xs">
+              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-red-500"></span>부정</span>
+              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-gray-500"></span>중립</span>
+              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-green-500"></span>긍정</span>
+            </div>
+          </div>
+          
+          <div className="relative h-[300px] w-full bg-[#151921] rounded-2xl overflow-hidden border border-white/5">
+             <Bubble text="사상최고치" color="#10b981" size="80px" top="15%" left="60%" />
+             <Bubble text="코스피지수" color="#10b981" size="70px" top="45%" left="70%" />
+             <Bubble text="목표주가상향" color="#10b981" size="65px" top="55%" left="15%" />
+             <Bubble text="피지컬AI" color="#10b981" size="60px" top="25%" left="10%" />
+             <Bubble text="휴머노이드 로봇" color="#10b981" size="65px" top="35%" left="40%" />
+             <Bubble text="유상증자" color="#6b7280" size="55px" top="20%" left="30%" />
+             <Bubble text="외환보유액 감소" color="#6b7280" size="55px" top="5%" left="45%" />
+             <Bubble text="리스크관리" color="#10b981" size="55px" top="55%" left="35%" />
+             <Bubble text="지급여력비율" color="#10b981" size="55px" top="65%" left="50%" />
+             <Bubble text="사상최고치 경신" color="#10b981" size="75px" top="75%" left="25%" />
+          </div>
+        </section>
+
+      </main>
+    </div>
+  );
+}
