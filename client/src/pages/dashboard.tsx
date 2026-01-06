@@ -175,7 +175,7 @@ const FearGreedGauge = () => (
       
       <div className="flex flex-col items-end">
         <div className="flex items-baseline">
-          <span className="text-5xl font-bold text-white tracking-tighter">98</span>
+          <span className="text-5xl font-bold text-[#ff3b30] tracking-tighter">98</span>
           <span className="text-lg text-gray-400 ml-1 font-medium">점</span>
         </div>
         <div className="flex items-center gap-1.5 text-base text-white/90 font-medium mt-1 mb-6">
