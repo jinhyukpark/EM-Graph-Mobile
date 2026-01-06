@@ -232,6 +232,10 @@ const StrongSignalCard = ({
   volume: string;
   isPositive: boolean;
 }) => {
+  const chartPath = isPositive 
+    ? "M0,30 C10,25 20,28 30,15 C40,5 50,10 60,0" 
+    : "M0,0 C10,5 20,2 30,15 C40,25 50,20 60,30";
+
   return (
     <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3">
       <div className="flex justify-between items-start mb-2">
@@ -243,11 +247,25 @@ const StrongSignalCard = ({
           {/* Mini Chart Placeholder */}
           <div className="w-16 h-8 opacity-70">
             <svg viewBox="0 0 60 30" className="w-full h-full overflow-visible">
+              <defs>
+                <linearGradient id={`gradient-mini-${code}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0.5" />
+                  <stop offset="100%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0" />
+                </linearGradient>
+              </defs>
               <path
-                d={isPositive ? "M0,30 C10,25 20,28 30,15 C40,5 50,10 60,0" : "M0,0 C10,5 20,2 30,15 C40,25 50,20 60,30"}
+                d={chartPath}
                 fill="none"
                 stroke={isPositive ? "#ef4444" : "#3b82f6"}
                 strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d={`${chartPath} V 30 H 0 Z`}
+                fill={`url(#gradient-mini-${code})`}
+                stroke="none"
+                opacity="0.5"
               />
             </svg>
           </div>
