@@ -180,25 +180,25 @@ const MomentumCard = ({
         </div>
 
         {/* Stats Grid - Compact */}
-        <div className="grid grid-cols-2 gap-x-8 text-xs border-t border-white/5 pt-3">
+        <div className="grid grid-cols-2 gap-x-8 text-xs border-t border-white/5 pt-3 bg-white/5 -mx-4 -mb-4 p-4 mt-3">
           <div>
             <div className="text-gray-500 mb-1">10일간 주가 강도</div>
-            <div className="flex justify-between mb-0.5">
+            <div className="flex justify-between mb-0.5 whitespace-nowrap">
               <span className="text-gray-400">상승탄력</span>
               <span className="text-[#ff3b30]">{stats.elasticity}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between whitespace-nowrap">
               <span className="text-gray-400">하락방어</span>
               <span className="text-blue-400">{stats.defense}</span>
             </div>
           </div>
           <div>
             <div className="text-gray-500 mb-1 text-right">20일간 주가 강도</div>
-            <div className="flex justify-between mb-0.5">
+            <div className="flex justify-between mb-0.5 whitespace-nowrap">
               <span className="text-gray-400">상승탄력</span>
               <span className="text-[#ff3b30] text-right w-full">{stats.strength20}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between whitespace-nowrap">
               <span className="text-gray-400">하락방어</span>
               <span className="text-[#ff3b30] text-right w-full">{stats.strength10}</span>
             </div>
