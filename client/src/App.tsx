@@ -10,6 +10,8 @@ import StockDetailPage from "@/pages/stock-detail";
 import TrendPage from "@/pages/trend";
 import NotificationsPage from "@/pages/notifications";
 
+import LoginPage from "@/pages/login";
+
 // Placeholder pages
 const PlaceholderPage = ({ title }: { title: string }) => (
   <div className="min-h-screen bg-background text-foreground flex items-center justify-center pb-20">
@@ -23,6 +25,7 @@ const PlaceholderPage = ({ title }: { title: string }) => (
 function Router() {
   return (
     <Switch>
+      <Route path="/login" component={LoginPage} />
       <Route path="/" component={DashboardPage} />
       <Route path="/favorites">
         <PlaceholderPage title="즐겨찾기" />
