@@ -298,9 +298,42 @@ const StrongSignalCard = ({
   volume: string;
   isPositive: boolean;
 }) => {
-  const chartPath = isPositive 
-    ? "M0,30 C10,25 20,28 30,15 C40,5 50,10 60,0" 
-    : "M0,0 C10,5 20,2 30,15 C40,25 50,20 60,30";
+  // Generate random-ish jagged path based on code
+  const seed = code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  
+  const generatePath = (seed: number, isUp: boolean, points: number = 20) => {
+    let path = "";
+    const width = 100;
+    const height = 40;
+    const step = width / (points - 1);
+    
+    // Starting Y
+    let currentY = isUp ? height * 0.8 : height * 0.2;
+    
+    for (let i = 0; i < points; i++) {
+      const x = i * step;
+      
+      // Trend
+      const trend = isUp ? -0.8 : 0.8; // Up moves Y down (canvas coords)
+      
+      // Random walk
+      const noise = (Math.sin(seed * (i + 1)) * 15); 
+      
+      let y = currentY + (trend * (height/points) * i) + noise;
+      y = Math.max(5, Math.min(height - 5, y)); // Clamp
+      
+      if (i === 0) {
+        path = `M${x},${y}`;
+      } else {
+        path += ` L${x},${y}`;
+      }
+    }
+    return path;
+  };
+
+  const mainPath = generatePath(seed, isPositive, 15);
+  // Generate a second "MA" line that is smoother
+  const maPath = generatePath(seed + 123, isPositive, 8); // Fewer points = smoother look if using curves, but here just different
 
   return (
     <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3">
@@ -310,28 +343,42 @@ const StrongSignalCard = ({
           <h3 className="text-sm font-bold text-white">{name}</h3>
         </div>
         <div className="flex gap-3">
-          {/* Mini Chart Placeholder */}
-          <div className="w-16 h-8 opacity-70">
-            <svg viewBox="0 0 60 30" className="w-full h-full overflow-visible">
+          {/* Enhanced Spark Chart */}
+          <div className="w-24 h-12">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id={`gradient-mini-${code}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.5" />
+                  <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.2" />
                   <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0" />
                 </linearGradient>
               </defs>
+              
+              {/* Secondary Line (MA-like) */}
               <path
-                d={chartPath}
+                d={maPath}
+                fill="none"
+                stroke={isPositive ? "#ff3b30" : "#3b82f6"}
+                strokeWidth="1"
+                strokeOpacity="0.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Main Price Line */}
+              <path
+                d={mainPath}
                 fill="none"
                 stroke={isPositive ? "#ff3b30" : "#3b82f6"}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
+              
+              {/* Area Fill for Main Line */}
               <path
-                d={`${chartPath} V 30 H 0 Z`}
+                d={`${mainPath} V 40 H 0 Z`}
                 fill={`url(#gradient-mini-${code})`}
                 stroke="none"
-                opacity="0.5"
               />
             </svg>
           </div>
