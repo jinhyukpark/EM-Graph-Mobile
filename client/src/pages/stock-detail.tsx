@@ -767,27 +767,28 @@ export default function StockDetailPage() {
         {activeTab === "투자자 동향" && (
            <div className="space-y-6">
              {/* Chart Section */}
-             <div className="bg-[#1e232b] rounded-xl p-4 border border-white/5">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-sm font-bold text-gray-200">기간별 거래량</h3>
-                  <div className="flex bg-[#151921] rounded-lg p-0.5 border border-white/5">
-                    {(["주", "월", "년"] as const).map((period) => (
-                      <button 
-                        key={period}
-                        onClick={() => setInvestorChartPeriod(period)}
-                        className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
-                          investorChartPeriod === period 
-                            ? "bg-white/10 text-white shadow-sm" 
-                            : "text-gray-500 hover:text-gray-300"
-                        }`}
-                      >
-                        {period}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+             <div>
+                <h3 className="text-sm font-bold text-gray-200 mb-4">기간별 거래량</h3>
+                <div className="bg-[#1e232b] rounded-xl p-4 border border-white/5">
+                   <div className="flex justify-end items-center mb-4">
+                     <div className="flex bg-[#151921] rounded-lg p-0.5 border border-white/5">
+                       {(["주", "월", "년"] as const).map((period) => (
+                         <button 
+                           key={period}
+                           onClick={() => setInvestorChartPeriod(period)}
+                           className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
+                             investorChartPeriod === period 
+                               ? "bg-white/10 text-white shadow-sm" 
+                               : "text-gray-500 hover:text-gray-300"
+                           }`}
+                         >
+                           {period}
+                         </button>
+                       ))}
+                     </div>
+                   </div>
 
-                <div className="h-[180px] w-full mb-6">
+                   <div className="h-[180px] w-full mb-6">
                    <ResponsiveContainer width="100%" height="100%">
                      <BarChart data={investorVolumeData["주"]}>
                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
