@@ -76,17 +76,17 @@ export default function TrendPage() {
       <main className="space-y-6">
         {/* Trend Map Section */}
         <section className="px-4 pt-4">
-          <div className="flex justify-end gap-3 mb-3 text-[10px]">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#ff3b30]"></span>
+          <div className="flex justify-end gap-4 mb-3 text-xs font-medium">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#ff3b30]"></span>
               <span className="text-gray-400">부정</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-gray-500"></span>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-gray-500"></span>
               <span className="text-gray-400">중립</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#10b981]"></span>
               <span className="text-gray-400">긍정</span>
             </div>
           </div>
