@@ -241,6 +241,7 @@ const Bubble = ({
 };
 
 import StockTicker from "@/components/ui/stock-ticker";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function DashboardPage() {
   return (
@@ -250,13 +251,21 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Stock<span className="font-light text-gray-300">link</span></span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="w-48">
+        <div className="flex items-center gap-2">
+          <div className="w-32 hidden xs:block overflow-hidden">
              <StockTicker />
           </div>
           <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white">
             <Search className="w-4 h-4" />
           </Button>
+          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white relative">
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-[#151921]" />
+          </Button>
+          <Avatar className="w-8 h-8 border border-white/10">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </div>
       </header>
 
