@@ -65,68 +65,70 @@ export default function StockDetailPage() {
 
       {/* Basic Info */}
       <div className="px-4 py-6">
-        {/* Row 1: Logo & Chart */}
-        <div className="flex items-start justify-between mb-0">
-          <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
-            <img 
-              src={stockImage}
-              alt="SAMSUNG" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-          
-          {/* Sparkline Chart & Period Buttons - Right Aligned */}
-          <div className="flex flex-col items-end">
-            <div className="h-24 w-48 mb-2">
-              <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
-                <defs>
-                  <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#ff3b30" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path 
-                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
-                  fill="none" 
-                  stroke="#ff3b30" 
-                  strokeWidth="2" 
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path 
-                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
-                  fill="url(#sparklineGradient)" 
-                  stroke="none" 
-                />
-              </svg>
+        {/* Top Row: Logo, Info, Chart */}
+        <div className="flex justify-between items-start mb-6">
+            {/* Left Group: Logo + Text Info */}
+            <div className="flex gap-4">
+                {/* Logo */}
+                <div className="w-[60px] h-[60px] rounded-2xl overflow-hidden bg-blue-600 flex items-center justify-center shrink-0">
+                    <img 
+                      src={stockImage}
+                      alt="SAMSUNG" 
+                      className="w-full h-full object-contain"
+                    />
+                </div>
+                
+                {/* Text Info */}
+                <div className="flex flex-col justify-center">
+                    <h2 className="text-2xl font-bold text-white mb-1">삼성전자</h2>
+                    <div className="text-xs text-gray-500">제{stockInfo.code} | {stockInfo.market} | {stockInfo.sector}</div>
+                </div>
             </div>
-            
-            {/* Period Buttons */}
-            <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
-                {["일", "주", "월", "년"].map((period) => (
-                  <button 
-                    key={period}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                      period === "주" 
-                        ? "bg-white text-gray-900 shadow-sm" 
-                        : "text-gray-400 hover:text-gray-200"
-                    }`}
-                  >
-                    {period}
-                  </button>
-                ))}
+
+            {/* Right Group: Chart & Buttons */}
+            <div className="flex flex-col items-end">
+                <div className="h-16 w-32 mb-2">
+                  <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+                    <defs>
+                      <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#ff3b30" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <path 
+                      d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
+                      fill="none" 
+                      stroke="#ff3b30" 
+                      strokeWidth="2" 
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path 
+                      d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
+                      fill="url(#sparklineGradient)" 
+                      stroke="none" 
+                    />
+                  </svg>
+                </div>
+                
+                <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                    {["일", "주", "월", "년"].map((period) => (
+                      <button 
+                        key={period}
+                        className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
+                          period === "주" 
+                            ? "bg-white text-gray-900 shadow-sm" 
+                            : "text-gray-400 hover:text-gray-200"
+                        }`}
+                      >
+                        {period}
+                      </button>
+                    ))}
+                </div>
             </div>
-          </div>
         </div>
 
-        <div className="mb-4 -mt-6">
-             <div className="flex items-center gap-2 mb-1">
-               <h2 className="text-2xl font-bold text-white">{stockInfo.name}</h2>
-               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-             </div>
-             <div className="text-xs text-gray-500">제{stockInfo.code} | {stockInfo.market} | {stockInfo.sector}</div>
-        </div>
-        
+        {/* Bottom Row: Price */}
         <div className="flex items-baseline gap-2">
            <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
            <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
