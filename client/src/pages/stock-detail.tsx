@@ -70,7 +70,7 @@ export default function StockDetailPage() {
             {/* Left Group: Logo + Text Info */}
             <div className="flex gap-4">
                 {/* Logo */}
-                <div className="w-[60px] h-[60px] rounded-2xl overflow-hidden bg-blue-600 flex items-center justify-center shrink-0">
+                <div className="w-[60px] h-[60px] rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
                     <img 
                       src={stockImage}
                       alt="SAMSUNG" 
@@ -85,9 +85,9 @@ export default function StockDetailPage() {
                 </div>
             </div>
 
-            {/* Right Group: Chart & Buttons */}
+            {/* Right Group: Chart Only */}
             <div className="flex flex-col items-end">
-                <div className="h-16 w-32 mb-2">
+                <div className="h-16 w-32">
                   <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
                     <defs>
                       <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
@@ -110,28 +110,30 @@ export default function StockDetailPage() {
                     />
                   </svg>
                 </div>
-                
-                <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
-                    {["일", "주", "월", "년"].map((period) => (
-                      <button 
-                        key={period}
-                        className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
-                          period === "주" 
-                            ? "bg-white text-gray-900 shadow-sm" 
-                            : "text-gray-400 hover:text-gray-200"
-                        }`}
-                      >
-                        {period}
-                      </button>
-                    ))}
-                </div>
             </div>
         </div>
 
-        {/* Bottom Row: Price */}
-        <div className="flex items-baseline gap-2">
-           <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
-           <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
+        {/* Bottom Row: Price & Buttons */}
+        <div className="flex justify-between items-center">
+           <div className="flex items-baseline gap-2">
+             <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
+             <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
+           </div>
+           
+           <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                {["일", "주", "월", "년"].map((period) => (
+                  <button 
+                    key={period}
+                    className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
+                      period === "주" 
+                        ? "bg-white text-gray-900 shadow-sm" 
+                        : "text-gray-400 hover:text-gray-200"
+                    }`}
+                  >
+                    {period}
+                  </button>
+                ))}
+            </div>
         </div>
       </div>
 
