@@ -302,10 +302,8 @@ const StrongSignalCard = ({
   // Generate random-ish jagged path based on code
   const seed = code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
-  const generatePath = (seed: number, isUp: boolean, points: number = 20) => {
+  const generatePath = (seed: number, isUp: boolean, points: number = 20, width: number = 100, height: number = 40) => {
     let path = "";
-    const width = 100;
-    const height = 40;
     const step = width / (points - 1);
     
     // Starting Y
@@ -318,7 +316,7 @@ const StrongSignalCard = ({
       const trend = isUp ? -0.8 : 0.8; // Up moves Y down (canvas coords)
       
       // Random walk
-      const noise = (Math.sin(seed * (i + 1)) * 15); 
+      const noise = (Math.sin(seed * (i + 1)) * (height * 0.3)); 
       
       let y = currentY + (trend * (height/points) * i) + noise;
       y = Math.max(5, Math.min(height - 5, y)); // Clamp
@@ -332,9 +330,10 @@ const StrongSignalCard = ({
     return path;
   };
 
-  const mainPath = generatePath(seed, isPositive, 15);
-  // Generate a second "MA" line that is smoother
-  const maPath = generatePath(seed + 123, isPositive, 8); // Fewer points = smoother look if using curves, but here just different
+  // Use larger dimensions directly
+  const chartWidth = 180;
+  const chartHeight = 80;
+  const mainPath = generatePath(seed, isPositive, 15, chartWidth, chartHeight);
 
   return (
     <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3 relative overflow-hidden">
@@ -356,8 +355,8 @@ const StrongSignalCard = ({
         </div>
 
         {/* Enhanced Spark Chart - Larger Area */}
-        <div className="w-[140px] h-[70px] -mr-2">
-            <svg viewBox="0 0 140 70" className="w-full h-full overflow-visible">
+        <div className="w-[180px] h-[80px] -mr-4">
+            <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id={`gradient-mini-${code}`} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.3" />
@@ -367,7 +366,7 @@ const StrongSignalCard = ({
               
               {/* Main Price Line */}
               <path
-                d={mainPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)}
+                d={mainPath}
                 fill="none"
                 stroke={isPositive ? "#ff3b30" : "#3b82f6"}
                 strokeWidth="4"
@@ -377,7 +376,7 @@ const StrongSignalCard = ({
               
               {/* Area Fill for Main Line */}
               <path
-                d={`${mainPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)} V 70 H 0 Z`}
+                d={`${mainPath} V ${chartHeight} H 0 Z`}
                 fill={`url(#gradient-mini-${code})`}
                 stroke="none"
               />
