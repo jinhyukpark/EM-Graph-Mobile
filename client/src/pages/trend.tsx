@@ -286,7 +286,10 @@ export default function TrendPage() {
       <main className="space-y-6">
         {/* Trend Map Section */}
         <section className="px-4 pt-4">
-          <div className="flex justify-end gap-4 mb-3 text-xs font-medium">
+          <div className="flex justify-end gap-4 mb-3 text-xs font-medium items-center">
+            <span className="text-[10px] text-gray-500 mr-2 animate-pulse hidden sm:inline-block">
+              ← 범례선택하면 필터링 됩니다.
+            </span>
             <button 
               onClick={() => handleSentimentClick('negative')}
               className={cn(
