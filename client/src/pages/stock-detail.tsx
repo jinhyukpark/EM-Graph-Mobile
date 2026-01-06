@@ -66,7 +66,7 @@ export default function StockDetailPage() {
       {/* Basic Info */}
       <div className="px-4 py-6">
         {/* Row 1: Logo & Chart */}
-        <div className="flex items-start justify-between mb-2">
+        <div className="flex items-start justify-between mb-0">
           <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
             <img 
               src={stockImage}
@@ -103,11 +103,11 @@ export default function StockDetailPage() {
             
             {/* Period Buttons */}
             <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
-                {["1일", "1주", "1월", "1년"].map((period) => (
+                {["일", "주", "월", "년"].map((period) => (
                   <button 
                     key={period}
-                    className={`px-2 py-0.5 text-[10px] font-medium rounded-md transition-all ${
-                      period === "1주" 
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                      period === "주" 
                         ? "bg-white text-gray-900 shadow-sm" 
                         : "text-gray-400 hover:text-gray-200"
                     }`}
@@ -119,7 +119,7 @@ export default function StockDetailPage() {
           </div>
         </div>
 
-        <div className="mb-4 mt-2">
+        <div className="mb-4 mt-1">
              <div className="flex items-center gap-2 mb-1">
                <h2 className="text-2xl font-bold text-white">{stockInfo.name}</h2>
                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
