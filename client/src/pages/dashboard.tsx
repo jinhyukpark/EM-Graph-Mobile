@@ -570,20 +570,42 @@ export default function DashboardPage() {
             </div>
           </div>
           
-          <div className="relative h-[320px] w-full bg-[#151921] rounded-2xl overflow-hidden border border-white/5 shadow-inner">
+          <div className="relative h-[360px] w-full bg-[#151921] rounded-2xl overflow-hidden border border-white/5 shadow-inner flex items-center justify-center">
              {/* Background Glow Effect */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#10b981]/5 blur-[60px] rounded-full pointer-events-none" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-500/5 blur-[80px] rounded-full pointer-events-none" />
 
-             <Bubble text="사상최고치" color="#10b981" size="85px" top="15%" left="60%" delay={0} />
-             <Bubble text="코스피지수" color="#10b981" size="75px" top="40%" left="72%" delay={1} />
-             <Bubble text="목표주가상향" color="#10b981" size="70px" top="55%" left="15%" delay={0.5} />
-             <Bubble text="피지컬AI" color="#10b981" size="65px" top="25%" left="10%" delay={1.5} />
-             <Bubble text="휴머노이드 로봇" color="#10b981" size="70px" top="35%" left="38%" delay={0.2} />
-             <Bubble text="유상증자" color="#6b7280" size="60px" top="20%" left="32%" delay={0.8} />
-             <Bubble text="외환보유액 감소" color="#6b7280" size="60px" top="5%" left="45%" delay={1.2} />
-             <Bubble text="리스크관리" color="#10b981" size="60px" top="52%" left="35%" delay={0.3} />
-             <Bubble text="지급여력비율" color="#10b981" size="60px" top="60%" left="52%" delay={1.7} />
-             <Bubble text="사상최고치 경신" color="#10b981" size="80px" top="70%" left="25%" delay={0.7} />
+             {/* Center Cluster */}
+             <div className="relative w-[320px] h-[320px]">
+                {/* Center Big One */}
+                <Bubble text="사상최고치" color="#10b981" size="90px" top="40%" left="40%" delay={0} />
+                
+                {/* Inner Ring */}
+                <Bubble text="코스피지수" color="#10b981" size="75px" top="25%" left="25%" delay={0.2} />
+                <Bubble text="금리인하" color="#10b981" size="72px" top="25%" left="55%" delay={0.4} />
+                <Bubble text="실적호조" color="#10b981" size="68px" top="55%" left="58%" delay={0.6} />
+                <Bubble text="외국인매수" color="#10b981" size="65px" top="58%" left="30%" delay={0.8} />
+                
+                {/* Middle Ring */}
+                <Bubble text="목표주가상향" color="#10b981" size="60px" top="10%" left="45%" delay={1.0} />
+                <Bubble text="피지컬AI" color="#10b981" size="58px" top="35%" left="10%" delay={1.2} />
+                <Bubble text="휴머노이드" color="#10b981" size="55px" top="65%" left="15%" delay={1.4} />
+                <Bubble text="신성장동력" color="#10b981" size="52px" top="75%" left="45%" delay={1.6} />
+                <Bubble text="배당확대" color="#10b981" size="50px" top="50%" left="75%" delay={1.8} />
+                <Bubble text="전고점돌파" color="#10b981" size="48px" top="20%" left="70%" delay={2.0} />
+
+                {/* Outer/Negative Ring */}
+                <Bubble text="유상증자" color="#ff3b30" size="55px" top="5%" left="25%" delay={2.2} />
+                <Bubble text="외환보유액" color="#ff3b30" size="52px" top="15%" left="5%" delay={2.4} />
+                <Bubble text="공매도" color="#ff3b30" size="48px" top="50%" left="5%" delay={2.6} />
+                <Bubble text="실적악화" color="#ff3b30" size="45px" top="80%" left="25%" delay={2.8} />
+                <Bubble text="금리인상" color="#ff3b30" size="44px" top="85%" left="55%" delay={3.0} />
+                <Bubble text="환율상승" color="#ff3b30" size="42px" top="70%" left="75%" delay={3.2} />
+                
+                {/* Neutral/Mixed */}
+                <Bubble text="리스크관리" color="#6b7280" size="45px" top="5%" left="65%" delay={3.4} />
+                <Bubble text="지급여력" color="#6b7280" size="40px" top="35%" left="80%" delay={3.6} />
+                <Bubble text="관망세" color="#6b7280" size="38px" top="85%" left="35%" delay={3.8} />
+             </div>
           </div>
         </motion.section>
 
