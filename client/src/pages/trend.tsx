@@ -24,35 +24,35 @@ const newsList = [
   {
     title: "보험사, 지난해 3분기 지급여력비율 210.8%… 전 분기 대비 4%p 상승",
     source: "조선비즈",
-    timeAgo: "4시간 전",
+    timeAgo: "오늘 11:30",
     sentiment: "positive",
     summary: "보험사들의 재무 건전성을 나타내는 지급여력비율(K-ICS)이 전분기 대비 개선된 것으로 나타났다."
   },
   {
     title: "[4대 금융, 새 전략을 묻다]진옥동 신한금융 회장 \"AI 시대 기민한 대응 중요\"",
     source: "아시아경제",
-    timeAgo: "4시간 전",
+    timeAgo: "오늘 11:30",
     sentiment: "positive",
     summary: "신한금융지주 진옥동 회장이 신년사를 통해 AI 기술 도입과 디지털 전환의 중요성을 강조했다."
   },
   {
     title: "보험사 지급여력비율 210%대로 '반등'...캐롯·KDB 등 일부는 '경고등'",
     source: "머니투데이",
-    timeAgo: "5시간 전",
+    timeAgo: "오늘 10:20",
     sentiment: "neutral",
     summary: "전반적인 보험업계의 지급여력비율은 상승했으나, 일부 중소형 보험사들은 여전히 기준치를 밑돌며 우려를 낳고 있다."
   },
   {
     title: "코스피, 외국인 매수세에 2600선 회복...삼성전자 1%대 상승",
     source: "이데일리",
-    timeAgo: "6시간 전",
+    timeAgo: "오늘 09:15",
     sentiment: "positive",
     summary: "코스피 지수가 외국인 투자자들의 매수세 유입에 힘입어 2600선을 회복하며 마감했다."
   },
   {
     title: "테슬라, 휴머노이드 로봇 '옵티머스 2세대' 공개...주가 5% 급등",
     source: "한국경제",
-    timeAgo: "7시간 전",
+    timeAgo: "오늘 08:45",
     sentiment: "positive",
     summary: "테슬라가 더욱 정교해진 휴머노이드 로봇 옵티머스 2세대를 공개하며 로봇 시장 선점 의지를 보였다."
   }
