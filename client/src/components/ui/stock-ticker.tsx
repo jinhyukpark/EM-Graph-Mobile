@@ -24,7 +24,7 @@ export default function StockTicker() {
   const current = indices[currentIndex];
 
   return (
-    <div className="h-full w-full overflow-hidden relative flex items-center justify-center bg-[#09090b]/50">
+    <div className="h-full w-full overflow-hidden relative flex items-center justify-start">
       <AnimatePresence mode="popLayout">
         <motion.div
           key={currentIndex}
@@ -32,7 +32,7 @@ export default function StockTicker() {
           animate={{ y: "0%" }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 flex items-center justify-center gap-2 w-full h-full"
+          className="absolute inset-0 flex items-center justify-start gap-2 w-full h-full"
         >
           <span className="text-[12px] font-bold text-white">{current.name}</span>
           <div className={`text-[12px] font-medium flex items-center gap-1.5 ${current.isUp ? 'text-red-400' : 'text-blue-400'}`}>

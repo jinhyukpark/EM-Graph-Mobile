@@ -249,7 +249,7 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-white/5">
         {/* Ticker Bar */}
-        <div className="h-8 bg-[#151921] flex items-center justify-center border-b border-white/5 overflow-hidden">
+        <div className="h-8 bg-background flex items-center justify-start border-b border-white/5 overflow-hidden px-4">
           <StockTicker />
         </div>
         
