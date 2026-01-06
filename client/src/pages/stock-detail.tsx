@@ -60,23 +60,23 @@ export default function StockDetailPage() {
             </Link>
             <h1 className="text-lg font-bold text-white">종목 상세</h1>
           </div>
-          <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
         </div>
       </header>
 
       {/* Basic Info */}
       <div className="px-4 py-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-[100px]">
+        {/* Row 1: Logo & Chart */}
+        <div className="flex items-start justify-between mb-2 h-16 relative">
+          <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white flex items-center justify-center">
             <img 
               src={stockImage}
               alt="SAMSUNG" 
-              className="w-full h-auto object-contain"
+              className="w-full h-full object-contain"
             />
           </div>
           
-          {/* Sparkline Chart */}
-          <div className="h-8 w-24 ml-2">
+          {/* Sparkline Chart - Right Aligned */}
+          <div className="h-16 w-32 absolute top-0 right-0">
             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
@@ -101,8 +101,11 @@ export default function StockDetailPage() {
           </div>
         </div>
 
-        <div className="mb-3">
-             <h2 className="text-2xl font-bold text-white mb-1">{stockInfo.name}</h2>
+        <div className="mb-4 mt-4">
+             <div className="flex items-center gap-2 mb-1">
+               <h2 className="text-2xl font-bold text-white">{stockInfo.name}</h2>
+               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+             </div>
              <div className="text-xs text-gray-500">제{stockInfo.code} | {stockInfo.market} | {stockInfo.sector}</div>
         </div>
         
