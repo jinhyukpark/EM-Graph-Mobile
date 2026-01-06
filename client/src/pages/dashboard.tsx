@@ -8,7 +8,9 @@ import {
   Star,
   Building2,
   Puzzle,
-  Plane
+  Plane,
+  Clock,
+  CheckCircle
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -118,22 +120,31 @@ const RealTimeRow = ({
 );
 
 const FearGreedGauge = () => (
-  <div className="relative h-40 w-full flex items-center justify-center bg-[#1e232b] rounded-2xl border border-white/5 p-4 overflow-hidden">
-    <div className="absolute top-4 right-4 text-right">
-      <div className="text-4xl font-bold text-white">98<span className="text-lg text-gray-400 font-normal">점</span></div>
-      <div className="text-xs text-gray-500">일주일(극도의 탐욕)</div>
-      <Button variant="outline" size="sm" className="h-6 text-[10px] mt-2 rounded-full border-gray-600 text-gray-300 hover:bg-gray-800">
-        체크포인트
-      </Button>
-    </div>
-    
-    <div className="absolute top-4 left-4">
-      <div className="text-sm text-gray-400">공포 & 탐욕 지수</div>
+  <div className="relative h-44 w-full bg-[#1e232b] rounded-2xl border border-white/5 p-5 overflow-hidden">
+    <div className="flex justify-between items-start relative z-10">
+      <div className="text-base text-gray-200 font-medium pt-1">
+        공포 & 탐욕 지수
+      </div>
+      
+      <div className="flex flex-col items-end">
+        <div className="flex items-baseline">
+          <span className="text-5xl font-bold text-white tracking-tighter">98</span>
+          <span className="text-lg text-gray-400 ml-1 font-medium">점</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-1 mb-3">
+          <Clock className="w-3.5 h-3.5" />
+          <span>일주일(극도의 탐욕)</span>
+        </div>
+        <Button variant="outline" size="sm" className="h-9 text-xs rounded-full bg-[#252b36] border-white/10 text-gray-300 hover:bg-[#303745] hover:text-white px-4 transition-colors">
+          <CheckCircle className="w-4 h-4 mr-1.5" />
+          체크포인트
+        </Button>
+      </div>
     </div>
 
-    {/* Simple SVG Gauge */}
-    <div className="absolute bottom-[-10px] left-8 w-40 h-24">
-       <svg viewBox="0 0 200 110" className="w-full h-full">
+    {/* Gauge Positioned Absolute Center-Bottom-Leftish */}
+    <div className="absolute bottom-2 left-1/2 -translate-x-[60%] w-48 h-28">
+       <svg viewBox="0 0 200 110" className="w-full h-full overflow-visible">
          <defs>
            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
              <stop offset="0%" stopColor="#3b82f6" />
@@ -142,17 +153,17 @@ const FearGreedGauge = () => (
            </linearGradient>
          </defs>
          {/* Background Arc */}
-         <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#334155" strokeWidth="12" strokeLinecap="round" />
+         <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#334155" strokeWidth="16" strokeLinecap="round" opacity="0.5" />
          {/* Value Arc (Full for 98) */}
-         <path d="M 20 100 A 80 80 0 0 1 175 95" fill="none" stroke="url(#gaugeGradient)" strokeWidth="12" strokeLinecap="round" />
+         <path d="M 20 100 A 80 80 0 0 1 175 95" fill="none" stroke="url(#gaugeGradient)" strokeWidth="16" strokeLinecap="round" />
          
          {/* Needle */}
-         <line x1="100" y1="100" x2="160" y2="60" stroke="white" strokeWidth="4" />
-         <circle cx="100" cy="100" r="6" fill="white" />
+         <line x1="100" y1="100" x2="160" y2="60" stroke="white" strokeWidth="5" />
+         <circle cx="100" cy="100" r="8" fill="white" />
          
          {/* Labels */}
-         <text x="20" y="115" fill="#64748b" fontSize="10" textAnchor="middle">EF</text>
-         <text x="180" y="115" fill="#64748b" fontSize="10" textAnchor="middle">EG</text>
+         <text x="20" y="120" fill="#94a3b8" fontSize="12" fontWeight="500" textAnchor="middle">EF</text>
+         <text x="180" y="120" fill="#94a3b8" fontSize="12" fontWeight="500" textAnchor="middle">EG</text>
        </svg>
     </div>
   </div>
