@@ -173,25 +173,27 @@ const StockCard = ({
         </div>
 
         {isLocked ? (
-          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[140px]">
-            <div className="text-[11px] text-gray-300 font-medium mb-1">AI 점수</div>
+          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
+            <div className="text-[11px] text-gray-300 font-medium">AI 스코어링</div>
             
-            <Button 
-              variant="outline" 
-              className="h-8 w-full bg-[#1e232b]/80 border-[#00E5BC]/30 hover:bg-[#00E5BC]/10 hover:border-[#00E5BC] text-[#00E5BC] text-xs font-bold transition-all px-2"
-            >
-              <Crown className="w-3 h-3 mr-1.5" />
-              Business Upgrade
-            </Button>
+            <div className="flex flex-col justify-end h-[54px] w-full">
+              <Button 
+                variant="outline" 
+                className="h-9 w-full bg-[#1e232b]/80 border-[#00E5BC]/30 hover:bg-[#00E5BC]/10 hover:border-[#00E5BC] text-[#00E5BC] text-xs font-bold transition-all px-2 shadow-lg"
+              >
+                <Crown className="w-3.5 h-3.5 mr-1.5" />
+                Business
+              </Button>
+            </div>
           </div>
         ) : aiScore && (
-          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
+          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
             <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
             <div className="text-3xl font-bold text-white font-mono flex items-baseline gap-1 shadow-black drop-shadow-md">
                {aiScore}
                <span className="text-sm text-gray-400 font-normal">/10</span>
             </div>
-            <div className="h-2 w-28 bg-[#252b36] rounded-full overflow-hidden mt-2 border border-white/5">
+            <div className="h-2 w-full bg-[#252b36] rounded-full overflow-hidden mt-2 border border-white/5">
               <div 
                 className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full shadow-[0_0_10px_rgba(255,59,48,0.5)]" 
                 style={{ width: `${(aiScore / 10) * 100}%` }}
