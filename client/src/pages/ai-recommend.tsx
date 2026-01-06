@@ -397,6 +397,90 @@ const FilterDrawer = () => {
 export default function AIRecommendPage() {
   const [activeTab, setActiveTab] = useState("weekly");
   const [activeFilter, setActiveFilter] = useState("거래량");
+  const [selectedPeriod, setSelectedPeriod] = useState("1주");
+
+  // Mock data generator for Strong Sell items based on period
+  const getStrongSellItems = (period: string) => {
+    // Base items
+    const items = [
+      {
+        code: "010170",
+        name: "대한광통신",
+        price: "2,840",
+        diff: "-505",
+        percent: "-15.1",
+        baseScore: 0.03,
+        volume: "37,828,100",
+        isPositive: false
+      },
+      {
+        code: "024910",
+        name: "경창산업",
+        price: "2,255",
+        diff: "286",
+        percent: "14.53",
+        baseScore: 0.49,
+        volume: "18,344,072",
+        isPositive: true
+      },
+      {
+        code: "074430",
+        name: "아미노로직스",
+        price: "1,682",
+        diff: "1",
+        percent: "0.06",
+        baseScore: 0.48,
+        volume: "17,181,684",
+        isPositive: true
+      },
+      {
+        code: "093240",
+        name: "형지엘리트",
+        price: "1,937",
+        diff: "-273",
+        percent: "-12.35",
+        baseScore: 0.12,
+        volume: "16,857,977",
+        isPositive: false
+      },
+      {
+        code: "321370",
+        name: "센서뷰",
+        price: "1,960",
+        diff: "180",
+        percent: "10.11",
+        baseScore: 1.85,
+        volume: "15,241,441",
+        isPositive: true
+      },
+      {
+        code: "274090",
+        name: "켄코아에어로스페이스",
+        price: "21,400",
+        diff: "950",
+        percent: "4.65",
+        baseScore: 2.10,
+        volume: "8,241,441",
+        isPositive: true
+      }
+    ];
+
+    // Adjust scores based on period to simulate changing data
+    return items.map(item => {
+      let modifier = 0;
+      if (period === "2주") modifier = 0.5;
+      if (period === "4주") modifier = 1.2;
+      if (period === "6주") modifier = 2.5;
+      
+      // Calculate new score with some randomness for demo effect, capped at 10
+      let newScore = item.baseScore + modifier;
+      if (newScore > 10) newScore = 9.99;
+      
+      return { ...item, aiScore: newScore };
+    });
+  };
+
+  const strongSellItems = getStrongSellItems(selectedPeriod);
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -515,8 +599,17 @@ export default function AIRecommendPage() {
              {/* Prediction Period Icons */}
              <div className="flex justify-center gap-2 mb-2">
                {["1주", "2주", "4주", "6주"].map((period) => (
-                 <div key={period} className="flex flex-col items-center gap-1 cursor-pointer group">
-                   <div className="w-10 h-10 rounded-full bg-[#1e232b] border border-white/10 flex items-center justify-center text-xs font-bold text-gray-400 group-hover:border-red-500/50 group-hover:text-red-400 group-hover:bg-red-500/10 transition-all">
+                 <div 
+                   key={period} 
+                   onClick={() => setSelectedPeriod(period)}
+                   className="flex flex-col items-center gap-1 cursor-pointer group"
+                 >
+                   <div className={cn(
+                     "w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all",
+                     selectedPeriod === period 
+                       ? "bg-[#1e232b] border border-white/30 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)]" 
+                       : "bg-transparent border border-white/5 text-gray-600 hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10"
+                   )}>
                      {period}
                    </div>
                  </div>
@@ -543,66 +636,19 @@ export default function AIRecommendPage() {
           </div>
 
           <main className="px-4 pb-6">
-            <StrongSignalCard 
-              code="010170"
-              name="대한광통신"
-              price="2,840"
-              diff="-505"
-              percent="-15.1"
-              aiScore={0.03}
-              volume="37,828,100"
-              isPositive={false}
-            />
-            <StrongSignalCard 
-              code="024910"
-              name="경창산업"
-              price="2,255"
-              diff="286"
-              percent="14.53"
-              aiScore={0.49}
-              volume="18,344,072"
-              isPositive={true}
-            />
-            <StrongSignalCard 
-              code="074430"
-              name="아미노로직스"
-              price="1,682"
-              diff="1"
-              percent="0.06"
-              aiScore={0.48}
-              volume="17,181,684"
-              isPositive={true}
-            />
-            <StrongSignalCard 
-              code="093240"
-              name="형지엘리트"
-              price="1,937"
-              diff="-273"
-              percent="-12.35"
-              aiScore={0.12}
-              volume="16,857,977"
-              isPositive={false}
-            />
-            <StrongSignalCard 
-              code="321370"
-              name="센서뷰"
-              price="1,960"
-              diff="180"
-              percent="10.11"
-              aiScore={1.85}
-              volume="15,241,441"
-              isPositive={true}
-            />
-             <StrongSignalCard 
-              code="274090"
-              name="켄코아에어로스페이스"
-              price="21,400"
-              diff="950"
-              percent="4.65"
-              aiScore={2.10}
-              volume="8,241,441"
-              isPositive={true}
-            />
+            {strongSellItems.map((item) => (
+              <StrongSignalCard 
+                key={item.code}
+                code={item.code}
+                name={item.name}
+                price={item.price}
+                diff={item.diff}
+                percent={item.percent}
+                aiScore={item.aiScore}
+                volume={item.volume}
+                isPositive={item.isPositive}
+              />
+            ))}
           </main>
         </>
       ) : activeTab === "모멘텀분석" ? (
