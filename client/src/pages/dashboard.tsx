@@ -173,26 +173,16 @@ const StockCard = ({
         </div>
 
         {isLocked ? (
-          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[120px]">
-            <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
+          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[140px]">
+            <div className="text-[11px] text-gray-300 font-medium mb-1">AI 점수</div>
             
-            <div className="relative w-full py-1">
-              <div className="flex items-baseline gap-1 opacity-20 blur-sm select-none">
-                 <span className="text-3xl font-bold text-white font-mono">8.92</span>
-                 <span className="text-sm text-gray-400 font-normal">/10</span>
-              </div>
-              
-              <div className="absolute inset-0 flex items-center justify-end">
-                <div className="flex items-center gap-1.5 bg-[#1e232b] border border-white/10 rounded-full px-3 py-1.5 shadow-lg">
-                   <Crown className="w-3.5 h-3.5 text-[#00E5BC]" />
-                   <span className="text-[11px] font-bold text-white">Business</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="h-2 w-28 bg-[#252b36] rounded-full overflow-hidden mt-2 border border-white/5 opacity-30">
-              <div className="h-full w-20 bg-gray-500 rounded-full" />
-            </div>
+            <Button 
+              variant="outline" 
+              className="h-8 w-full bg-[#1e232b]/80 border-[#00E5BC]/30 hover:bg-[#00E5BC]/10 hover:border-[#00E5BC] text-[#00E5BC] text-xs font-bold transition-all px-2"
+            >
+              <Crown className="w-3 h-3 mr-1.5" />
+              Business Upgrade
+            </Button>
           </div>
         ) : aiScore && (
           <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
