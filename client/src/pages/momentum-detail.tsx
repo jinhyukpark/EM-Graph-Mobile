@@ -1,5 +1,5 @@
 import { useRoute, Link } from "wouter";
-import { ChevronLeft, Star } from "lucide-react";
+import { ChevronLeft, Star, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { 
@@ -199,6 +199,7 @@ export default function MomentumDetailPage() {
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1 h-4 bg-[#ff3b30] rounded-full"/>
               <h3 className="text-sm font-bold text-gray-900">모멘텀 총평</h3>
+              <Smile className="w-4 h-4 text-orange-500 ml-1" />
             </div>
             <p className="text-sm text-gray-700 leading-relaxed font-medium">
               현재 장은 상승장에 돌입했으며 <span className="text-blue-600 font-bold">{stockInfo.name}</span>은 
