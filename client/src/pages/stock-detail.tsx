@@ -64,19 +64,48 @@ export default function StockDetailPage() {
 
       {/* Basic Info */}
       <div className="px-4 py-6">
-        <div className="flex items-start gap-2 mb-1">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-1">
-            SAMSUNG
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-[100px]">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" 
+              alt="SAMSUNG" 
+              className="w-full h-auto object-contain"
+            />
           </div>
-          <div>
-             <h2 className="text-xl font-bold text-white">{stockInfo.name}</h2>
-             <div className="text-xs text-gray-500">제{stockInfo.code} | {stockInfo.market} | {stockInfo.sector}</div>
+          
+          {/* Sparkline Chart */}
+          <div className="h-8 w-24 ml-2">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+              <defs>
+                <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#ff3b30" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path 
+                d="M0,35 C20,30 40,32 60,15 C80,5 100,10" 
+                fill="none" 
+                stroke="#ff3b30" 
+                strokeWidth="2.5" 
+                strokeLinecap="round"
+              />
+              <path 
+                d="M0,35 C20,30 40,32 60,15 C80,5 100,10 V40 H0 Z" 
+                fill="url(#sparklineGradient)" 
+                stroke="none" 
+              />
+            </svg>
           </div>
         </div>
+
+        <div className="mb-3">
+             <h2 className="text-2xl font-bold text-white mb-1">{stockInfo.name}</h2>
+             <div className="text-xs text-gray-500">제{stockInfo.code} | {stockInfo.market} | {stockInfo.sector}</div>
+        </div>
         
-        <div className="mt-2 flex items-baseline gap-2">
-           <span className="text-3xl font-bold text-white">{stockInfo.price}원</span>
-           <span className="text-sm font-medium text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
+        <div className="flex items-baseline gap-2">
+           <span className="text-4xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
+           <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
         </div>
       </div>
 
