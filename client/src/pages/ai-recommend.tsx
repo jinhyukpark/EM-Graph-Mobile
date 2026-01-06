@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 const AIRecommendCard = ({ 
   rank, 
@@ -88,8 +89,94 @@ const AIRecommendCard = ({
   );
 };
 
+const StrongSignalCard = ({
+  code,
+  name,
+  price,
+  diff,
+  percent,
+  aiScore,
+  volume,
+  isPositive,
+}: {
+  code: string;
+  name: string;
+  price: string;
+  diff: string;
+  percent: string;
+  aiScore: number;
+  volume: string;
+  isPositive: boolean;
+}) => {
+  return (
+    <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3">
+      <div className="flex justify-between items-start mb-2">
+        <div>
+          <span className="text-[10px] text-gray-500 block mb-0.5">{code}</span>
+          <h3 className="text-sm font-bold text-white">{name}</h3>
+        </div>
+        <div className="flex gap-3">
+          {/* Mini Chart Placeholder */}
+          <div className="w-16 h-8 opacity-70">
+            <svg viewBox="0 0 60 30" className="w-full h-full overflow-visible">
+              <path
+                d={isPositive ? "M0,30 C10,25 20,28 30,15 C40,5 50,10 60,0" : "M0,0 C10,5 20,2 30,15 C40,25 50,20 60,30"}
+                fill="none"
+                stroke={isPositive ? "#ef4444" : "#3b82f6"}
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <Star className="w-4 h-4 text-gray-600" />
+        </div>
+      </div>
+
+      <div className="flex items-baseline gap-2 mb-3">
+        <span className="text-lg font-bold text-white">{price}원</span>
+        <span className={`text-xs ${isPositive ? "text-red-400" : "text-blue-400"}`}>
+          {diff}원 <span className="ml-1">{percent}%</span>
+        </span>
+      </div>
+
+      <div className="space-y-1">
+        <div className="flex justify-between items-end text-[10px] text-gray-400 mb-1">
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-red-500"></span>
+            AI 점수
+          </div>
+          <span className="text-white font-mono">{aiScore.toFixed(2)}<span className="text-gray-600">/10</span></span>
+        </div>
+        <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 rounded-full" 
+            style={{ width: `${(aiScore / 10) * 100}%` }}
+          />
+        </div>
+        <div className="text-[10px] text-gray-500 mt-2">
+          거래량 <span className="text-gray-300">{volume}주</span>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const FilterChip = ({ label, isActive, onClick }: { label: string, isActive: boolean, onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className={cn(
+      "px-4 py-2 rounded-full text-xs font-bold transition-all",
+      isActive 
+        ? "bg-[#00E5BC] text-[#151921] shadow-[0_0_10px_rgba(0,229,188,0.2)]" 
+        : "bg-[#1e232b] text-gray-400 border border-white/5 hover:bg-[#252b36]"
+    )}
+  >
+    {label}
+  </button>
+);
+
 export default function AIRecommendPage() {
   const [activeTab, setActiveTab] = useState("weekly");
+  const [activeFilter, setActiveFilter] = useState("거래량");
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -104,7 +191,7 @@ export default function AIRecommendPage() {
         
         {/* Tabs */}
         <div className="px-2 overflow-x-auto no-scrollbar">
-          <Tabs defaultValue="weekly" className="w-full" onValueChange={setActiveTab}>
+          <Tabs value={activeTab} className="w-full" onValueChange={setActiveTab}>
             <TabsList className="bg-transparent h-auto p-0 gap-6 w-full justify-start border-b border-white/5 rounded-none px-2">
               {["주간추천", "강한매도", "강한매수", "모멘텀분석"].map((tab) => (
                 <TabsTrigger 
@@ -120,77 +207,167 @@ export default function AIRecommendPage() {
         </div>
       </header>
 
-      {/* Filter Bar */}
-      <div className="px-4 py-3 bg-[#151921] border-b border-white/5">
-        <Select defaultValue="2026-01-02">
-          <SelectTrigger className="w-full bg-[#1e232b] border-white/5 text-gray-300 h-10 rounded-lg text-sm">
-            <SelectValue placeholder="기간 선택" />
-          </SelectTrigger>
-          <SelectContent className="bg-[#1e232b] border-white/10 text-white">
-            <SelectItem value="2026-01-02">2026년 1월 2주차(2026-01-05)</SelectItem>
-            <SelectItem value="2026-01-01">2026년 1월 1주차(2025-12-29)</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Conditional Content based on Tab */}
+      {activeTab === "weekly" ? (
+        <>
+          {/* Filter Bar for Weekly */}
+          <div className="px-4 py-3 bg-[#151921] border-b border-white/5">
+            <Select defaultValue="2026-01-02">
+              <SelectTrigger className="w-full bg-[#1e232b] border-white/5 text-gray-300 h-10 rounded-lg text-sm">
+                <SelectValue placeholder="기간 선택" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1e232b] border-white/10 text-white">
+                <SelectItem value="2026-01-02">2026년 1월 2주차(2026-01-05)</SelectItem>
+                <SelectItem value="2026-01-01">2026년 1월 1주차(2025-12-29)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-      <main className="px-4 py-6">
-        {/* Banner */}
-        <div className="text-center mb-8">
-           <h2 className="text-xl font-bold text-white mb-2">AI 주간 랭킹 리포트</h2>
-           <p className="text-sm text-gray-400 mb-3 px-8 leading-relaxed">
-             빅데이터 분석을 통해 이번 주 상승 여력이 가장 높은<br/>
-             <span className="text-white font-semibold">Top 10 종목</span>을 선정했습니다.
-           </p>
-           <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500 bg-[#151921] py-2 px-4 rounded-full inline-flex border border-white/5 mx-auto">
-             <span>안녕하세요 <span className="text-[#00E5BC] font-medium">jhpark</span>님! AI가 분석한 투자의견을 확인해보세요.</span>
-           </div>
-        </div>
+          <main className="px-4 py-6">
+            {/* Banner */}
+            <div className="text-center mb-8">
+               <h2 className="text-xl font-bold text-white mb-2">AI 주간 랭킹 리포트</h2>
+               <p className="text-sm text-gray-400 mb-3 px-8 leading-relaxed">
+                 빅데이터 분석을 통해 이번 주 상승 여력이 가장 높은<br/>
+                 <span className="text-white font-semibold">Top 10 종목</span>을 선정했습니다.
+               </p>
+               <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500 bg-[#151921] py-2 px-4 rounded-full inline-flex border border-white/5 mx-auto">
+                 <span>안녕하세요 <span className="text-[#00E5BC] font-medium">jhpark</span>님! AI가 분석한 투자의견을 확인해보세요.</span>
+               </div>
+            </div>
 
-        {/* List */}
-        <div className="space-y-4">
-           <AIRecommendCard 
-             rank={1}
-             name="SK하이닉스"
-             price="677,000"
-             diff="+26000"
-             score={10}
-             tags={["반도체", "HBM", "AI", "메모리", "성장주"]}
-             description={[
-               "AI 수요 증가로 HBM 메모리 시장에서 선도적 위치를 점하고 있어 고성장 잠재력이 크다.",
-               "반도체 산업의 글로벌 공급망 재편 속에서 기술 우위가 지속적인 수익 개선을 이끌 전망이다.",
-               "2026년 KOSDAQ 혁신 계획에 부합하는 첨단 기술 기업으로 시장 재평가 기대가 높다."
-             ]}
-           />
-           
-           <AIRecommendCard 
-             rank={2}
-             name="삼성물산"
-             price="245,000"
-             diff="+5500"
-             score={10}
-             tags={["상사", "건설", "패션", "상패", "다각화"]}
-             description={[
-               "상패무역과 건설 부문의 글로벌 프로젝트 수주가 실적을 견인한다.",
-               "지주사 전환 기대감으로 기업가치 재평가가 진행 중이다.",
-               "다각화된 사업 포트폴리오가 경기 변동성에 강하다."
-             ]}
-           />
-           
-           <AIRecommendCard 
-             rank={3}
-             name="씨어스테크놀로지"
-             price="122,900"
-             diff="-7200"
-             score={10}
-             tags={["AI", "반도체", "IP", "칩셋", "데이터센터"]}
-             description={[
-               "AI 칩 IP 라이선싱 사업의 고성장세가 지속된다.",
-               "데이터센터 및 엣지 컴퓨팅 트렌드 수혜가 크다.",
-               "소프트웨어 중심 모델로 높은 마진율을 유지한다."
-             ]}
-           />
+            {/* List */}
+            <div className="space-y-4">
+               <AIRecommendCard 
+                 rank={1}
+                 name="SK하이닉스"
+                 price="677,000"
+                 diff="+26000"
+                 score={10}
+                 tags={["반도체", "HBM", "AI", "메모리", "성장주"]}
+                 description={[
+                   "AI 수요 증가로 HBM 메모리 시장에서 선도적 위치를 점하고 있어 고성장 잠재력이 크다.",
+                   "반도체 산업의 글로벌 공급망 재편 속에서 기술 우위가 지속적인 수익 개선을 이끌 전망이다.",
+                   "2026년 KOSDAQ 혁신 계획에 부합하는 첨단 기술 기업으로 시장 재평가 기대가 높다."
+                 ]}
+               />
+               
+               <AIRecommendCard 
+                 rank={2}
+                 name="삼성물산"
+                 price="245,000"
+                 diff="+5500"
+                 score={10}
+                 tags={["상사", "건설", "패션", "상패", "다각화"]}
+                 description={[
+                   "상패무역과 건설 부문의 글로벌 프로젝트 수주가 실적을 견인한다.",
+                   "지주사 전환 기대감으로 기업가치 재평가가 진행 중이다.",
+                   "다각화된 사업 포트폴리오가 경기 변동성에 강하다."
+                 ]}
+               />
+               
+               <AIRecommendCard 
+                 rank={3}
+                 name="씨어스테크놀로지"
+                 price="122,900"
+                 diff="-7200"
+                 score={10}
+                 tags={["AI", "반도체", "IP", "칩셋", "데이터센터"]}
+                 description={[
+                   "AI 칩 IP 라이선싱 사업의 고성장세가 지속된다.",
+                   "데이터센터 및 엣지 컴퓨팅 트렌드 수혜가 크다.",
+                   "소프트웨어 중심 모델로 높은 마진율을 유지한다."
+                 ]}
+               />
+            </div>
+          </main>
+        </>
+      ) : activeTab === "강한매도" ? (
+        <>
+          {/* Sort Filters */}
+          <div className="sticky top-[105px] z-30 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-white/5 flex gap-2 overflow-x-auto no-scrollbar">
+            {["거래량", "거래대금", "시가총액", "등락률"].map((filter) => (
+              <FilterChip 
+                key={filter} 
+                label={filter} 
+                isActive={activeFilter === filter} 
+                onClick={() => setActiveFilter(filter)} 
+              />
+            ))}
+          </div>
+          
+          <div className="px-4 py-2 flex justify-end">
+             <span className="text-[10px] text-gray-500">2026-01-05 기준</span>
+          </div>
+
+          <main className="px-4 pb-6">
+            <StrongSignalCard 
+              code="010170"
+              name="대한광통신"
+              price="2,840"
+              diff="-505"
+              percent="-15.1"
+              aiScore={0.03}
+              volume="37,828,100"
+              isPositive={false}
+            />
+            <StrongSignalCard 
+              code="024910"
+              name="경창산업"
+              price="2,255"
+              diff="286"
+              percent="14.53"
+              aiScore={0.49}
+              volume="18,344,072"
+              isPositive={true}
+            />
+            <StrongSignalCard 
+              code="074430"
+              name="아미노로직스"
+              price="1,682"
+              diff="1"
+              percent="0.06"
+              aiScore={0.48}
+              volume="17,181,684"
+              isPositive={true}
+            />
+            <StrongSignalCard 
+              code="093240"
+              name="형지엘리트"
+              price="1,937"
+              diff="-273"
+              percent="-12.35"
+              aiScore={0.12}
+              volume="16,857,977"
+              isPositive={false}
+            />
+            <StrongSignalCard 
+              code="321370"
+              name="센서뷰"
+              price="1,960"
+              diff="180"
+              percent="10.11"
+              aiScore={1.85}
+              volume="15,241,441"
+              isPositive={true}
+            />
+             <StrongSignalCard 
+              code="274090"
+              name="켄코아에어로스페이스"
+              price="21,400"
+              diff="950"
+              percent="4.65"
+              aiScore={2.10}
+              volume="8,241,441"
+              isPositive={true}
+            />
+          </main>
+        </>
+      ) : (
+        <div className="min-h-[50vh] flex items-center justify-center text-gray-500">
+          준비 중인 서비스입니다.
         </div>
-      </main>
+      )}
     </div>
   );
 }
