@@ -159,14 +159,15 @@ const MomentumCard = ({
           
           {/* AI Score Gauge - Wider & Compact */}
           <div className="w-[40%] flex flex-col items-end">
-             <div className="text-[10px] text-gray-400 mb-1">AI 점수</div>
-             <div className="w-full h-6 bg-[#252b36] rounded-full overflow-hidden relative">
+             <div className="text-[10px] text-gray-400 mb-1 flex justify-between w-full">
+                <span>AI 점수</span>
+                <span className="text-xs font-bold text-white drop-shadow-md">{score}</span>
+             </div>
+             <div className="w-full h-1.5 bg-[#252b36] rounded-full overflow-hidden relative">
                <div 
-                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-[#ff3b30] flex items-center justify-center shadow-[0_0_10px_rgba(255,59,48,0.3)]"
+                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-[#ff3b30] shadow-[0_0_10px_rgba(255,59,48,0.3)]"
                  style={{ width: `${(score / 10) * 100}%` }}
-               >
-                 <span className="text-xs font-bold text-white drop-shadow-md">{score}</span>
-               </div>
+               />
              </div>
              <div className="text-[10px] text-[#ff3b30] mt-1 text-right w-full">{period}</div>
           </div>
