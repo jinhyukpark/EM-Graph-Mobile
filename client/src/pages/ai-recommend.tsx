@@ -7,7 +7,10 @@ import {
   Crown,
   Info,
   Search,
-  SlidersHorizontal
+  SlidersHorizontal,
+  X,
+  RefreshCcw,
+  Check
 } from "lucide-react";
 import { 
   Select,
@@ -20,6 +23,20 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const MomentumCard = ({
@@ -271,7 +288,7 @@ const FilterChip = ({ label, isActive, onClick }: { label: string, isActive: boo
   <button
     onClick={onClick}
     className={cn(
-      "px-4 py-2 rounded-full text-xs font-bold transition-all",
+      "px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap",
       isActive 
         ? "bg-[#00E5BC] text-[#151921] shadow-[0_0_10px_rgba(0,229,188,0.2)]" 
         : "bg-[#1e232b] text-gray-400 border border-white/5 hover:bg-[#252b36]"
@@ -280,6 +297,101 @@ const FilterChip = ({ label, isActive, onClick }: { label: string, isActive: boo
     {label}
   </button>
 );
+
+const FilterDrawer = () => {
+  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [volumeRange, setVolumeRange] = useState([0, 100]);
+  
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <button className="px-3 py-2 rounded-full bg-[#1e232b] border border-white/5 text-gray-400 hover:bg-[#252b36] flex items-center justify-center shrink-0 transition-colors active:scale-95">
+           <SlidersHorizontal className="w-4 h-4" />
+        </button>
+      </DrawerTrigger>
+      <DrawerContent className="bg-[#151921] border-t border-white/10 text-white">
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerHeader>
+            <DrawerTitle className="text-lg font-bold text-center">상세 필터 설정</DrawerTitle>
+            <DrawerDescription className="text-center text-gray-500 text-xs">
+              원하는 조건으로 종목을 필터링해보세요.
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="p-4 space-y-6">
+            
+            {/* Price Range */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <Label className="text-sm font-semibold text-gray-300">주가 범위</Label>
+                <span className="text-xs text-[#00E5BC] font-mono">1,000원 ~ 500,000원</span>
+              </div>
+              <Slider 
+                defaultValue={[20, 80]} 
+                max={100} 
+                step={1} 
+                className="[&_.bg-primary]:bg-[#00E5BC] [&_.border-primary]:border-[#00E5BC]"
+              />
+              <div className="flex justify-between text-[10px] text-gray-600 font-mono">
+                <span>Min</span>
+                <span>Max</span>
+              </div>
+            </div>
+
+            {/* Volume Range */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <Label className="text-sm font-semibold text-gray-300">거래량 (일일)</Label>
+                <span className="text-xs text-[#00E5BC] font-mono">10만주 이상</span>
+              </div>
+              <Slider 
+                defaultValue={[30]} 
+                max={100} 
+                step={1} 
+                className="[&_.bg-primary]:bg-[#00E5BC] [&_.border-primary]:border-[#00E5BC]"
+              />
+               <div className="flex justify-between text-[10px] text-gray-600 font-mono">
+                <span>0</span>
+                <span>1,000만+</span>
+              </div>
+            </div>
+
+            {/* Financial Filters */}
+            <div className="space-y-3">
+               <Label className="text-sm font-semibold text-gray-300 mb-2 block">재무 건전성</Label>
+               <div className="space-y-3">
+                 <div className="flex items-center justify-between">
+                   <Label htmlFor="profit" className="text-sm text-gray-400 font-normal">영업이익 흑자 (최근 1년)</Label>
+                   <Switch id="profit" className="data-[state=checked]:bg-[#00E5BC]" />
+                 </div>
+                 <div className="flex items-center justify-between">
+                   <Label htmlFor="debt" className="text-sm text-gray-400 font-normal">부채비율 200% 이하</Label>
+                   <Switch id="debt" className="data-[state=checked]:bg-[#00E5BC]" defaultChecked />
+                 </div>
+                 <div className="flex items-center justify-between">
+                    <Label htmlFor="foreign" className="text-sm text-gray-400 font-normal">외국인 순매수 지속</Label>
+                    <Switch id="foreign" className="data-[state=checked]:bg-[#00E5BC]" />
+                 </div>
+               </div>
+            </div>
+
+          </div>
+          <DrawerFooter className="flex-row gap-2 pt-2 pb-8">
+            <Button variant="outline" className="flex-1 bg-[#1e232b] border-white/5 text-gray-400 hover:bg-[#252b36] hover:text-white border-0 h-12 rounded-xl">
+              <RefreshCcw className="w-4 h-4 mr-2" />
+              초기화
+            </Button>
+            <DrawerClose asChild>
+              <Button className="flex-1 bg-[#00E5BC] text-[#151921] hover:bg-[#00E5BC]/90 font-bold h-12 rounded-xl">
+                <Check className="w-4 h-4 mr-2" />
+                필터 적용
+              </Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  );
+};
 
 export default function AIRecommendPage() {
   const [activeTab, setActiveTab] = useState("weekly");
@@ -412,7 +524,9 @@ export default function AIRecommendPage() {
           </div>
 
           {/* Sort Filters */}
-          <div className="sticky top-[105px] z-30 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-white/5 flex gap-2 overflow-x-auto no-scrollbar">
+          <div className="sticky top-[105px] z-30 bg-background/95 backdrop-blur-md px-4 py-3 border-b border-white/5 flex gap-2 overflow-x-auto no-scrollbar items-center">
+            <FilterDrawer />
+            <div className="w-[1px] h-6 bg-white/10 mx-1 shrink-0" />
             {["거래량", "거래대금", "시가총액", "등락률"].map((filter) => (
               <FilterChip 
                 key={filter} 
