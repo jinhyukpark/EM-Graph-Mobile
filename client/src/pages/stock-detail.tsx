@@ -884,6 +884,33 @@ export default function StockDetailPage() {
 
         {activeTab === "투자자 동향" && (
            <div className="space-y-6">
+             {/* AI Investor Trends Summary */}
+             <div className="bg-gradient-to-br from-[#1e232b] to-[#151921] rounded-xl border border-white/10 p-5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 blur-3xl rounded-full pointer-events-none -mr-10 -mt-10" />
+                
+                <div className="flex items-start gap-3 relative z-10">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/20">
+                    <Star className="w-4 h-4 text-white fill-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="text-sm font-bold text-white">AI 수급 분석 요약</h4>
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-orange-500/30 text-orange-400 bg-orange-500/10">PREMIUM</Badge>
+                    </div>
+                    <p className="text-xs text-gray-300 leading-relaxed">
+                      최근 1주일간 <span className="text-[#ff3b30] font-bold">외국인과 기관의 동반 매도세</span>가 이어지고 있습니다. 
+                      특히 외국인은 최근 3거래일 연속 순매도를 기록하며 차익 실현에 나선 모습입니다. 
+                      반면 개인 투자자들은 저가 매수세 유입으로 물량을 소화하고 있으나, 수급 불균형에 따른 단기 변동성 확대가 예상됩니다.
+                    </p>
+                    <div className="mt-3 flex gap-2">
+                       <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">외국인 <span className="text-blue-400">매도 우위</span></div>
+                       <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">기관 <span className="text-blue-400">매도 우위</span></div>
+                       <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">수급점수 <span className="text-orange-400">32점</span></div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+
              {/* Chart Section */}
              <div>
                 <h3 className="text-lg font-bold text-gray-200 mb-4">기간별 거래량</h3>
