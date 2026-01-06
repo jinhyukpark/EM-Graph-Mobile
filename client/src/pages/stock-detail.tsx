@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Link, useRoute } from "wouter";
-import { ChevronLeft, Star, ChevronDown } from "lucide-react";
+import { ChevronLeft, Star, ChevronDown, Crown, ArrowRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -423,6 +423,34 @@ export default function StockDetailPage() {
           <>
         {/* Company Info */}
         <section>
+          {/* Premium Momentum Banner */}
+          <Link href={`/momentum/${code}`}>
+            <div className="bg-gradient-to-r from-[#1e232b] to-[#151921] rounded-xl p-4 mb-6 border border-white/10 relative overflow-hidden group cursor-pointer">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#00E5BC]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              
+              <div className="flex justify-between items-center relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#00E5BC]/10 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-[#00E5BC] fill-[#00E5BC]" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="font-bold text-white">AI 모멘텀 분석</h3>
+                      <Badge variant="outline" className="bg-[#00E5BC]/10 text-[#00E5BC] border-[#00E5BC]/20 text-[10px] px-1.5 py-0 h-4">
+                        PREMIUM
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-gray-400">기관/외국인 수급과 추세를 AI가 분석했습니다</p>
+                  </div>
+                </div>
+                
+                <div className="w-8 h-8 rounded-full bg-[#2a3038] flex items-center justify-center group-hover:bg-[#00E5BC] group-hover:text-black transition-colors">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+          </Link>
+
           <h3 className="text-lg font-bold text-gray-200 mb-4">기업 소개</h3>
           
           <div className="grid grid-cols-[100px_1fr] gap-y-3 text-sm mb-6">
