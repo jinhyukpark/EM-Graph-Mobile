@@ -128,7 +128,7 @@ const FearGreedGauge = () => (
       
       <div className="flex flex-col items-end">
         <div className="flex items-baseline">
-          <span className="text-5xl font-bold text-white tracking-tighter">98</span>
+          <span className="text-5xl font-bold text-[#ef4444] tracking-tighter">98</span>
           <span className="text-lg text-gray-400 ml-1 font-medium">점</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-1 mb-5">
@@ -147,8 +147,8 @@ const FearGreedGauge = () => (
        <svg viewBox="0 0 200 110" className="w-full h-full overflow-visible">
          <defs>
            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-             <stop offset="0%" stopColor="#3b82f6" />
-             <stop offset="50%" stopColor="#8b5cf6" />
+             <stop offset="0%" stopColor="#10b981" />
+             <stop offset="50%" stopColor="#fbbf24" />
              <stop offset="100%" stopColor="#ef4444" />
            </linearGradient>
          </defs>
