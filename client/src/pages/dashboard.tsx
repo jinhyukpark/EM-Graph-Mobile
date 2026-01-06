@@ -287,8 +287,22 @@ const FearGreedGauge = () => (
               {/* Check Point Section */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="text-blue-400">
-                    <Check className="w-5 h-5 stroke-[3]" />
+                  <div className="relative w-6 h-6">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-full h-full">
+                      <defs>
+                        <linearGradient id="check-gradient" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stopColor="#3b82f6" /> 
+                          <stop offset="100%" stopColor="#ec4899" />
+                        </linearGradient>
+                      </defs>
+                      <path 
+                        d="M20 6L9 17L4 12" 
+                        stroke="url(#check-gradient)" 
+                        strokeWidth="4" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                      />
+                    </svg>
                   </div>
                   <h3 className="text-lg font-bold">Check Point</h3>
                 </div>
