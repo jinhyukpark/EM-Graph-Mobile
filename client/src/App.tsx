@@ -3,6 +3,8 @@ import DashboardPage from "@/pages/dashboard";
 import MobileNav from "@/components/layout/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
 
+import AIRecommendPage from "@/pages/ai-recommend";
+
 // Placeholder pages
 const PlaceholderPage = ({ title }: { title: string }) => (
   <div className="min-h-screen bg-background text-foreground flex items-center justify-center pb-20">
@@ -20,9 +22,7 @@ function Router() {
       <Route path="/favorites">
         <PlaceholderPage title="즐겨찾기" />
       </Route>
-      <Route path="/ai-recommend">
-        <PlaceholderPage title="AI 추천" />
-      </Route>
+      <Route path="/ai-recommend" component={AIRecommendPage} />
       <Route path="/trends">
         <PlaceholderPage title="트렌드" />
       </Route>
