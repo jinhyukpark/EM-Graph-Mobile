@@ -365,23 +365,12 @@ const StrongSignalCard = ({
                 </linearGradient>
               </defs>
               
-              {/* Secondary Line (MA-like) */}
-              <path
-                d={maPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)}
-                fill="none"
-                stroke={isPositive ? "#ff3b30" : "#3b82f6"}
-                strokeWidth="1.5"
-                strokeOpacity="0.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-
               {/* Main Price Line */}
               <path
                 d={mainPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)}
                 fill="none"
                 stroke={isPositive ? "#ff3b30" : "#3b82f6"}
-                strokeWidth="2.5"
+                strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
