@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const COLORS = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981", "#6b7280"];
 const COLORS_MARKET = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981"];
@@ -56,6 +62,8 @@ export default function StockDetailPage() {
   };
 
   const [activeTab, setActiveTab] = useState("기업소개");
+  const [reportType, setReportType] = useState("연결"); // 연결 vs 별도
+  const [periodType, setPeriodType] = useState("분기"); // 분기 vs 연간
 
   return (
     <div className="min-h-screen bg-background pb-20 text-white">
@@ -336,12 +344,37 @@ export default function StockDetailPage() {
           <div className="space-y-6">
             {/* Global Controls */}
             <div className="flex justify-end gap-2 mb-2">
-              <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                연결 <ChevronDown className="w-3 h-3" />
-              </Button>
-              <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                분기 <ChevronDown className="w-3 h-3" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                    {reportType} <ChevronDown className="w-3 h-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[80px] bg-[#1e232b] border-white/10 text-gray-200">
+                  <DropdownMenuItem onClick={() => setReportType("연결")} className="focus:bg-white/10 focus:text-white cursor-pointer">
+                    연결
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setReportType("별도")} className="focus:bg-white/10 focus:text-white cursor-pointer">
+                    별도
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                    {periodType} <ChevronDown className="w-3 h-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[80px] bg-[#1e232b] border-white/10 text-gray-200">
+                  <DropdownMenuItem onClick={() => setPeriodType("분기")} className="focus:bg-white/10 focus:text-white cursor-pointer">
+                    분기
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setPeriodType("연간")} className="focus:bg-white/10 focus:text-white cursor-pointer">
+                    연간
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Summary Card */}
