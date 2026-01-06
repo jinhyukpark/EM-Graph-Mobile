@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useRoute } from "wouter";
 import { ChevronLeft, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -187,6 +187,34 @@ export default function StockDetailPage() {
   const [investorTab, setInvestorTab] = useState("투자자"); // 투자자, 신용, 대차, 공매도, CFD
   const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별, 기관별
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   const handleBarClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
        setSelectedPeriod(data.activePayload[0].payload);
@@ -283,9 +311,16 @@ export default function StockDetailPage() {
 
       {/* Tabs */}
       <div className="sticky top-[60px] z-30 bg-background border-b border-white/5">
-        <div className="px-2 overflow-x-auto no-scrollbar">
+        <div 
+          ref={scrollContainerRef}
+          className="px-2 overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
           <Tabs value={activeTab} className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="bg-transparent h-auto p-0 gap-6 w-full justify-start rounded-none px-2">
+            <TabsList className="bg-transparent h-auto p-0 gap-6 w-full justify-start rounded-none px-2 select-none">
               {["기업소개", "실적", "배당", "뉴스", "공시", "투자자 동향", "재무분석", "투자지표"].map((tab) => (
                 <TabsTrigger 
                   key={tab} 
