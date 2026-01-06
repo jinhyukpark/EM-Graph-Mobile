@@ -1,48 +1,99 @@
+import { useState } from "react";
 import { Link } from "wouter";
-import { ChevronLeft, Search, CheckCircle2, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { ChevronLeft, Search, Bell, TrendingUp, TrendingDown, Info, Sparkles, FileText } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-const IssueStockCard = ({
-  code,
-  name,
-  tag,
-  score,
-  isPositive
-}: {
-  code: string;
-  name: string;
-  tag: string;
-  score: string;
-  isPositive: boolean;
-}) => (
-  <Card className="bg-[#1e232b] border border-white/5 p-4 rounded-xl flex justify-between items-center mb-3">
-    <div>
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-[10px] text-gray-500">{code}</span>
-        <Badge variant="secondary" className="bg-[#2a3038] text-gray-300 border-none text-[10px] px-1.5 py-0.5 font-normal">
-          {tag}
-        </Badge>
-      </div>
-      <h3 className="text-base font-bold text-white">{name}</h3>
-    </div>
-    
-    <div className="flex flex-col items-end">
-       <div className="text-[10px] text-gray-500 mb-1">AI 점수</div>
-       <div className="text-lg font-bold text-white flex items-center gap-1">
-         {score}
-         <span className={`text-[10px] ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>
-           {isPositive ? "▲" : "▼"}
-         </span>
-       </div>
-    </div>
-  </Card>
-);
+// Mock Data for Notifications
+const notifications = [
+  {
+    id: 1,
+    category: "AI 추천",
+    title: "삼성전자 AI 점수 변동",
+    message: "삼성전자의 AI 점수가 8.5점에서 8.8점으로 상승했습니다. 수급 분석 결과 기관 매수세가 포착되었습니다.",
+    time: "방금 전",
+    read: false,
+    icon: Sparkles,
+    color: "text-purple-400",
+    bg: "bg-purple-400/10"
+  },
+  {
+    id: 2,
+    category: "지수",
+    title: "공포 & 탐욕 지수 변동 알림",
+    message: "현재 시장은 '극도의 탐욕' 단계(98점)에 진입했습니다. 과열 구간 진입에 유의하세요.",
+    time: "10분 전",
+    read: false,
+    icon: TrendingUp,
+    color: "text-[#ff3b30]",
+    bg: "bg-[#ff3b30]/10"
+  },
+  {
+    id: 3,
+    category: "키워드",
+    title: "관심 키워드 '사상최고치' 발생",
+    message: "미래에셋증권 종목에서 '사상최고치' 키워드가 발생했습니다.",
+    time: "30분 전",
+    read: true,
+    icon: Bell,
+    color: "text-blue-400",
+    bg: "bg-blue-400/10"
+  },
+  {
+    id: 4,
+    category: "종목",
+    title: "SK하이닉스 목표가 상향",
+    message: "주요 증권사 3곳에서 SK하이닉스 목표주가를 상향 조정했습니다. 평균 목표가: 210,000원",
+    time: "1시간 전",
+    read: true,
+    icon: TrendingUp,
+    color: "text-[#10b981]",
+    bg: "bg-[#10b981]/10"
+  },
+  {
+    id: 5,
+    category: "공지",
+    title: "시스템 점검 안내",
+    message: "안정적인 서비스 제공을 위해 금일 새벽 2시부터 4시까지 서버 점검이 진행될 예정입니다.",
+    time: "2시간 전",
+    read: true,
+    icon: Info,
+    color: "text-gray-400",
+    bg: "bg-gray-400/10"
+  },
+  {
+    id: 6,
+    category: "AI 추천",
+    title: "오늘의 급등 예상 종목",
+    message: "AI가 분석한 장시작 전 급등 예상 종목 리포트가 도착했습니다. 지금 확인해보세요.",
+    time: "5시간 전",
+    read: true,
+    icon: Sparkles,
+    color: "text-purple-400",
+    bg: "bg-purple-400/10"
+  },
+  {
+    id: 7,
+    category: "지수",
+    title: "코스피 2,600선 회복",
+    message: "코스피 지수가 외국인 매수세에 힘입어 2,600선을 회복 마감했습니다.",
+    time: "어제",
+    read: true,
+    icon: TrendingUp,
+    color: "text-[#ff3b30]",
+    bg: "bg-[#ff3b30]/10"
+  }
+];
+
+const categories = ["전체", "AI 추천", "종목", "지수", "키워드", "공지"];
 
 export default function NotificationsPage() {
-  const fearGreedScore = 98;
-  
+  const [activeCategory, setActiveCategory] = useState("전체");
+
+  const filteredNotifications = activeCategory === "전체" 
+    ? notifications 
+    : notifications.filter(n => n.category === activeCategory);
+
   return (
     <div className="min-h-screen bg-background pb-20 text-white">
       {/* Header */}
@@ -54,120 +105,71 @@ export default function NotificationsPage() {
             </Link>
             <h1 className="text-lg font-bold text-white">알림</h1>
           </div>
-          <Search className="w-5 h-5 text-white" />
+          <div className="flex gap-4">
+             <Search className="w-5 h-5 text-white" />
+          </div>
+        </div>
+        
+        {/* Categories */}
+        <div className="flex px-4 py-3 gap-2 overflow-x-auto no-scrollbar border-b border-white/5">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all",
+                activeCategory === category
+                  ? "bg-white text-black font-bold"
+                  : "bg-[#1e232b] text-gray-400 border border-white/5 hover:bg-[#2a3038]"
+              )}
+            >
+              {category}
+            </button>
+          ))}
         </div>
       </header>
 
-      <main className="px-4 py-6 space-y-6">
-        {/* Fear & Greed Index */}
-        <section>
-          <Card className="bg-[#151921] border border-white/5 p-5 rounded-2xl relative overflow-hidden">
-            <div className="flex justify-between items-start mb-6">
-              <h2 className="text-sm font-bold text-gray-300">공포 & 탐욕 지수</h2>
-              <div className="text-right">
-                <div className="text-4xl font-black text-[#ff3b30] tracking-tighter">{fearGreedScore}<span className="text-lg font-bold text-gray-500 ml-1">점</span></div>
-                <div className="text-xs text-gray-400 mt-1 flex items-center justify-end gap-1">
-                  <span>🕒</span> 일주일(극도의 탐욕)
+      <main className="px-4 py-2">
+        {filteredNotifications.length > 0 ? (
+          <div className="divide-y divide-white/5">
+            {filteredNotifications.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.id} className={cn("py-4 flex gap-4 group cursor-pointer", !item.read && "bg-white/[0.02] -mx-4 px-4")}>
+                  <div className={cn("w-10 h-10 rounded-full flex items-center justify-center shrink-0 mt-1", item.bg)}>
+                    <Icon className={cn("w-5 h-5", item.color)} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex items-center gap-2">
+                         <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-white/10 text-gray-400 font-normal">
+                           {item.category}
+                         </Badge>
+                         <span className="text-xs text-gray-500">{item.time}</span>
+                      </div>
+                      {!item.read && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b30]"></span>
+                      )}
+                    </div>
+                    <h3 className={cn("text-sm font-bold mb-1 leading-tight group-hover:text-blue-400 transition-colors", item.read ? "text-gray-300" : "text-white")}>
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
+                      {item.message}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Gauge Chart Visualization */}
-            <div className="relative h-32 w-full flex justify-center items-end mb-4">
-               <div className="w-[240px] h-[120px] relative overflow-hidden">
-                 {/* Gauge Background */}
-                 <div className="absolute top-0 left-0 w-full h-full rounded-t-full bg-gray-800 opacity-30"></div>
-                 
-                 {/* Gradient Arc (Using CSS conic-gradient) */}
-                 <div 
-                   className="absolute top-0 left-0 w-full h-full rounded-t-full"
-                   style={{
-                     background: "conic-gradient(from 180deg at 50% 100%, #3b82f6 0deg, #10b981 60deg, #eab308 120deg, #ff3b30 180deg)",
-                     maskImage: "radial-gradient(at 50% 100%, transparent 60%, black 61%)",
-                     WebkitMaskImage: "radial-gradient(at 50% 100%, transparent 60%, black 61%)"
-                   }}
-                 ></div>
-
-                 {/* Needle */}
-                 <div 
-                   className="absolute bottom-0 left-1/2 w-1 h-[110px] bg-white origin-bottom rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)] z-10 transition-transform duration-1000 ease-out"
-                   style={{ transform: `translateX(-50%) rotate(${(fearGreedScore / 100) * 180 - 90}deg)` }}
-                 >
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rounded-full shadow-md"></div>
-                 </div>
-                 
-                 {/* Center Pivot */}
-                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full z-20"></div>
-               </div>
-               
-               <div className="absolute bottom-0 left-8 text-xs text-gray-500 font-bold">EF</div>
-               <div className="absolute bottom-0 right-8 text-xs text-gray-500 font-bold">EG</div>
-            </div>
-
-            <div className="flex justify-end">
-              <Button variant="outline" className="bg-[#252b36] border-none text-gray-300 hover:bg-[#2f3642] text-xs h-8 rounded-full">
-                <CheckCircle2 className="w-3 h-3 mr-1.5" />
-                체크포인트
-              </Button>
-            </div>
-          </Card>
-        </section>
-
-        {/* Buy/Sell Counts */}
-        <section className="grid grid-cols-2 gap-4">
-          <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center text-center hover:bg-[#1a1f29] transition-colors">
-            <h3 className="text-sm font-bold text-blue-400 mb-2">강한매도</h3>
-            <div className="text-3xl font-black text-white mb-1">345<span className="text-sm font-normal text-gray-500 ml-0.5">개</span></div>
-            <div className="text-[10px] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded-full">
-              7일간 이내 -0.51%
-            </div>
-          </Card>
-          
-          <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center text-center hover:bg-[#1a1f29] transition-colors">
-            <h3 className="text-sm font-bold text-[#ff3b30] mb-2">강한매수</h3>
-            <div className="text-3xl font-black text-white mb-1">245<span className="text-sm font-normal text-gray-500 ml-0.5">개</span></div>
-            <div className="text-[10px] text-[#ff3b30] bg-[#ff3b30]/10 px-2 py-0.5 rounded-full">
-              7일간 이내 -0.30%
-            </div>
-          </Card>
-        </section>
-
-        {/* Issue Stocks */}
-        <section>
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h3 className="text-lg font-bold text-gray-200">이슈 종목</h3>
-              <p className="text-xs text-gray-500 mt-0.5">오늘 22:20 기준</p>
-            </div>
-            <Button variant="ghost" className="text-xs text-gray-500 hover:text-white bg-[#1e232b] h-7 rounded-full">
-              자세히보기
-            </Button>
+              );
+            })}
           </div>
-
-          <div className="space-y-3">
-            <IssueStockCard 
-              code="006800" 
-              name="미래에셋증권" 
-              tag="사상최고치" 
-              score="9.2" 
-              isPositive={true} 
-            />
-            <IssueStockCard 
-              code="005930" 
-              name="삼성전자" 
-              tag="수급급증" 
-              score="8.5" 
-              isPositive={true} 
-            />
-            <IssueStockCard 
-              code="035720" 
-              name="카카오" 
-              tag="낙폭과대" 
-              score="7.8" 
-              isPositive={false} 
-            />
+        ) : (
+          <div className="py-20 text-center">
+            <div className="w-16 h-16 bg-[#1e232b] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Bell className="w-8 h-8 text-gray-600" />
+            </div>
+            <p className="text-gray-500 text-sm">새로운 알림이 없습니다.</p>
           </div>
-        </section>
+        )}
       </main>
     </div>
   );
