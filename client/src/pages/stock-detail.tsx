@@ -747,22 +747,6 @@ export default function StockDetailPage() {
 
         {activeTab === "투자자 동향" && (
            <div className="space-y-6">
-             {/* Main Tabs */}
-             <div className="w-full bg-[#1e232b] p-1 rounded-lg flex border border-white/5">
-                {["투자자", "신용", "대차", "공매도", "CFD"].map((tab) => (
-                  <button
-                    key={tab}
-                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-                      tab === "투자자"
-                        ? "bg-white/10 text-white shadow-sm"
-                        : "text-gray-400 hover:text-gray-200"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-             </div>
-
              {/* Chart Section */}
              <div className="bg-[#1e232b] rounded-xl p-4 border border-white/5">
                 <div className="flex justify-between items-center mb-4">
@@ -832,37 +816,7 @@ export default function StockDetailPage() {
                    </div>
                 </div>
              </div>
-
-             {/* Table Header */}
-             <div className="grid grid-cols-5 text-center text-xs text-gray-400 py-2 border-b border-white/5 bg-[#1e232b] rounded-t-lg mt-6">
-                   <div>날짜</div>
-                   <div>개인</div>
-                   <div>외국인</div>
-                   <div>기관</div>
-                   <div>기타법인</div>
-                </div>
-
-                {/* Table Body */}
-                <div className="divide-y divide-white/5 border-x border-b border-white/5 rounded-b-lg">
-                   {investorTrendsData.map((row, index) => (
-                     <div key={index} className="grid grid-cols-5 text-center py-3 text-xs hover:bg-white/5 transition-colors bg-[#1e232b]">
-                        <div className="text-gray-300 flex items-center justify-center">{row.date}</div>
-                        <div className={row.individual > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
-                          {row.individual > 0 ? "+" : ""}{row.individual.toLocaleString()}
-                        </div>
-                        <div className={row.foreigner > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
-                          {row.foreigner > 0 ? "+" : ""}{row.foreigner.toLocaleString()}
-                        </div>
-                        <div className={row.institution > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
-                          {row.institution > 0 ? "+" : ""}{row.institution.toLocaleString()}
-                        </div>
-                        <div className={row.other > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
-                          {row.other > 0 ? "+" : ""}{row.other.toLocaleString()}
-                        </div>
-                     </div>
-                   ))}
-                </div>
-             </div>
+           </div>
         )}
       </main>
     </div>
