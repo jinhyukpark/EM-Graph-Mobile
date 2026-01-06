@@ -58,6 +58,23 @@ const newsList = [
 
 export default function TrendPage() {
   const [activeTab, setActiveTab] = useState("상세뉴스");
+  const [selectedSentiment, setSelectedSentiment] = useState<string | null>(null);
+
+  const filteredKeywords = selectedSentiment 
+    ? trendKeywords.filter(k => k.type === selectedSentiment)
+    : trendKeywords;
+
+  const filteredNews = selectedSentiment
+    ? newsList.filter(n => n.sentiment === selectedSentiment)
+    : newsList;
+
+  const handleSentimentClick = (sentiment: string) => {
+    if (selectedSentiment === sentiment) {
+      setSelectedSentiment(null);
+    } else {
+      setSelectedSentiment(sentiment);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24 text-white">
@@ -77,24 +94,42 @@ export default function TrendPage() {
         {/* Trend Map Section */}
         <section className="px-4 pt-4">
           <div className="flex justify-end gap-4 mb-3 text-xs font-medium">
-            <div className="flex items-center gap-2">
+            <button 
+              onClick={() => handleSentimentClick('negative')}
+              className={cn(
+                "flex items-center gap-2 transition-opacity",
+                selectedSentiment && selectedSentiment !== 'negative' ? "opacity-30" : "opacity-100"
+              )}
+            >
               <span className="w-3 h-3 rounded-full bg-[#ff3b30]"></span>
               <span className="text-gray-400">부정</span>
-            </div>
-            <div className="flex items-center gap-2">
+            </button>
+            <button 
+              onClick={() => handleSentimentClick('neutral')}
+              className={cn(
+                "flex items-center gap-2 transition-opacity",
+                selectedSentiment && selectedSentiment !== 'neutral' ? "opacity-30" : "opacity-100"
+              )}
+            >
               <span className="w-3 h-3 rounded-full bg-gray-500"></span>
               <span className="text-gray-400">중립</span>
-            </div>
-            <div className="flex items-center gap-2">
+            </button>
+            <button 
+              onClick={() => handleSentimentClick('positive')}
+              className={cn(
+                "flex items-center gap-2 transition-opacity",
+                selectedSentiment && selectedSentiment !== 'positive' ? "opacity-30" : "opacity-100"
+              )}
+            >
               <span className="w-3 h-3 rounded-full bg-[#10b981]"></span>
               <span className="text-gray-400">긍정</span>
-            </div>
+            </button>
           </div>
 
-          <div className="bg-[#1e232b] rounded-2xl aspect-[4/3] relative overflow-hidden shadow-inner border border-white/5">
-            {trendKeywords.map((item, index) => (
+          <div className="bg-[#1e232b] rounded-2xl aspect-[4/3] relative overflow-hidden shadow-inner border border-white/5 transition-all">
+            {filteredKeywords.map((item, index) => (
               <div
-                key={index}
+                key={`${item.text}-${index}`}
                 className={cn(
                   "absolute flex items-center justify-center text-center p-2 rounded-full shadow-lg transition-transform hover:scale-110 cursor-pointer animate-float",
                   item.type === "positive" ? "bg-[#10b981] text-[#0a2e22]" : 
@@ -116,6 +151,11 @@ export default function TrendPage() {
                 {item.text}
               </div>
             ))}
+            {filteredKeywords.length === 0 && (
+              <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">
+                해당하는 키워드가 없습니다.
+              </div>
+            )}
           </div>
         </section>
 
@@ -143,12 +183,17 @@ export default function TrendPage() {
         {activeTab === "상세뉴스" && (
           <section className="px-4">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold">전체 뉴스</h2>
-              <span className="text-sm text-gray-500">50개</span>
+              <h2 className="text-lg font-bold">
+                {selectedSentiment === 'positive' ? '긍정 뉴스' :
+                 selectedSentiment === 'negative' ? '부정 뉴스' :
+                 selectedSentiment === 'neutral' ? '중립 뉴스' :
+                 '전체 뉴스'}
+              </h2>
+              <span className="text-sm text-gray-500">{filteredNews.length}개</span>
             </div>
 
             <div className="space-y-4">
-              {newsList.map((news, index) => (
+              {filteredNews.map((news, index) => (
                 <div key={index} className="bg-[#1e232b] p-5 rounded-2xl border border-white/5 space-y-3">
                   <div className="flex items-start justify-between gap-4">
                     <Badge 
@@ -174,6 +219,12 @@ export default function TrendPage() {
                   </div>
                 </div>
               ))}
+              
+              {filteredNews.length === 0 && (
+                <div className="text-center py-10 text-gray-500">
+                  해당하는 뉴스가 없습니다.
+                </div>
+              )}
             </div>
           </section>
         )}
