@@ -173,18 +173,16 @@ const StockCard = ({
         </div>
 
         {isLocked ? (
-          <div className="flex flex-col items-center gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
-            <div className="text-sm text-gray-300 font-bold mb-1">AI 점수</div>
+          <div className="flex flex-col items-center justify-center gap-3 bg-black/20 backdrop-blur-[2px] rounded-lg py-4 px-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
+            <div className="text-sm text-gray-300 font-bold">AI 점수</div>
             
-            <div className="flex flex-col justify-end h-[54px] w-full">
-              <Button 
-                variant="outline" 
-                className="h-9 w-full bg-[#1e232b]/80 border-[#00E5BC]/30 hover:bg-[#00E5BC]/10 hover:border-[#00E5BC] text-[#00E5BC] text-xs font-bold transition-all px-2 shadow-lg"
-              >
-                <Crown className="w-3.5 h-3.5 mr-1.5" />
-                Business
-              </Button>
-            </div>
+            <Button 
+              variant="outline" 
+              className="h-9 w-full bg-[#1e232b]/80 border-[#00E5BC]/30 hover:bg-[#00E5BC]/10 hover:border-[#00E5BC] text-[#00E5BC] text-xs font-bold transition-all px-2 shadow-lg"
+            >
+              <Crown className="w-3.5 h-3.5 mr-1.5" />
+              Business
+            </Button>
           </div>
         ) : aiScore && (
           <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
