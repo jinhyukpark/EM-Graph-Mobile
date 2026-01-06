@@ -173,8 +173,8 @@ const StockCard = ({
         </div>
 
         {isLocked ? (
-          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
-            <div className="text-[11px] text-gray-300 font-medium">AI 스코어링</div>
+          <div className="flex flex-col items-center gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[130px]">
+            <div className="text-sm text-gray-300 font-bold mb-1">AI 점수</div>
             
             <div className="flex flex-col justify-end h-[54px] w-full">
               <Button 
