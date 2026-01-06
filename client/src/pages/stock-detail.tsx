@@ -29,6 +29,8 @@ const marketShareData = [
   { name: "스마트폰", value: 21.8, color: "#10b981" },
 ];
 
+import stockImage from '@assets/stock_images/samsung_logo_c86f1f2f.jpg';
+
 export default function StockDetailPage() {
   const [match, params] = useRoute("/stock/:code");
   const code = params?.code || "005930"; // Default to Samsung
@@ -67,7 +69,7 @@ export default function StockDetailPage() {
         <div className="flex items-center gap-3 mb-2">
           <div className="w-[100px]">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" 
+              src={stockImage}
               alt="SAMSUNG" 
               className="w-full h-auto object-contain"
             />
@@ -83,14 +85,15 @@ export default function StockDetailPage() {
                 </linearGradient>
               </defs>
               <path 
-                d="M0,35 C20,30 40,32 60,15 C80,5 100,10" 
+                d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
                 fill="none" 
                 stroke="#ff3b30" 
-                strokeWidth="2.5" 
+                strokeWidth="2" 
                 strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path 
-                d="M0,35 C20,30 40,32 60,15 C80,5 100,10 V40 H0 Z" 
+                d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
                 fill="url(#sparklineGradient)" 
                 stroke="none" 
               />
