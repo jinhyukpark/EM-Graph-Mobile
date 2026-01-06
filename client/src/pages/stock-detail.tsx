@@ -57,9 +57,9 @@ const newsItems = [
 
 const newsVolumeData = {
   "일": [
-    { label: "09:00", volume: 12 }, { label: "10:00", volume: 18 }, { label: "11:00", volume: 15 },
-    { label: "12:00", volume: 8 }, { label: "13:00", volume: 22 }, { label: "14:00", volume: 28 },
-    { label: "15:00", volume: 20 }, { label: "16:00", volume: 14 }
+    { label: "12.30", volume: 12 }, { label: "12.31", volume: 18 }, { label: "01.01", volume: 15 },
+    { label: "01.02", volume: 8 }, { label: "01.03", volume: 22 }, { label: "01.04", volume: 28 },
+    { label: "01.05", volume: 20 }, { label: "01.06", volume: 14 }
   ],
   "주": [
     { label: "월", volume: 45 }, { label: "화", volume: 52 }, { label: "수", volume: 38 },
