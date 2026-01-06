@@ -76,6 +76,23 @@ const newsVolumeData = {
   ]
 };
 
+const investorTrendsData = [
+  { date: "01.06", individual: 10361493, foreigner: -11256930, institution: 236370, other: 593746 },
+  { date: "01.05", individual: 401056, foreigner: 2464904, institution: -3264831, other: 388491 },
+  { date: "01.02", individual: -1492572, foreigner: 2342432, institution: -918307, other: 44877 },
+  { date: "12.30", individual: 1459781, foreigner: -1243553, institution: -275056, other: 55457 },
+  { date: "12.29", individual: 5276406, foreigner: -4667566, institution: -682301, other: 42068 },
+  { date: "12.26", individual: -13859069, foreigner: 10872572, institution: 2925086, other: 84628 },
+  { date: "12.24", individual: -1646632, foreigner: 461256, institution: 1248329, other: -62314 },
+  { date: "12.23", individual: -6611880, foreigner: 5400119, institution: 1331000, other: -86467 },
+  { date: "12.22", individual: -12325196, foreigner: 7282031, institution: 5250125, other: -153066 },
+  { date: "12.19", individual: 4952520, foreigner: -6770371, institution: 1614758, other: 192374 },
+  { date: "12.18", individual: 315477, foreigner: -866428, institution: 417747, other: 140568 },
+  { date: "12.17", individual: -4156504, foreigner: 2210752, institution: 1901835, other: 59961 },
+  { date: "12.16", individual: 1888146, foreigner: -1720005, institution: -170685, other: 13337 },
+  { date: "12.15", individual: 7539547, foreigner: -6659078, institution: -1038292, other: 138920 },
+];
+
 import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
 export default function StockDetailPage() {
@@ -101,6 +118,7 @@ export default function StockDetailPage() {
   // Default to the second item (24.12) as per the design requirement to show 2024 data initially
   const [selectedPeriod, setSelectedPeriod] = useState(performanceData[1]);
   const [newsChartPeriod, setNewsChartPeriod] = useState<"일" | "주" | "월" | "년">("일");
+  const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별 vs 기관별
 
   const handleBarClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
@@ -639,6 +657,78 @@ export default function StockDetailPage() {
               </div>
             </section>
           </div>
+        )}
+
+        {activeTab === "투자자 동향" && (
+           <div className="space-y-6">
+             {/* Main Tabs */}
+             <div className="w-full bg-[#1e232b] p-1 rounded-lg flex border border-white/5">
+                {["투자자", "신용", "대차", "공매도", "CFD"].map((tab) => (
+                  <button
+                    key={tab}
+                    className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
+                      tab === "투자자"
+                        ? "bg-white/10 text-white shadow-sm"
+                        : "text-gray-400 hover:text-gray-200"
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+             </div>
+
+             {/* Sub Tabs */}
+             <div>
+                <div className="flex gap-6 border-b border-white/5 px-2 mb-4">
+                  {["투자자별", "기관별"].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setInvestorSubTab(tab)}
+                      className={`pb-3 text-sm font-medium transition-all relative ${
+                        investorSubTab === tab 
+                          ? "text-[#00E5BC]" 
+                          : "text-gray-500 hover:text-gray-300"
+                      }`}
+                    >
+                      {tab}
+                      {investorSubTab === tab && (
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00E5BC]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Table Header */}
+                <div className="grid grid-cols-5 text-center text-xs text-gray-400 py-2 border-b border-white/5 bg-[#1e232b]">
+                   <div>날짜</div>
+                   <div>개인</div>
+                   <div>외국인</div>
+                   <div>기관</div>
+                   <div>기타법인</div>
+                </div>
+
+                {/* Table Body */}
+                <div className="divide-y divide-white/5">
+                   {investorTrendsData.map((row, index) => (
+                     <div key={index} className="grid grid-cols-5 text-center py-3 text-xs hover:bg-white/5 transition-colors">
+                        <div className="text-gray-300 flex items-center justify-center">{row.date}</div>
+                        <div className={row.individual > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                          {row.individual > 0 ? "+" : ""}{row.individual.toLocaleString()}
+                        </div>
+                        <div className={row.foreigner > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                          {row.foreigner > 0 ? "+" : ""}{row.foreigner.toLocaleString()}
+                        </div>
+                        <div className={row.institution > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                          {row.institution > 0 ? "+" : ""}{row.institution.toLocaleString()}
+                        </div>
+                        <div className={row.other > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                          {row.other > 0 ? "+" : ""}{row.other.toLocaleString()}
+                        </div>
+                     </div>
+                   ))}
+                </div>
+             </div>
+           </div>
         )}
       </main>
     </div>
