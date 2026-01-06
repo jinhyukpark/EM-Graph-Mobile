@@ -129,6 +129,23 @@ const investorTrendsData = [
   { date: "12.15", individual: 7539547, foreigner: -6659078, institution: -1038292, other: 138920 },
 ];
 
+const institutionTrendsData = [
+  { date: "01.06", financial: 10234, insurance: -5231, invTrust: 3421, bank: 1200, pension: -1500, privEquity: 500, otherFin: 120 },
+  { date: "01.05", financial: -4520, insurance: 2100, invTrust: -1200, bank: 540, pension: 2300, privEquity: -300, otherFin: -50 },
+  { date: "01.02", financial: 3400, insurance: -1200, invTrust: 4500, bank: -200, pension: 5600, privEquity: 120, otherFin: 100 },
+  { date: "12.30", financial: -2300, insurance: 1500, invTrust: -3400, bank: 400, pension: -2100, privEquity: -150, otherFin: 80 },
+  { date: "12.29", financial: 5600, insurance: -3400, invTrust: 2300, bank: -150, pension: 4500, privEquity: 200, otherFin: -120 },
+  { date: "12.26", financial: -1200, insurance: 2300, invTrust: -4500, bank: 300, pension: -3400, privEquity: -100, otherFin: 50 },
+  { date: "12.24", financial: 4500, insurance: -2300, invTrust: 1200, bank: -100, pension: 2300, privEquity: 150, otherFin: -80 },
+  { date: "12.23", financial: -3400, insurance: 1200, invTrust: -2300, bank: 250, pension: -4500, privEquity: -200, otherFin: 60 },
+  { date: "12.22", financial: 2300, insurance: -4500, invTrust: 3400, bank: -300, pension: 1200, privEquity: 100, otherFin: -40 },
+  { date: "12.19", financial: -5600, insurance: 3400, invTrust: -1200, bank: 150, pension: -2300, privEquity: -50, otherFin: 30 },
+  { date: "12.18", financial: 1200, insurance: -2300, invTrust: 5600, bank: -250, pension: 3400, privEquity: 80, otherFin: -20 },
+  { date: "12.17", financial: -4500, insurance: 1200, invTrust: -3400, bank: 200, pension: -5600, privEquity: -120, otherFin: 10 },
+  { date: "12.16", financial: 3400, insurance: -1200, invTrust: 2300, bank: -150, pension: 4500, privEquity: 50, otherFin: -60 },
+  { date: "12.15", financial: -2300, insurance: 5600, invTrust: -4500, bank: 100, pension: -1200, privEquity: -80, otherFin: 40 },
+];
+
 const investorVolumeData = {
   "주": [
     { label: "12월 1주", individual: 10762549, foreigner: 8792026, institution: 3028461 },
@@ -167,6 +184,8 @@ export default function StockDetailPage() {
   const [newsChartPeriod, setNewsChartPeriod] = useState<"일" | "주" | "월" | "년">("일");
   const [selectedNewsDate, setSelectedNewsDate] = useState<string | null>(null);
   const [investorChartPeriod, setInvestorChartPeriod] = useState<"주" | "월" | "년">("주");
+  const [investorTab, setInvestorTab] = useState("투자자"); // 투자자, 신용, 대차, 공매도, CFD
+  const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별, 기관별
 
   const handleBarClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
@@ -815,6 +834,121 @@ export default function StockDetailPage() {
                       <div className="font-medium text-white">-3,028,461</div>
                    </div>
                 </div>
+             </div>
+             
+             <div className="mt-8">
+               <h3 className="text-sm font-bold text-gray-200 mb-4">일별 거래량</h3>
+               
+               {/* Tabs */}
+               <div className="w-full bg-[#1e232b] p-1 rounded-lg flex border border-white/5 mb-4">
+                  {["투자자", "신용", "대차", "공매도", "CFD"].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setInvestorTab(tab)}
+                      className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
+                        investorTab === tab
+                          ? "bg-white/10 text-white shadow-sm"
+                          : "text-gray-400 hover:text-gray-200"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+               </div>
+
+               {/* Sub Tabs (Only for Investor) */}
+               {investorTab === "투자자" && (
+                  <div className="flex gap-4 mb-4 border-b border-white/5 px-2">
+                     {["투자자별", "기관별"].map((tab) => (
+                       <button
+                         key={tab}
+                         onClick={() => setInvestorSubTab(tab)}
+                         className={`pb-2 text-sm font-medium border-b-2 transition-all ${
+                           investorSubTab === tab
+                             ? "border-[#00E5BC] text-[#00E5BC]"
+                             : "border-transparent text-gray-400 hover:text-gray-200"
+                         }`}
+                       >
+                         {tab}
+                       </button>
+                     ))}
+                  </div>
+               )}
+
+               {/* Data Table */}
+               <div className="bg-[#1e232b] rounded-xl overflow-hidden border border-white/5">
+                  {/* Header */}
+                  <div className={`grid ${investorSubTab === "투자자별" ? "grid-cols-5" : "grid-cols-[1fr_repeat(7,1fr)]"} text-center text-[10px] text-gray-400 py-3 border-b border-white/5 bg-[#1e232b]`}>
+                     <div>날짜</div>
+                     {investorSubTab === "투자자별" ? (
+                        <>
+                          <div>개인</div>
+                          <div>외국인</div>
+                          <div>기관</div>
+                          <div>기타법인</div>
+                        </>
+                     ) : (
+                        <>
+                          <div>금융투자</div>
+                          <div>보험</div>
+                          <div>투신</div>
+                          <div>은행</div>
+                          <div>연기금</div>
+                          <div>사모</div>
+                          <div>기타금융</div>
+                        </>
+                     )}
+                  </div>
+
+                  {/* Body */}
+                  <div className="divide-y divide-white/5">
+                     {(investorSubTab === "투자자별" ? investorTrendsData : institutionTrendsData).map((row, index) => (
+                       <div key={index} className={`grid ${investorSubTab === "투자자별" ? "grid-cols-5" : "grid-cols-[1fr_repeat(7,1fr)]"} text-center py-3 text-[10px] hover:bg-white/5 transition-colors items-center`}>
+                          <div className="text-gray-300 flex items-center justify-center">{row.date}</div>
+                          {investorSubTab === "투자자별" ? (
+                            <>
+                              <div className={(row as any).individual > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {(row as any).individual > 0 ? "+" : ""}{(row as any).individual.toLocaleString()}
+                              </div>
+                              <div className={(row as any).foreigner > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {(row as any).foreigner > 0 ? "+" : ""}{(row as any).foreigner.toLocaleString()}
+                              </div>
+                              <div className={(row as any).institution > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {(row as any).institution > 0 ? "+" : ""}{(row as any).institution.toLocaleString()}
+                              </div>
+                              <div className={(row as any).other > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {(row as any).other > 0 ? "+" : ""}{(row as any).other.toLocaleString()}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className={((row as any).financial || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).financial || 0) > 0 ? "+" : ""}{((row as any).financial || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).insurance || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).insurance || 0) > 0 ? "+" : ""}{((row as any).insurance || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).invTrust || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).invTrust || 0) > 0 ? "+" : ""}{((row as any).invTrust || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).bank || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).bank || 0) > 0 ? "+" : ""}{((row as any).bank || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).pension || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).pension || 0) > 0 ? "+" : ""}{((row as any).pension || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).privEquity || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).privEquity || 0) > 0 ? "+" : ""}{((row as any).privEquity || 0).toLocaleString()}
+                              </div>
+                              <div className={((row as any).otherFin || 0) > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
+                                {((row as any).otherFin || 0) > 0 ? "+" : ""}{((row as any).otherFin || 0).toLocaleString()}
+                              </div>
+                            </>
+                          )}
+                       </div>
+                     ))}
+                  </div>
+               </div>
              </div>
            </div>
         )}
