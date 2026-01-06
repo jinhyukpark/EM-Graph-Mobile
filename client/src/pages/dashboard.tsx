@@ -172,7 +172,29 @@ const StockCard = ({
            </div>
         </div>
 
-        {aiScore && (
+        {isLocked ? (
+          <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20 min-w-[120px]">
+            <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
+            
+            <div className="relative w-full py-1">
+              <div className="flex items-baseline gap-1 opacity-20 blur-sm select-none">
+                 <span className="text-3xl font-bold text-white font-mono">8.92</span>
+                 <span className="text-sm text-gray-400 font-normal">/10</span>
+              </div>
+              
+              <div className="absolute inset-0 flex items-center justify-end">
+                <div className="flex items-center gap-1.5 bg-[#1e232b] border border-white/10 rounded-full px-3 py-1.5 shadow-lg">
+                   <Crown className="w-3.5 h-3.5 text-[#00E5BC]" />
+                   <span className="text-[11px] font-bold text-white">Business</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-2 w-28 bg-[#252b36] rounded-full overflow-hidden mt-2 border border-white/5 opacity-30">
+              <div className="h-full w-20 bg-gray-500 rounded-full" />
+            </div>
+          </div>
+        ) : aiScore && (
           <div className="flex flex-col items-end gap-1 bg-black/20 backdrop-blur-[2px] rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
             <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
             <div className="text-3xl font-bold text-white font-mono flex items-baseline gap-1 shadow-black drop-shadow-md">
@@ -185,20 +207,6 @@ const StockCard = ({
                 style={{ width: `${(aiScore / 10) * 100}%` }}
               />
             </div>
-          </div>
-        )}
-
-        {isLocked && (
-          <div className="flex flex-col items-end z-20">
-            <Button 
-              variant="outline" 
-              className="bg-[#1e232b]/80 backdrop-blur-sm border-white/10 hover:bg-[#1e232b] hover:border-[#00E5BC] text-gray-400 hover:text-[#00E5BC] transition-all rounded-full h-10 px-4 gap-2 group/btn"
-            >
-              <div className="w-6 h-6 rounded-full bg-[#2a3038] flex items-center justify-center group-hover/btn:bg-[#00E5BC]/10 transition-colors">
-                <Crown className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-bold">Business</span>
-            </Button>
           </div>
         )}
       </div>
