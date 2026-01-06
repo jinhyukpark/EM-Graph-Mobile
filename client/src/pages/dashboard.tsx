@@ -82,78 +82,112 @@ const StockCard = ({
   isUp: boolean,
   badge?: string,
   aiScore?: number
-}) => (
-  <Link href={`/stock/${code}`}>
-    <Card className="min-w-[160px] p-4 bg-[#1e232b] border-none shadow-md rounded-xl relative overflow-hidden group cursor-pointer transition-transform active:scale-95">
-      {/* Background gradient effect */}
-      <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${isUp ? 'from-[#ff3b30]/10' : 'from-blue-500/10'} to-transparent blur-2xl -mr-8 -mt-8`} />
+}) => {
+  // Generate random-ish jagged path based on code to make them look different but consistent
+  const seed = code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const generatePath = (isUp: boolean) => {
+    // A simple jagged trend
+    const points = [];
+    const segments = 10;
+    let y = isUp ? 80 : 20;
+    
+    for (let i = 0; i <= segments; i++) {
+      const x = (i / segments) * 100;
+      // Random fluctuation
+      const noise = Math.sin((seed + i) * 123) * 15;
       
-      <div className="flex justify-between items-start mb-2 relative z-10">
-        <span className="text-xs text-muted-foreground">{code}</span>
-        <Star className="w-4 h-4 text-gray-600 fill-gray-600/20" />
-      </div>
+      // Trend
+      if (isUp) {
+        y = 80 - (i / segments) * 60 + noise; // End higher (smaller y)
+      } else {
+        y = 20 + (i / segments) * 60 + noise; // End lower (larger y)
+      }
       
-      <h3 className="font-bold text-white mb-1 relative z-10">{name}</h3>
-      
-      {badge && (
-        <Badge variant="secondary" className="bg-gray-700/50 text-gray-300 text-[10px] px-1.5 py-0 mb-2 border-none">
-          {badge}
-        </Badge>
-      )}
-      
-      <div className="mt-2 relative z-10">
-        <div className="text-lg font-bold text-white mb-0.5">{price}원</div>
-        <div className={`text-xs flex items-center gap-1 ${isUp ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
-          <span>{isUp ? '+' : ''}{diff}원</span>
-          <span className="font-semibold">{isUp ? '+' : ''}{percent}%</span>
-        </div>
-      </div>
+      // Clamp
+      y = Math.max(5, Math.min(95, y));
+      points.push(`${x},${y}`);
+    }
+    
+    return `M${points.join(' L')}`;
+  };
 
-      {aiScore ? (
-         <div className="mt-3 relative z-10">
-           <div className="flex justify-between items-center mb-1">
-             <span className="text-[10px] text-gray-400">AI 점수</span>
-           </div>
-           <div className="flex items-center gap-2">
-              <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden flex-1">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full" 
-                  style={{ width: `${(aiScore / 10) * 100}%` }}
-                />
-              </div>
-              <span className="text-xs font-bold text-white font-mono">{aiScore}<span className="text-gray-600 text-[10px] font-normal">/10</span></span>
-           </div>
-         </div>
-      ) : (
-        <div className="mt-3">
-          <div className={`w-full h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${
-            isUp 
-              ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white' 
-              : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-          }`}>
-            Business 업그레이드
-          </div>
-        </div>
-      )}
-      
-      <div className="mt-2 text-[10px] text-gray-500 relative z-10">
-        뉴스 언급 횟수 <span className="text-white font-bold">263회</span>
-      </div>
-      
-      {/* Mini Chart Area (Simulated) */}
-      <div className="absolute top-4 right-8 w-12 h-6 opacity-50">
-        <svg viewBox="0 0 100 50" className="w-full h-full overflow-visible">
+  const linePath = generatePath(isUp);
+  const areaPath = `${linePath} V 100 H 0 Z`;
+  const gradientId = `grad-${code}`;
+
+  return (
+  <Link href={`/stock/${code}`}>
+    <Card className="w-full p-4 bg-[#1e232b] border border-white/5 shadow-md rounded-xl relative overflow-hidden group cursor-pointer transition-transform active:scale-[0.98]">
+      {/* Background Chart */}
+      <div className="absolute top-0 right-0 bottom-0 w-[60%] opacity-30 pointer-events-none mask-image-linear-to-l">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={isUp ? "#ff3b30" : "#3b82f6"} stopOpacity="0.5" />
+              <stop offset="100%" stopColor={isUp ? "#ff3b30" : "#3b82f6"} stopOpacity="0" />
+            </linearGradient>
+          </defs>
           <path 
-            d={isUp ? "M0,50 C20,40 40,45 60,20 C80,5 100,10" : "M0,10 C20,15 40,40 60,45 C80,48 100,50"}
+            d={areaPath} 
+            fill={`url(#${gradientId})`} 
+            stroke="none"
+          />
+          <path 
+            d={linePath} 
             fill="none" 
             stroke={isUp ? "#ff3b30" : "#3b82f6"} 
-            strokeWidth="3"
+            strokeWidth="2" 
+            vectorEffect="non-scaling-stroke"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </div>
+      
+      <div className="flex justify-between items-center relative z-10">
+        <div className="flex flex-col gap-1">
+           <div className="flex items-center gap-2">
+             <span className="text-xs text-muted-foreground font-medium">{code}</span>
+             {badge && (
+                <Badge variant="secondary" className="bg-gray-700/50 text-gray-300 text-[10px] px-1.5 py-0 border-none">
+                  {badge}
+                </Badge>
+              )}
+           </div>
+           
+           <h3 className="font-bold text-white text-lg">{name}</h3>
+           
+           <div className="flex items-baseline gap-2 mt-1">
+             <span className="text-xl font-bold text-white tracking-tight">{price}원</span>
+             <span className={`text-sm font-bold ${isUp ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
+               {isUp ? '▲' : '▼'} {diff} ({percent}%)
+             </span>
+           </div>
+           
+           <div className="mt-2 text-[10px] text-gray-500">
+             뉴스 언급 횟수 <span className="text-white font-bold">263회</span>
+           </div>
+        </div>
+
+        {aiScore && (
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-[10px] text-gray-400">AI 점수</div>
+            <div className="text-2xl font-bold text-white font-mono flex items-baseline gap-1">
+               {aiScore}
+               <span className="text-xs text-gray-600 font-normal">/10</span>
+            </div>
+            <div className="h-1.5 w-24 bg-[#252b36] rounded-full overflow-hidden mt-1">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full" 
+                style={{ width: `${(aiScore / 10) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </Card>
   </Link>
-);
+)};
 
 const RealTimeRow = ({ 
   icon, 
@@ -423,7 +457,7 @@ export default function DashboardPage() {
             </Button>
           </div>
           
-          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
+          <div className="flex flex-col gap-3">
             <StockCard 
               code="006800"
               name="미래에셋증권"
