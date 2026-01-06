@@ -139,7 +139,7 @@ export default function AIRecommendPage() {
            <h2 className="text-xl font-bold text-white mb-2">AI 주간 랭킹 리포트</h2>
            <p className="text-sm text-gray-400 mb-3 px-8 leading-relaxed">
              빅데이터 분석을 통해 이번 주 상승 여력이 가장 높은<br/>
-             <span className="text-white font-semibold">Top 3 종목</span>을 선정했습니다.
+             <span className="text-white font-semibold">Top 10 종목</span>을 선정했습니다.
            </p>
            <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500 bg-[#151921] py-2 px-4 rounded-full inline-flex border border-white/5 mx-auto">
              <span>안녕하세요 <span className="text-[#00E5BC] font-medium">jhpark</span>님! AI가 분석한 투자의견을 확인해보세요.</span>
