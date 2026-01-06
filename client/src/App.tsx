@@ -7,6 +7,8 @@ import AIRecommendPage from "@/pages/ai-recommend";
 import MomentumDetailPage from "@/pages/momentum-detail";
 import StockDetailPage from "@/pages/stock-detail";
 
+import TrendPage from "@/pages/trend";
+
 // Placeholder pages
 const PlaceholderPage = ({ title }: { title: string }) => (
   <div className="min-h-screen bg-background text-foreground flex items-center justify-center pb-20">
@@ -27,9 +29,7 @@ function Router() {
       <Route path="/ai-recommend" component={AIRecommendPage} />
       <Route path="/momentum/:code" component={MomentumDetailPage} />
       <Route path="/stock/:code" component={StockDetailPage} />
-      <Route path="/trends">
-        <PlaceholderPage title="트렌드" />
-      </Route>
+      <Route path="/trends" component={TrendPage} />
       <Route path="/my-page">
         <PlaceholderPage title="마이페이지" />
       </Route>
