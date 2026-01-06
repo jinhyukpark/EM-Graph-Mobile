@@ -280,15 +280,32 @@ export default function DashboardPage() {
           <FearGreedGauge />
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center shadow-lg">
-              <div className="text-blue-400 text-sm font-bold mb-1">강한매도</div>
-              <div className="text-3xl font-bold text-white mb-1">345<span className="text-sm font-normal text-gray-500">개</span></div>
-              <div className="text-[10px] text-blue-500/80">7일간 이내 -0.51%</div>
+            <div className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden">
+              {/* Blue Gradient Flare */}
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full pointer-events-none" />
+              
+              <div className="relative z-10">
+                <div className="text-blue-400 text-lg font-bold mb-1">강한매도</div>
+                <div className="flex items-baseline justify-center gap-0.5 mb-2">
+                    <span className="text-4xl font-bold text-white tracking-tight">345</span>
+                    <span className="text-base font-normal text-gray-500 mb-1">개</span>
+                </div>
+                <div className="text-xs text-gray-400 font-medium">7일간 이내 <span className="text-blue-400">-0.51%</span></div>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center shadow-lg">
-              <div className="text-red-400 text-sm font-bold mb-1">강한매수</div>
-              <div className="text-3xl font-bold text-white mb-1">245<span className="text-sm font-normal text-gray-500">개</span></div>
-              <div className="text-[10px] text-blue-500/80">7일간 이내 -0.30%</div>
+
+            <div className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden">
+               {/* Red Gradient Flare */}
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-red-500/20 blur-3xl rounded-full pointer-events-none" />
+
+              <div className="relative z-10">
+                <div className="text-red-400 text-lg font-bold mb-1">강한매수</div>
+                <div className="flex items-baseline justify-center gap-0.5 mb-2">
+                    <span className="text-4xl font-bold text-white tracking-tight">245</span>
+                    <span className="text-base font-normal text-gray-500 mb-1">개</span>
+                </div>
+                <div className="text-xs text-gray-400 font-medium">7일간 이내 <span className="text-blue-400">-0.30%</span></div>
+              </div>
             </div>
           </div>
         </section>
