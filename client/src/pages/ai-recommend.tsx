@@ -69,93 +69,95 @@ const MomentumCard = ({
     : "M0,5 C20,10 40,8 60,25 C80,35 100,30";
 
   return (
-    <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3">
-      {/* Header */}
-      <div className="flex justify-between items-start mb-2">
-        <div>
-          <span className="text-[10px] text-gray-500 block mb-0.5">{code}</span>
-          <div className="flex items-baseline gap-2">
-            <h3 className="text-base font-bold text-white">{name}</h3>
-            <span className="text-[10px] text-gray-500">{market}</span>
+    <Link href={`/momentum/${code}`}>
+      <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3 cursor-pointer hover:border-white/10 transition-colors">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <span className="text-[10px] text-gray-500 block mb-0.5">{code}</span>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-base font-bold text-white">{name}</h3>
+              <span className="text-[10px] text-gray-500">{market}</span>
+            </div>
           </div>
+          <Star className="w-5 h-5 text-gray-600" />
         </div>
-        <Star className="w-5 h-5 text-gray-600" />
-      </div>
 
-      {/* Main Content: Chart + Score */}
-      <div className="flex items-center gap-4 mb-3 h-16">
-        {/* Chart Area - Larger */}
-        <div className="flex-1 h-full relative">
-           <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible preserve-3d">
-             <defs>
-               <linearGradient id={`gradient-mom-${code}`} x1="0" y1="0" x2="0" y2="1">
-                 <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.6"/>
-                 <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0"/>
-               </linearGradient>
-             </defs>
-             <path 
-               d={chartPath}
-               fill="none" 
-               stroke={isPositive ? "#ff3b30" : "#3b82f6"} 
-               strokeWidth="3"
-               strokeLinecap="round"
-             />
-             <path 
-               d={`${chartPath} V40 H0 Z`}
-               fill={`url(#gradient-mom-${code})`} 
-               opacity="0.4"
-             />
-           </svg>
-        </div>
-        
-        {/* AI Score Gauge - Wider & Compact */}
-        <div className="w-[40%] flex flex-col items-end">
-           <div className="text-[10px] text-gray-400 mb-1">AI 점수</div>
-           <div className="w-full h-6 bg-[#252b36] rounded-full overflow-hidden relative">
-             <div 
-               className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-[#ff3b30] flex items-center justify-center shadow-[0_0_10px_rgba(255,59,48,0.3)]"
-               style={{ width: `${(score / 10) * 100}%` }}
-             >
-               <span className="text-xs font-bold text-white drop-shadow-md">{score}</span>
+        {/* Main Content: Chart + Score */}
+        <div className="flex items-center gap-4 mb-3 h-16">
+          {/* Chart Area - Larger */}
+          <div className="flex-1 h-full relative">
+             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible preserve-3d">
+               <defs>
+                 <linearGradient id={`gradient-mom-${code}`} x1="0" y1="0" x2="0" y2="1">
+                   <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.6"/>
+                   <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0"/>
+                 </linearGradient>
+               </defs>
+               <path 
+                 d={chartPath}
+                 fill="none" 
+                 stroke={isPositive ? "#ff3b30" : "#3b82f6"} 
+                 strokeWidth="3"
+                 strokeLinecap="round"
+               />
+               <path 
+                 d={`${chartPath} V40 H0 Z`}
+                 fill={`url(#gradient-mom-${code})`} 
+                 opacity="0.4"
+               />
+             </svg>
+          </div>
+          
+          {/* AI Score Gauge - Wider & Compact */}
+          <div className="w-[40%] flex flex-col items-end">
+             <div className="text-[10px] text-gray-400 mb-1">AI 점수</div>
+             <div className="w-full h-6 bg-[#252b36] rounded-full overflow-hidden relative">
+               <div 
+                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-[#ff3b30] flex items-center justify-center shadow-[0_0_10px_rgba(255,59,48,0.3)]"
+                 style={{ width: `${(score / 10) * 100}%` }}
+               >
+                 <span className="text-xs font-bold text-white drop-shadow-md">{score}</span>
+               </div>
              </div>
-           </div>
-           <div className="text-[10px] text-[#ff3b30] mt-1 text-right w-full">{period}</div>
+             <div className="text-[10px] text-[#ff3b30] mt-1 text-right w-full">{period}</div>
+          </div>
         </div>
-      </div>
 
-      {/* Price Info */}
-      <div className="mb-3">
-        <span className="text-gray-400 text-xs mr-2">종가</span>
-        <span className="text-base font-bold text-white mr-2">{price}원</span>
-        <span className={`text-sm font-medium ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>{change}</span>
-      </div>
+        {/* Price Info */}
+        <div className="mb-3">
+          <span className="text-gray-400 text-xs mr-2">종가</span>
+          <span className="text-base font-bold text-white mr-2">{price}원</span>
+          <span className={`text-sm font-medium ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>{change}</span>
+        </div>
 
-      {/* Stats Grid - Compact */}
-      <div className="grid grid-cols-2 gap-x-8 text-xs border-t border-white/5 pt-3">
-        <div>
-          <div className="text-gray-500 mb-1">10일간 주가 강도</div>
-          <div className="flex justify-between mb-0.5">
-            <span className="text-gray-400">상승탄력</span>
-            <span className="text-[#ff3b30]">{stats.elasticity}</span>
+        {/* Stats Grid - Compact */}
+        <div className="grid grid-cols-2 gap-x-8 text-xs border-t border-white/5 pt-3">
+          <div>
+            <div className="text-gray-500 mb-1">10일간 주가 강도</div>
+            <div className="flex justify-between mb-0.5">
+              <span className="text-gray-400">상승탄력</span>
+              <span className="text-[#ff3b30]">{stats.elasticity}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">하락방어</span>
+              <span className="text-blue-400">{stats.defense}</span>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-400">하락방어</span>
-            <span className="text-blue-400">{stats.defense}</span>
+          <div>
+            <div className="text-gray-500 mb-1 text-right">20일간 주가 강도</div>
+            <div className="flex justify-between mb-0.5">
+              <span className="text-gray-400">상승탄력</span>
+              <span className="text-[#ff3b30] text-right w-full">{stats.strength20}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">하락방어</span>
+              <span className="text-[#ff3b30] text-right w-full">{stats.strength10}</span>
+            </div>
           </div>
         </div>
-        <div>
-          <div className="text-gray-500 mb-1 text-right">20일간 주가 강도</div>
-          <div className="flex justify-between mb-0.5">
-            <span className="text-gray-400">상승탄력</span>
-            <span className="text-[#ff3b30] text-right w-full">{stats.strength20}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-400">하락방어</span>
-            <span className="text-[#ff3b30] text-right w-full">{stats.strength10}</span>
-          </div>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 

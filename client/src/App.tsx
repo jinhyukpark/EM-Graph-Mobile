@@ -4,6 +4,7 @@ import MobileNav from "@/components/layout/mobile-nav";
 import { Toaster } from "@/components/ui/toaster";
 
 import AIRecommendPage from "@/pages/ai-recommend";
+import MomentumDetailPage from "@/pages/momentum-detail";
 import StockDetailPage from "@/pages/stock-detail";
 
 // Placeholder pages
@@ -24,6 +25,7 @@ function Router() {
         <PlaceholderPage title="즐겨찾기" />
       </Route>
       <Route path="/ai-recommend" component={AIRecommendPage} />
+      <Route path="/momentum/:code" component={MomentumDetailPage} />
       <Route path="/stock/:code" component={StockDetailPage} />
       <Route path="/trends">
         <PlaceholderPage title="트렌드" />
