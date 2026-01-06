@@ -82,7 +82,7 @@ const StockCard = ({
 }) => (
   <Card className="min-w-[160px] p-4 bg-[#1e232b] border-none shadow-md rounded-xl relative overflow-hidden group">
     {/* Background gradient effect */}
-    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${isUp ? 'from-red-500/10' : 'from-blue-500/10'} to-transparent blur-2xl -mr-8 -mt-8`} />
+    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${isUp ? 'from-[#ff3b30]/10' : 'from-blue-500/10'} to-transparent blur-2xl -mr-8 -mt-8`} />
     
     <div className="flex justify-between items-start mb-2 relative z-10">
       <span className="text-xs text-muted-foreground">{code}</span>
@@ -99,7 +99,7 @@ const StockCard = ({
     
     <div className="mt-2 relative z-10">
       <div className="text-lg font-bold text-white mb-0.5">{price}원</div>
-      <div className={`text-xs flex items-center gap-1 ${isUp ? 'text-red-400' : 'text-blue-400'}`}>
+      <div className={`text-xs flex items-center gap-1 ${isUp ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
         <span>{isUp ? '+' : ''}{diff}원</span>
         <span className="font-semibold">{isUp ? '+' : ''}{percent}%</span>
       </div>
@@ -125,7 +125,7 @@ const StockCard = ({
         <path 
           d={isUp ? "M0,50 C20,40 40,45 60,20 C80,5 100,10" : "M0,10 C20,15 40,40 60,45 C80,48 100,50"}
           fill="none" 
-          stroke={isUp ? "#ef4444" : "#3b82f6"} 
+          stroke={isUp ? "#ff3b30" : "#3b82f6"} 
           strokeWidth="3"
         />
       </svg>
@@ -156,7 +156,7 @@ const RealTimeRow = ({
       <div>
         <div className="font-bold text-sm text-white">{name}</div>
         <div className="text-xs text-gray-400">
-          {price}원 <span className={isUp ? 'text-red-400' : 'text-blue-400'}>{percent}</span>
+          {price}원 <span className={isUp ? 'text-[#ff3b30]' : 'text-blue-400'}>{percent}</span>
         </div>
       </div>
     </div>
@@ -196,7 +196,7 @@ const FearGreedGauge = () => (
            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
              <stop offset="0%" stopColor="#10b981" />
              <stop offset="50%" stopColor="#fbbf24" />
-             <stop offset="100%" stopColor="#ef4444" />
+             <stop offset="100%" stopColor="#ff3b30" />
            </linearGradient>
          </defs>
          {/* Background Arc */}
@@ -235,7 +235,7 @@ const CategoryCard = ({
         <span className="text-[10px] text-white/60">{total}개 중 {upCount}종목 상승</span>
       </div>
       <div className="font-bold mb-2 truncate">{title}</div>
-      <div className="text-xs text-red-400 font-medium">평균 등락률 {avgPercent}</div>
+      <div className="text-xs text-[#ff3b30] font-medium">평균 등락률 {avgPercent}</div>
     </div>
   </Card>
 );
@@ -325,7 +325,7 @@ export default function DashboardPage() {
             </Button>
             <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white relative">
               <Bell className="w-4 h-4" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-[#151921]" />
+              <span className="absolute top-0 right-0 w-2 h-2 bg-[#ff3b30] rounded-full border-2 border-[#151921]" />
             </Button>
             <Avatar className="w-8 h-8 border border-white/10">
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -368,10 +368,10 @@ export default function DashboardPage() {
               className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden"
             >
                {/* Red Gradient Flare */}
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-red-500/20 blur-3xl rounded-full pointer-events-none" />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#ff3b30]/20 blur-3xl rounded-full pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="text-red-400 text-lg font-bold mb-1">강한매수</div>
+                <div className="text-[#ff3b30] text-lg font-bold mb-1">강한매수</div>
                 <div className="flex items-baseline justify-center gap-0.5 mb-2">
                     <span className="text-4xl font-bold text-white tracking-tight">245</span>
                     <span className="text-base font-normal text-gray-500 mb-1">개</span>
@@ -463,7 +463,7 @@ export default function DashboardPage() {
               isUp={false}
             />
              <RealTimeRow 
-              icon={<div className="bg-red-600 w-full h-full flex items-center justify-center font-bold text-[10px]">SK</div>}
+              icon={<div className="bg-[#ff3b30] w-full h-full flex items-center justify-center font-bold text-[10px]">SK</div>}
               name="SK하이닉스"
               price="726,000원"
               percent="4.31%"
@@ -544,7 +544,7 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold text-white">인기 키워드</h2>
             <div className="flex gap-2 text-xs">
-              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-red-500"></span>부정</span>
+              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-[#ff3b30]"></span>부정</span>
               <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-gray-500"></span>중립</span>
               <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-[#10b981]"></span>긍정</span>
             </div>

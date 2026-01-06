@@ -64,6 +64,9 @@ const MomentumCard = ({
   }
 }) => {
   const isPositive = !change.startsWith("-");
+  const chartPath = isPositive 
+    ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" 
+    : "M0,5 C20,10 40,8 60,25 C80,35 100,30";
 
   return (
     <Card className="bg-[#151921] border border-white/5 p-5 rounded-2xl mb-4">
@@ -76,43 +79,45 @@ const MomentumCard = ({
         <Star className="w-5 h-5 text-gray-600" />
       </div>
 
-      {/* Chart Area Placeholder */}
-      <div className="h-16 w-full mb-4 relative opacity-80">
-         <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible preserve-3d">
-           <defs>
-             <linearGradient id={`gradient-${code}`} x1="0" y1="0" x2="0" y2="1">
-               <stop offset="0%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0.5"/>
-               <stop offset="100%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0"/>
-             </linearGradient>
-           </defs>
-           <path 
-             d={isPositive ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" : "M0,5 C20,10 40,8 60,25 C80,35 100,30"}
-             fill="none" 
-             stroke={isPositive ? "#ef4444" : "#3b82f6"} 
-             strokeWidth="3"
-             strokeLinecap="round"
-           />
-           <path 
-             d={`${isPositive ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" : "M0,5 C20,10 40,8 60,25 C80,35 100,30"} V40 H0 Z`}
-             fill={`url(#gradient-${code})`} 
-             opacity="0.3"
-           />
-         </svg>
-         
-         {/* AI Score Badge Floating on Chart */}
-         <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-end">
+      <div className="flex items-center gap-4 mb-6">
+        {/* Chart Area with Gradient */}
+        <div className="h-20 flex-1 relative">
+           <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible preserve-3d">
+             <defs>
+               <linearGradient id={`gradient-mom-${code}`} x1="0" y1="0" x2="0" y2="1">
+                 <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.5"/>
+                 <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0"/>
+               </linearGradient>
+             </defs>
+             <path 
+               d={chartPath}
+               fill="none" 
+               stroke={isPositive ? "#ff3b30" : "#3b82f6"} 
+               strokeWidth="3"
+               strokeLinecap="round"
+             />
+             <path 
+               d={`${chartPath} V40 H0 Z`}
+               fill={`url(#gradient-mom-${code})`} 
+               opacity="0.3"
+             />
+           </svg>
+        </div>
+        
+        {/* AI Score Gauge - Widened */}
+        <div className="flex flex-col items-center justify-center min-w-[80px]">
            <div className="text-[10px] text-gray-400 mb-1">AI 점수</div>
-           <div className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-red-500 rounded-full px-3 py-1">
-             <span className="text-sm font-bold text-white">{score}</span>
+           <div className="w-24 h-8 bg-gradient-to-r from-blue-600 to-[#ff3b30] rounded-full flex items-center justify-center shadow-lg">
+             <span className="text-base font-bold text-white">{score}</span>
            </div>
-           <div className="text-[10px] text-red-400 mt-1 text-right w-full">{period}</div>
-         </div>
+           <div className="text-[10px] text-[#ff3b30] mt-1">{period}</div>
+        </div>
       </div>
 
       <div className="flex items-baseline gap-2 mb-4">
         <span className="text-gray-400 text-xs">종가</span>
         <span className="text-lg font-bold text-white">{price}원</span>
-        <span className={`text-sm ${isPositive ? "text-red-400" : "text-blue-400"}`}>{change}</span>
+        <span className={`text-sm ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>{change}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-y-3 gap-x-8 text-xs">
@@ -120,7 +125,7 @@ const MomentumCard = ({
           <div className="text-gray-500 mb-1">10일간 주가 강도</div>
           <div className="flex justify-between">
             <span className="text-gray-400">상승탄력</span>
-            <span className="text-red-400">{stats.elasticity}</span>
+            <span className="text-[#ff3b30]">{stats.elasticity}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-400">하락방어</span>
@@ -131,11 +136,11 @@ const MomentumCard = ({
           <div className="text-gray-500 mb-1">20일간 주가 강도</div>
           <div className="flex justify-between">
             <span className="text-gray-400">상승탄력</span>
-            <span className="text-red-400">{stats.strength20}</span>
+            <span className="text-[#ff3b30]">{stats.strength20}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-400">하락방어</span>
-            <span className="text-red-400">{stats.strength10}</span>
+            <span className="text-[#ff3b30]">{stats.strength10}</span>
           </div>
         </div>
       </div>
@@ -182,7 +187,7 @@ const AIRecommendCard = ({
            <h3 className="text-xl font-bold text-white mb-1">{name}</h3>
            <div className="flex items-baseline gap-2">
              <span className="text-lg font-bold text-white">{price}</span>
-             <span className={`text-xs font-medium ${isPositive ? "text-red-400" : "text-blue-400"}`}>
+             <span className={`text-xs font-medium ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>
                {isPositive ? "▲" : "▼"} {diff.replace("-", "")}
              </span>
            </div>
@@ -249,14 +254,14 @@ const StrongSignalCard = ({
             <svg viewBox="0 0 60 30" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id={`gradient-mini-${code}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0.5" />
-                  <stop offset="100%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0" />
+                  <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.5" />
+                  <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0" />
                 </linearGradient>
               </defs>
               <path
                 d={chartPath}
                 fill="none"
-                stroke={isPositive ? "#ef4444" : "#3b82f6"}
+                stroke={isPositive ? "#ff3b30" : "#3b82f6"}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -275,7 +280,7 @@ const StrongSignalCard = ({
 
       <div className="flex items-baseline gap-2 mb-3">
         <span className="text-lg font-bold text-white">{price}원</span>
-        <span className={`text-xs ${isPositive ? "text-red-400" : "text-blue-400"}`}>
+        <span className={`text-xs ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>
           {diff}원 <span className="ml-1">{percent}%</span>
         </span>
       </div>
@@ -283,14 +288,14 @@ const StrongSignalCard = ({
       <div className="space-y-1">
         <div className="flex justify-between items-end text-[10px] text-gray-400 mb-1">
           <div className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-red-500"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-[#ff3b30]"></span>
             AI 점수
           </div>
           <span className="text-white font-mono">{aiScore.toFixed(2)}<span className="text-gray-600">/10</span></span>
         </div>
         <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 rounded-full" 
+            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full"  
             style={{ width: `${(aiScore / 10) * 100}%` }}
           />
         </div>
@@ -610,7 +615,7 @@ export default function AIRecommendPage() {
           <div className="px-4 py-6 text-center">
              <h2 className="text-xl font-bold text-white mb-2">AI 강한 매도 시그널</h2>
              <p className="text-sm text-gray-400 mb-4 px-8 leading-relaxed">
-               빅데이터 분석 결과 <span className="text-red-400 font-semibold">하락 위험이 감지된 종목</span>입니다.<br/>
+               빅데이터 분석 결과 <span className="text-[#ff3b30] font-semibold">하락 위험이 감지된 종목</span>입니다.<br/>
                투자 판단에 각별한 유의가 필요합니다.
              </p>
              
@@ -626,7 +631,7 @@ export default function AIRecommendPage() {
                      "w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all",
                      selectedPeriod === period 
                        ? "bg-[#1e232b] border border-white/30 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)]" 
-                       : "bg-transparent border border-white/5 text-gray-600 hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10"
+                       : "bg-transparent border border-white/5 text-gray-600 hover:border-[#ff3b30]/50 hover:text-[#ff3b30] hover:bg-[#ff3b30]/10"
                    )}>
                      {period}
                    </div>

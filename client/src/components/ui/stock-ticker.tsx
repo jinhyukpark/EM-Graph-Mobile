@@ -35,7 +35,7 @@ export default function StockTicker() {
           className="absolute inset-0 flex items-center justify-start gap-2 w-full h-full"
         >
           <span className="text-[12px] font-bold text-white">{current.name}</span>
-          <div className={`text-[12px] font-medium flex items-center gap-1.5 ${current.isUp ? 'text-red-400' : 'text-blue-400'}`}>
+          <div className={`text-[12px] font-medium flex items-center gap-1.5 ${current.isUp ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
             <span>{current.value}</span>
             <span>{current.diff}</span>
           </div>
