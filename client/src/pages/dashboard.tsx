@@ -70,7 +70,8 @@ const StockCard = ({
   diff, 
   percent, 
   isUp, 
-  badge 
+  badge,
+  aiScore 
 }: { 
   code: string, 
   name: string, 
@@ -78,7 +79,8 @@ const StockCard = ({
   diff: string, 
   percent: string, 
   isUp: boolean,
-  badge?: string
+  badge?: string,
+  aiScore?: number
 }) => (
   <Card className="min-w-[160px] p-4 bg-[#1e232b] border-none shadow-md rounded-xl relative overflow-hidden group">
     {/* Background gradient effect */}
@@ -105,17 +107,34 @@ const StockCard = ({
       </div>
     </div>
 
-    <div className="mt-3">
-      <div className={`w-full h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${
-        isUp 
-          ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white' 
-          : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-      }`}>
-        Business 업그레이드
+    {aiScore ? (
+       <div className="mt-3 relative z-10">
+         <div className="flex justify-between items-center mb-1">
+           <span className="text-[10px] text-gray-400">AI 점수</span>
+         </div>
+         <div className="flex items-center gap-2">
+            <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden flex-1">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full" 
+                style={{ width: `${(aiScore / 10) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs font-bold text-white font-mono">{aiScore}<span className="text-gray-600 text-[10px] font-normal">/10</span></span>
+         </div>
+       </div>
+    ) : (
+      <div className="mt-3">
+        <div className={`w-full h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${
+          isUp 
+            ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white' 
+            : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+        }`}>
+          Business 업그레이드
+        </div>
       </div>
-    </div>
+    )}
     
-    <div className="mt-2 text-[10px] text-gray-500">
+    <div className="mt-2 text-[10px] text-gray-500 relative z-10">
       뉴스 언급 횟수 <span className="text-white font-bold">263회</span>
     </div>
     
@@ -408,6 +427,7 @@ export default function DashboardPage() {
               percent="+12.55"
               isUp={true}
               badge="사상최고치"
+              aiScore={3.27}
             />
             <StockCard 
               code="001510"
