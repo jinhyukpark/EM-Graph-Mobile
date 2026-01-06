@@ -1232,9 +1232,9 @@ export default function StockDetailPage() {
                </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-6">
               {/* Valuation Chart */}
-              <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
+              <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-sm font-bold text-gray-200">가치성</h3>
                   <div className="flex gap-2">
@@ -1242,6 +1242,7 @@ export default function StockDetailPage() {
                     <span className="text-[10px] text-white font-bold cursor-pointer">분기</span>
                   </div>
                 </div>
+                <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
                 
                 <div className="h-[200px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -1296,9 +1297,10 @@ export default function StockDetailPage() {
                    </div>
                 </div>
               </div>
+              </div>
 
               {/* Stability Chart */}
-              <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
+              <div>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-sm font-bold text-gray-200">안정성</h3>
                   <div className="flex gap-2">
@@ -1306,6 +1308,7 @@ export default function StockDetailPage() {
                     <span className="text-[10px] text-white font-bold cursor-pointer">분기</span>
                   </div>
                 </div>
+                <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
                 
                 <div className="h-[200px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -1351,6 +1354,7 @@ export default function StockDetailPage() {
                      <div className="text-xs font-bold text-white">26.36%</div>
                    </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
