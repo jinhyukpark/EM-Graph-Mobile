@@ -29,7 +29,7 @@ const marketShareData = [
   { name: "스마트폰", value: 21.8, color: "#10b981" },
 ];
 
-import stockImage from '@assets/stock_images/samsung_logo_c86f1f2f.jpg';
+import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
 export default function StockDetailPage() {
   const [match, params] = useRoute("/stock/:code");
@@ -119,7 +119,7 @@ export default function StockDetailPage() {
           </div>
         </div>
 
-        <div className="mb-4 mt-1">
+        <div className="mb-4 -mt-2">
              <div className="flex items-center gap-2 mb-1">
                <h2 className="text-2xl font-bold text-white">{stockInfo.name}</h2>
                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
