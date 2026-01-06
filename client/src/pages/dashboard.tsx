@@ -240,6 +240,8 @@ const Bubble = ({
   );
 };
 
+import StockTicker from "@/components/ui/stock-ticker";
+
 export default function DashboardPage() {
   return (
     <div className="pb-8">
@@ -249,8 +251,8 @@ export default function DashboardPage() {
           <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Stock<span className="font-light text-gray-300">link</span></span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-[10px] text-red-400 font-mono">
-            다우 산업 43977.18 +1.23%
+          <div className="w-48">
+             <StockTicker />
           </div>
           <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white">
             <Search className="w-4 h-4" />
