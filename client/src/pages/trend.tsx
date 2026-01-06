@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ChevronLeft, Info, Crown } from "lucide-react";
+import { ChevronLeft, Info, Crown, SlidersHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -432,7 +432,11 @@ export default function TrendPage() {
                <span className="text-sm text-gray-500">263개</span>
              </div>
 
-             <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar mb-4 -mx-4 px-4">
+             <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar mb-4 -mx-4 px-4">
+               <button className="flex items-center justify-center w-8 h-8 rounded-full bg-[#1e232b] border border-white/5 shrink-0">
+                 <SlidersHorizontal className="w-4 h-4 text-gray-400" />
+               </button>
+               <div className="h-4 w-px bg-white/10 shrink-0 mx-1"></div>
                {["거래량", "거래대금", "시가총액", "등락률"].map((filter) => (
                  <button
                    key={filter}
