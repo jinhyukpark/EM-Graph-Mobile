@@ -12,7 +12,8 @@ import {
   Puzzle,
   Plane,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Crown
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -72,7 +73,8 @@ const StockCard = ({
   percent, 
   isUp, 
   badge,
-  aiScore 
+  aiScore,
+  isLocked
 }: { 
   code: string, 
   name: string, 
@@ -81,7 +83,8 @@ const StockCard = ({
   percent: string, 
   isUp: boolean,
   badge?: string,
-  aiScore?: number
+  aiScore?: number,
+  isLocked?: boolean
 }) => {
   // Generate random-ish jagged path based on code to make them look different but consistent
   const seed = code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -182,6 +185,20 @@ const StockCard = ({
                 style={{ width: `${(aiScore / 10) * 100}%` }}
               />
             </div>
+          </div>
+        )}
+
+        {isLocked && (
+          <div className="flex flex-col items-end z-20">
+            <Button 
+              variant="outline" 
+              className="bg-[#1e232b]/80 backdrop-blur-sm border-white/10 hover:bg-[#1e232b] hover:border-[#00E5BC] text-gray-400 hover:text-[#00E5BC] transition-all rounded-full h-10 px-4 gap-2 group/btn"
+            >
+              <div className="w-6 h-6 rounded-full bg-[#2a3038] flex items-center justify-center group-hover/btn:bg-[#00E5BC]/10 transition-colors">
+                <Crown className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold">Business</span>
+            </Button>
           </div>
         )}
       </div>
@@ -476,6 +493,7 @@ export default function DashboardPage() {
               percent="+5.24"
               isUp={true}
               badge="사상최고치"
+              isLocked={true}
             />
              <StockCard 
               code="003530"
@@ -485,6 +503,7 @@ export default function DashboardPage() {
               percent="+3.95"
               isUp={true}
               badge="사상최고치"
+              isLocked={true}
             />
           </div>
         </motion.section>
