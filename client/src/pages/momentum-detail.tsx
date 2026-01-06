@@ -154,7 +154,8 @@ export default function MomentumDetailPage() {
             </div>
             
             <div className="flex flex-col items-end">
-              <div className="text-sm font-bold text-gray-900 mb-2">AI 점수</div>
+              <div className="text-xs font-bold text-gray-500 mb-0.5">AI 점수</div>
+              <div className="text-3xl font-black text-[#ff3b30] tracking-tighter">10.00</div>
             </div>
           </div>
           
@@ -164,23 +165,17 @@ export default function MomentumDetailPage() {
              </Button>
           </Link>
           
-          {/* Score Grid */}
-          <div className="grid grid-cols-4 gap-2 mt-6 border-t border-gray-100 pt-4">
-            {[
-              { label: "1주", score: "10.00", high: "14.738", low: "13.427" },
-              { label: "2주", score: "10.00", high: "14.738", low: "13.427" },
-              { label: "4주", score: "10.00", high: "14.738", low: "13.427" },
-              { label: "6주", score: "10.00", high: "14.738", low: "13.427" },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="text-xs text-gray-500 font-bold mb-1">{item.label}</div>
-                <div className="text-xl font-bold text-[#ff3b30] mb-1">{item.score}</div>
-                <div className="text-[9px] text-gray-400 leading-tight">
-                  <div>최고: {item.high}</div>
-                  <div>최저: {item.low}</div>
-                </div>
-              </div>
-            ))}
+          {/* Summary Section */}
+          <div className="mt-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-1 h-4 bg-[#ff3b30] rounded-full"/>
+              <h3 className="text-sm font-bold text-gray-900">모멘텀 총평</h3>
+            </div>
+            <p className="text-sm text-gray-700 leading-relaxed font-medium">
+              현재 장은 상승장에 돌입했으며 <span className="text-blue-600 font-bold">{stockInfo.name}</span>은 
+              상승 탄력지수를 분석한 결과 충분한 상승여력이 남아있는 상태로, 단기적인 조정이 있더라도 
+              우상향 추세를 이어갈 가능성이 높습니다.
+            </p>
           </div>
         </Card>
 
