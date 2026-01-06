@@ -122,54 +122,54 @@ export default function MomentumDetailPage() {
                 <div className="text-sm text-gray-500 mb-1">{code}</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">{stockInfo.name}</h2>
                 <div className="flex items-baseline gap-2 text-sm">
-                  <span className="text-gray-500">종가</span>
-                  <span className="font-bold text-green-600">{stockInfo.price}원 {stockInfo.percent}</span>
+                  <span className="font-bold text-green-600 text-lg">{stockInfo.price}원</span>
+                  <div className="flex flex-col text-xs font-medium text-green-600">
+                    <span>{stockInfo.percent}</span>
+                  </div>
                 </div>
               </div>
               
-              {/* Sparkline Chart */}
-              <div className="h-12 w-28 opacity-80">
-                <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
-                  <defs>
-                    <linearGradient id="detailSparkline" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#ef4444" stopOpacity="0.3" />
-                      <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <path 
-                    d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
-                    fill="none" 
-                    stroke="#ef4444" 
-                    strokeWidth="2" 
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path 
-                    d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
-                    fill="url(#detailSparkline)" 
-                    stroke="none" 
-                  />
-                </svg>
-              </div>
+          <div className="flex flex-col items-end">
+            <div className="h-16 w-36 opacity-80 mb-2">
+              <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+                <defs>
+                  <linearGradient id="detailSparkline" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ef4444" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path 
+                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
+                  fill="none" 
+                  stroke="#ef4444" 
+                  strokeWidth="2" 
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
+                  fill="url(#detailSparkline)" 
+                  stroke="none" 
+                />
+              </svg>
             </div>
             
-            <div className="flex flex-col items-end">
-              <div className="flex bg-gray-100 rounded-lg p-0.5">
-                {["1일", "1주", "1월", "1년"].map((period) => (
-                  <button 
-                    key={period}
-                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
-                      period === "1주" 
-                        ? "bg-white text-gray-900 shadow-sm" 
-                        : "text-gray-400 hover:text-gray-600"
-                    }`}
-                  >
-                    {period}
-                  </button>
-                ))}
-              </div>
+            <div className="flex bg-gray-100 rounded-lg p-0.5">
+              {["일", "주", "월", "년"].map((period) => (
+                <button 
+                  key={period}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all ${
+                    period === "주" 
+                      ? "bg-white text-gray-900 shadow-sm" 
+                      : "text-gray-400 hover:text-gray-600"
+                  }`}
+                >
+                  {period}
+                </button>
+              ))}
             </div>
           </div>
+        </div>
           
           <div className="mt-6 mb-2">
             <h3 className="text-sm font-bold text-gray-900 mb-3">AI 점수</h3>
