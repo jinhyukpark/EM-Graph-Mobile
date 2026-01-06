@@ -337,66 +337,68 @@ const StrongSignalCard = ({
   const maPath = generatePath(seed + 123, isPositive, 8); // Fewer points = smoother look if using curves, but here just different
 
   return (
-    <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3">
-      <div className="flex justify-between items-start mb-2">
-        <div>
+    <Card className="bg-[#151921] border border-white/5 p-4 rounded-xl mb-3 relative overflow-hidden">
+      <div className="absolute top-4 right-4 z-20">
+        <Star className="w-5 h-5 text-gray-600" />
+      </div>
+
+      <div className="flex justify-between items-center mb-4 relative z-10">
+        <div className="flex-1">
           <span className="text-[10px] text-gray-500 block mb-0.5">{code}</span>
-          <h3 className="text-sm font-bold text-white">{name}</h3>
+          <h3 className="text-base font-bold text-white mb-3">{name}</h3>
+          
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-white tracking-tight">{price}<span className="text-lg font-normal ml-0.5">원</span></span>
+            <span className={`text-sm font-medium ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>
+              {diff} <span className="ml-0.5">{percent}%</span>
+            </span>
+          </div>
         </div>
-        <div className="flex gap-3">
-          {/* Enhanced Spark Chart */}
-          <div className="w-24 h-12">
-            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+
+        {/* Enhanced Spark Chart - Larger Area */}
+        <div className="w-[140px] h-[70px] -mr-2">
+            <svg viewBox="0 0 140 70" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id={`gradient-mini-${code}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.2" />
+                  <stop offset="0%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0.3" />
                   <stop offset="100%" stopColor={isPositive ? "#ff3b30" : "#3b82f6"} stopOpacity="0" />
                 </linearGradient>
               </defs>
               
               {/* Secondary Line (MA-like) */}
               <path
-                d={maPath}
+                d={maPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)}
                 fill="none"
                 stroke={isPositive ? "#ff3b30" : "#3b82f6"}
-                strokeWidth="1"
-                strokeOpacity="0.4"
+                strokeWidth="1.5"
+                strokeOpacity="0.3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
 
               {/* Main Price Line */}
               <path
-                d={mainPath}
+                d={mainPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)}
                 fill="none"
                 stroke={isPositive ? "#ff3b30" : "#3b82f6"}
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               
               {/* Area Fill for Main Line */}
               <path
-                d={`${mainPath} V 40 H 0 Z`}
+                d={`${mainPath.replace(/M(\d+),(\d+)/g, (match, x, y) => `M${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`).replace(/L(\d+),(\d+)/g, (match, x, y) => `L${parseFloat(x) * 1.4},${parseFloat(y) * 1.75}`)} V 70 H 0 Z`}
                 fill={`url(#gradient-mini-${code})`}
                 stroke="none"
               />
             </svg>
-          </div>
-          <Star className="w-4 h-4 text-gray-600" />
         </div>
       </div>
 
-      <div className="flex items-baseline gap-2 mb-3">
-        <span className="text-lg font-bold text-white">{price}원</span>
-        <span className={`text-xs ${isPositive ? "text-[#ff3b30]" : "text-blue-400"}`}>
-          {diff}원 <span className="ml-1">{percent}%</span>
-        </span>
-      </div>
-
-      <div className="space-y-1">
+      <div className="space-y-2 relative z-10 border-t border-white/5 pt-3">
         <div className="flex justify-between items-end text-[10px] text-gray-400 mb-1">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-[#ff3b30]"></span>
             <span className="text-gray-300">AI 점수</span>
           </div>
@@ -408,8 +410,9 @@ const StrongSignalCard = ({
             style={{ width: `${(aiScore / 10) * 100}%` }}
           />
         </div>
-        <div className="text-[10px] text-gray-500 mt-2">
-          거래량 <span className="text-gray-300">{volume}주</span>
+        <div className="text-[10px] text-gray-500 mt-2 flex justify-between">
+          <span>거래량</span>
+          <span className="text-gray-300 font-medium">{volume}주</span>
         </div>
       </div>
     </Card>
