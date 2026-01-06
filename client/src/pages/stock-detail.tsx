@@ -768,7 +768,7 @@ export default function StockDetailPage() {
            <div className="space-y-6">
              {/* Chart Section */}
              <div>
-                <h3 className="text-sm font-bold text-gray-200 mb-4">기간별 거래량</h3>
+                <h3 className="text-lg font-bold text-gray-200 mb-4">기간별 거래량</h3>
                 <div className="bg-[#1e232b] rounded-xl p-4 border border-white/5">
                    <div className="flex justify-end items-center mb-4">
                      <div className="flex bg-[#151921] rounded-lg p-0.5 border border-white/5">
@@ -839,7 +839,7 @@ export default function StockDetailPage() {
            </div>
              
              <div className="mt-8">
-               <h3 className="text-sm font-bold text-gray-200 mb-4">일별 거래량</h3>
+               <h3 className="text-lg font-bold text-gray-200 mb-4">일별 거래량</h3>
                
                {/* Tabs */}
                <div className="w-full bg-[#1e232b] p-1 rounded-lg flex border border-white/5 mb-4">
