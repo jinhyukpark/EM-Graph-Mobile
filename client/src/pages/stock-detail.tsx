@@ -55,6 +55,42 @@ const newsItems = [
   { title: "“아직도 의심해?” 95만닉스·18만전자 장밋빛 전망…함께 웃은 종목은", date: "2026-01-06", timeAgo: "7시간 전", source: "매일경제" },
 ];
 
+const newsByDate: Record<string, typeof newsItems> = {
+  "01.06": [
+     { title: "<< AI 정밀 분석으로 포착 된 \"급등주\" 신청시 즉시 문자 발송 >>", date: "2026-01-06", timeAgo: "4시간 전", source: "인포스탁" },
+     { title: "‘방중’ 재계총수들 잇달아 귀국…한중 경제협력 기대", date: "2026-01-06", timeAgo: "4시간 전", source: "이투데이" },
+     { title: "삼성전자 '갤럭시 북6 시리즈' 공개", date: "2026-01-06", timeAgo: "5시간 전", source: "데이터투자" },
+     { title: "삼성전자, CES 2026서 '라이즈'와 일상 속 AI 경험 확산", date: "2026-01-06", timeAgo: "5시간 전", source: "데이터투자" },
+  ],
+  "01.05": [
+     { title: "삼성전자, CES 2026서 혁신 가전 대거 공개 예고", date: "2026-01-05", timeAgo: "1일 전", source: "전자신문" },
+     { title: "[마감시황] 코스피, 기관 매도에 하락 마감...삼성전자 보합", date: "2026-01-05", timeAgo: "1일 전", source: "한국경제" },
+     { title: "삼성전자, 반도체 부문 성과급 논의 본격화", date: "2026-01-05", timeAgo: "1일 전", source: "매일경제" },
+  ],
+  "01.04": [
+     { title: "주말 반도체 수출 호조 소식에 기대감 솔솔", date: "2026-01-04", timeAgo: "2일 전", source: "연합뉴스" },
+     { title: "삼성전자, 6G 통신 기술 주도권 확보 박차", date: "2026-01-04", timeAgo: "2일 전", source: "디지털타임스" },
+  ],
+  "01.03": [
+     { title: "외국인, 삼성전자 3일 연속 순매수...반등 신호탄?", date: "2026-01-03", timeAgo: "3일 전", source: "이데일리" },
+     { title: "삼성전자 평택 캠퍼스 증설 계획 차질 없나", date: "2026-01-03", timeAgo: "3일 전", source: "서울경제" },
+     { title: "[특징주] 반도체주 동반 강세...삼성전자 1%대 상승", date: "2026-01-03", timeAgo: "3일 전", source: "머니투데이" },
+  ],
+  "01.02": [
+     { title: "새해 첫 거래일, 삼성전자 강보합 출발", date: "2026-01-02", timeAgo: "4일 전", source: "아시아경제" },
+     { title: "삼성전자, 올해 경영 화두는 '기술 초격차'", date: "2026-01-02", timeAgo: "4일 전", source: "헤럴드경제" },
+  ],
+  "01.01": [
+     { title: "[신년사] 한종희 부회장 \"과감한 도전으로 미래 개척\"", date: "2026-01-01", timeAgo: "5일 전", source: "뉴스1" },
+  ],
+  "12.31": [
+     { title: "삼성전자, 작년 한 해 개인 순매수 1위...16조원 담았다", date: "2025-12-31", timeAgo: "6일 전", source: "SBS Biz" },
+  ],
+  "12.30": [
+     { title: "폐장일 코스피 상승 마감...삼성전자 7만원대 회복", date: "2025-12-30", timeAgo: "7일 전", source: "YTN" },
+  ]
+};
+
 const newsVolumeData = {
   "일": [
     { label: "12.30", volume: 12 }, { label: "12.31", volume: 18 }, { label: "01.01", volume: 15 },
@@ -118,6 +154,7 @@ export default function StockDetailPage() {
   // Default to the second item (24.12) as per the design requirement to show 2024 data initially
   const [selectedPeriod, setSelectedPeriod] = useState(performanceData[1]);
   const [newsChartPeriod, setNewsChartPeriod] = useState<"일" | "주" | "월" | "년">("일");
+  const [selectedNewsDate, setSelectedNewsDate] = useState<string | null>(null);
   const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별 vs 기관별
 
   const handleBarClick = (data: any) => {
@@ -596,7 +633,10 @@ export default function StockDetailPage() {
                   {(["일", "주", "월", "년"] as const).map((period) => (
                     <button 
                       key={period}
-                      onClick={() => setNewsChartPeriod(period)}
+                      onClick={() => {
+                        setNewsChartPeriod(period);
+                        setSelectedNewsDate(null); // Reset selection when changing period type
+                      }}
                       className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
                         newsChartPeriod === period 
                           ? "bg-white text-gray-900 shadow-sm" 
@@ -629,7 +669,22 @@ export default function StockDetailPage() {
                         fill="#3b82f6" 
                         radius={[4, 4, 0, 0]} 
                         barSize={newsChartPeriod === "년" ? 10 : 20}
-                     />
+                        onClick={(data) => {
+                          if (data && data.label) {
+                            setSelectedNewsDate(data.label);
+                          }
+                        }}
+                        cursor="pointer"
+                     >
+                        {
+                          newsVolumeData[newsChartPeriod].map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={selectedNewsDate === entry.label ? "#00E5BC" : "#3b82f6"} 
+                            />
+                          ))
+                        }
+                     </Bar>
                    </BarChart>
                  </ResponsiveContainer>
               </div>
@@ -637,9 +692,23 @@ export default function StockDetailPage() {
 
             {/* News List */}
             <section>
-              <h3 className="text-lg font-bold text-gray-200 mb-4">최신 뉴스</h3>
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-lg font-bold text-gray-200">
+                  {selectedNewsDate ? `${selectedNewsDate} 뉴스` : "최신 뉴스"}
+                </h3>
+                {selectedNewsDate && (
+                  <button 
+                    onClick={() => setSelectedNewsDate(null)}
+                    className="text-xs text-gray-500 hover:text-white transition-colors bg-white/5 px-2 py-0.5 rounded-full"
+                  >
+                    초기화
+                  </button>
+                )}
+              </div>
               <div className="space-y-3">
-                {newsItems.map((news, index) => (
+                {(selectedNewsDate && newsByDate[selectedNewsDate] 
+                  ? newsByDate[selectedNewsDate] 
+                  : newsItems).map((news, index) => (
                   <div key={index} className="bg-[#1e232b] rounded-xl p-4 border border-white/5 hover:bg-[#2a3038] transition-colors cursor-pointer">
                     <h4 className="text-sm font-medium text-white mb-3 leading-snug line-clamp-2">
                       {news.title}
@@ -654,6 +723,12 @@ export default function StockDetailPage() {
                     </div>
                   </div>
                 ))}
+                
+                {selectedNewsDate && !newsByDate[selectedNewsDate] && (
+                  <div className="text-center py-10 text-gray-500 text-sm">
+                    해당 날짜의 뉴스가 없습니다.
+                  </div>
+                )}
               </div>
             </section>
           </div>
