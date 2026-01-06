@@ -5,7 +5,9 @@ import {
   ChevronDown, 
   Star, 
   Crown,
-  Info
+  Info,
+  Search,
+  SlidersHorizontal
 } from "lucide-react";
 import { 
   Select,
@@ -16,8 +18,113 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+
+const MomentumCard = ({
+  code,
+  name,
+  market,
+  price,
+  change,
+  score,
+  period,
+  stats
+}: {
+  code: string,
+  name: string,
+  market: string,
+  price: string,
+  change: string,
+  score: number,
+  period: string,
+  stats: {
+    strength10: string,
+    elasticity: string,
+    strength20: string,
+    defense: string
+  }
+}) => {
+  const isPositive = !change.startsWith("-");
+
+  return (
+    <Card className="bg-[#151921] border border-white/5 p-5 rounded-2xl mb-4">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <div className="text-xs text-gray-500 mb-1">{code}</div>
+          <h3 className="text-lg font-bold text-white mb-0.5">{name}</h3>
+          <span className="text-[10px] text-gray-500">{market}</span>
+        </div>
+        <Star className="w-5 h-5 text-gray-600" />
+      </div>
+
+      {/* Chart Area Placeholder */}
+      <div className="h-16 w-full mb-4 relative opacity-80">
+         <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible preserve-3d">
+           <defs>
+             <linearGradient id={`gradient-${code}`} x1="0" y1="0" x2="0" y2="1">
+               <stop offset="0%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0.5"/>
+               <stop offset="100%" stopColor={isPositive ? "#ef4444" : "#3b82f6"} stopOpacity="0"/>
+             </linearGradient>
+           </defs>
+           <path 
+             d={isPositive ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" : "M0,5 C20,10 40,8 60,25 C80,35 100,30"}
+             fill="none" 
+             stroke={isPositive ? "#ef4444" : "#3b82f6"} 
+             strokeWidth="3"
+             strokeLinecap="round"
+           />
+           <path 
+             d={`${isPositive ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" : "M0,5 C20,10 40,8 60,25 C80,35 100,30"} V40 H0 Z`}
+             fill={`url(#gradient-${code})`} 
+             opacity="0.3"
+           />
+         </svg>
+         
+         {/* AI Score Badge Floating on Chart */}
+         <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-end">
+           <div className="text-[10px] text-gray-400 mb-1">AI 점수</div>
+           <div className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-red-500 rounded-full px-3 py-1">
+             <span className="text-sm font-bold text-white">{score}</span>
+           </div>
+           <div className="text-[10px] text-red-400 mt-1 text-right w-full">{period}</div>
+         </div>
+      </div>
+
+      <div className="flex items-baseline gap-2 mb-4">
+        <span className="text-gray-400 text-xs">종가</span>
+        <span className="text-lg font-bold text-white">{price}원</span>
+        <span className={`text-sm ${isPositive ? "text-red-400" : "text-blue-400"}`}>{change}</span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-y-3 gap-x-8 text-xs">
+        <div>
+          <div className="text-gray-500 mb-1">10일간 주가 강도</div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">상승탄력</span>
+            <span className="text-red-400">{stats.elasticity}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">하락방어</span>
+            <span className="text-blue-400">{stats.defense}</span>
+          </div>
+        </div>
+        <div>
+          <div className="text-gray-500 mb-1">20일간 주가 강도</div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">상승탄력</span>
+            <span className="text-red-400">{stats.strength20}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">하락방어</span>
+            <span className="text-red-400">{stats.strength10}</span>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
 
 const AIRecommendCard = ({ 
   rank, 
@@ -380,6 +487,96 @@ export default function AIRecommendPage() {
               aiScore={2.10}
               volume="8,241,441"
               isPositive={true}
+            />
+          </main>
+        </>
+      ) : activeTab === "모멘텀분석" ? (
+        <>
+          {/* Banner for Momentum Analysis */}
+          <div className="px-4 py-6 text-center">
+             <h2 className="text-xl font-bold text-white mb-2">AI 모멘텀 분석</h2>
+             <p className="text-sm text-gray-400 mb-0 px-4 leading-relaxed">
+               상승장과 하락장에서의 <span className="text-[#00E5BC] font-semibold">추세를 정밀 분석</span>하여,<br/>
+               시장 상황에 맞는 유연한 투자 전략을 제시합니다.
+             </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="px-4 mb-4 sticky top-[105px] z-30 bg-background/95 backdrop-blur-md pb-2 pt-2">
+            <div className="relative">
+              <Input 
+                placeholder="종목명 또는 종목코드 검색" 
+                className="bg-[#1e232b] border-white/10 text-white pl-4 pr-10 h-11 rounded-xl placeholder:text-gray-600"
+              />
+              <Search className="w-5 h-5 text-gray-500 absolute right-3 top-1/2 -translate-y-1/2" />
+            </div>
+            <div className="flex justify-end mt-2">
+               <div className="text-[10px] text-gray-500 flex items-center gap-1">
+                 2026-01-05 기준
+               </div>
+            </div>
+          </div>
+
+          <main className="px-4 pb-6">
+            <MomentumCard 
+              code="043260"
+              name="성호전자"
+              market="KOSDAQ"
+              price="12,490"
+              change="+15.65%"
+              score={10}
+              period="1주 이내"
+              stats={{
+                strength10: "+0.50%",
+                elasticity: "+11.40%",
+                strength20: "+14.24%",
+                defense: "-0.43%"
+              }}
+            />
+            <MomentumCard 
+              code="419080"
+              name="엔젯"
+              market="KOSDAQ"
+              price="9,450"
+              change="+4.30%"
+              score={10}
+              period="1주 이내"
+              stats={{
+                strength10: "+3.44%",
+                elasticity: "+0.40%",
+                strength20: "+3.12%",
+                defense: "+4.09%"
+              }}
+            />
+            <MomentumCard 
+              code="376900"
+              name="로켓헬스케어"
+              market="KOSDAQ"
+              price="63,300"
+              change="+1.77%"
+              score={10}
+              period="1주 이내"
+              stats={{
+                strength10: "-1.71%",
+                elasticity: "-2.87%",
+                strength20: "-1.08%",
+                defense: "+0.42%"
+              }}
+            />
+            <MomentumCard 
+              code="203650"
+              name="드림시큐리티"
+              market="KOSDAQ"
+              price="3,410"
+              change="-2.15%"
+              score={9}
+              period="2주 이내"
+              stats={{
+                strength10: "+1.20%",
+                elasticity: "+5.10%",
+                strength20: "+8.45%",
+                defense: "-1.12%"
+              }}
             />
           </main>
         </>
