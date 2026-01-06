@@ -24,15 +24,15 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -303,20 +303,21 @@ const FilterDrawer = () => {
   const [volumeRange, setVolumeRange] = useState([0, 100]);
   
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <button className="px-3 py-2 rounded-full bg-[#1e232b] border border-white/5 text-gray-400 hover:bg-[#252b36] flex items-center justify-center shrink-0 transition-colors active:scale-95">
            <SlidersHorizontal className="w-4 h-4" />
         </button>
-      </DrawerTrigger>
-      <DrawerContent className="bg-[#151921] border-t border-white/10 text-white">
+      </SheetTrigger>
+      <SheetContent side="bottom" className="bg-[#151921] border-t border-white/10 text-white rounded-t-[20px] max-h-[85vh] overflow-y-auto">
+        <div className="mx-auto mt-2 h-1.5 w-[50px] rounded-full bg-white/10 mb-6" /> {/* Handle */}
         <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle className="text-lg font-bold text-center">상세 필터 설정</DrawerTitle>
-            <DrawerDescription className="text-center text-gray-500 text-xs">
+          <SheetHeader>
+            <SheetTitle className="text-lg font-bold text-center text-white">상세 필터 설정</SheetTitle>
+            <SheetDescription className="text-center text-gray-500 text-xs">
               원하는 조건으로 종목을 필터링해보세요.
-            </DrawerDescription>
-          </DrawerHeader>
+            </SheetDescription>
+          </SheetHeader>
           <div className="p-4 space-y-6">
             
             {/* Price Range */}
@@ -361,35 +362,35 @@ const FilterDrawer = () => {
                <div className="space-y-3">
                  <div className="flex items-center justify-between">
                    <Label htmlFor="profit" className="text-sm text-gray-400 font-normal">영업이익 흑자 (최근 1년)</Label>
-                   <Switch id="profit" className="data-[state=checked]:bg-[#00E5BC]" />
+                   <Switch id="profit" className="data-[state=checked]:bg-[#00E5BC] bg-[#252b36]" />
                  </div>
                  <div className="flex items-center justify-between">
                    <Label htmlFor="debt" className="text-sm text-gray-400 font-normal">부채비율 200% 이하</Label>
-                   <Switch id="debt" className="data-[state=checked]:bg-[#00E5BC]" defaultChecked />
+                   <Switch id="debt" className="data-[state=checked]:bg-[#00E5BC] bg-[#252b36]" defaultChecked />
                  </div>
                  <div className="flex items-center justify-between">
                     <Label htmlFor="foreign" className="text-sm text-gray-400 font-normal">외국인 순매수 지속</Label>
-                    <Switch id="foreign" className="data-[state=checked]:bg-[#00E5BC]" />
+                    <Switch id="foreign" className="data-[state=checked]:bg-[#00E5BC] bg-[#252b36]" />
                  </div>
                </div>
             </div>
 
           </div>
-          <DrawerFooter className="flex-row gap-2 pt-2 pb-8">
+          <SheetFooter className="flex-row gap-2 pt-2 pb-8 sm:justify-between">
             <Button variant="outline" className="flex-1 bg-[#1e232b] border-white/5 text-gray-400 hover:bg-[#252b36] hover:text-white border-0 h-12 rounded-xl">
               <RefreshCcw className="w-4 h-4 mr-2" />
               초기화
             </Button>
-            <DrawerClose asChild>
+            <SheetClose asChild>
               <Button className="flex-1 bg-[#00E5BC] text-[#151921] hover:bg-[#00E5BC]/90 font-bold h-12 rounded-xl">
                 <Check className="w-4 h-4 mr-2" />
                 필터 적용
               </Button>
-            </DrawerClose>
-          </DrawerFooter>
+            </SheetClose>
+          </SheetFooter>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 
