@@ -9,7 +9,7 @@ export default function MobileNav() {
     { icon: LayoutDashboard, label: "대시보드", path: "/" },
     { icon: Bookmark, label: "즐겨찾기", path: "/favorites" },
     { icon: Sparkles, label: "AI 추천", path: "/ai-recommend", highlight: true },
-    { icon: TrendingUp, label: "트렌드", path: "/trends" },
+    { icon: TrendingUp, label: "뉴스분석", path: "/trends" },
     { icon: User, label: "MY", path: "/my-page" },
   ];
 
