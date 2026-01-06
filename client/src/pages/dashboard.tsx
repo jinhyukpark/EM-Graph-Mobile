@@ -131,7 +131,7 @@ const FearGreedGauge = () => (
           <span className="text-5xl font-bold text-white tracking-tighter">98</span>
           <span className="text-lg text-gray-400 ml-1 font-medium">점</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-1 mb-3">
+        <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-1 mb-5">
           <Clock className="w-3.5 h-3.5" />
           <span>일주일(극도의 탐욕)</span>
         </div>
