@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { 
   Bell, 
   Search, 
@@ -15,8 +16,54 @@ import {
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const StockCard = ({ 
+const SkeletonDashboard = () => (
+  <div className="pb-8">
+    {/* Header Skeleton */}
+    <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-white/5">
+      <div className="h-8 bg-background border-b border-white/5 px-4 flex items-center">
+         <Skeleton className="h-4 w-64 bg-gray-800" />
+      </div>
+      <div className="px-4 py-3 flex items-center justify-between">
+        <Skeleton className="h-8 w-32 bg-gray-800" />
+        <div className="flex gap-2">
+          <Skeleton className="w-8 h-8 rounded-full bg-gray-800" />
+          <Skeleton className="w-8 h-8 rounded-full bg-gray-800" />
+          <Skeleton className="w-8 h-8 rounded-full bg-gray-800" />
+        </div>
+      </div>
+    </header>
+
+    <main className="px-4 space-y-6 pt-6">
+      {/* Gauge Skeleton */}
+      <Skeleton className="h-44 w-full rounded-2xl bg-[#1e232b]" />
+      
+      {/* Signal Cards Skeleton */}
+      <div className="grid grid-cols-2 gap-3">
+        <Skeleton className="h-32 rounded-2xl bg-[#1e232b]" />
+        <Skeleton className="h-32 rounded-2xl bg-[#1e232b]" />
+      </div>
+
+      {/* Sections Skeleton */}
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="space-y-3">
+          <div className="flex justify-between">
+            <Skeleton className="h-6 w-24 bg-gray-800" />
+            <Skeleton className="h-6 w-16 bg-gray-800 rounded-full" />
+          </div>
+          <div className="flex gap-3 overflow-hidden">
+            <Skeleton className="h-40 w-40 rounded-xl bg-[#1e232b] shrink-0" />
+            <Skeleton className="h-40 w-40 rounded-xl bg-[#1e232b] shrink-0" />
+            <Skeleton className="h-40 w-40 rounded-xl bg-[#1e232b] shrink-0" />
+          </div>
+        </div>
+      ))}
+    </main>
+  </div>
+);
+
+const StockCard = ({  
   code, 
   name, 
   price, 
@@ -244,6 +291,20 @@ import StockTicker from "@/components/ui/stock-ticker";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function DashboardPage() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <SkeletonDashboard />;
+  }
+
   return (
     <div className="pb-8">
       {/* Header */}
@@ -276,11 +337,19 @@ export default function DashboardPage() {
 
       <main className="px-4 space-y-6">
         {/* Fear & Greed + Signal Counts */}
-        <section className="space-y-3">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-3"
+        >
           <FearGreedGauge />
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden"
+            >
               {/* Blue Gradient Flare */}
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full pointer-events-none" />
               
@@ -292,9 +361,12 @@ export default function DashboardPage() {
                 </div>
                 <div className="text-xs text-gray-400 font-medium">7일간 이내 <span className="text-blue-400">-0.51%</span></div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="relative bg-[#1e232b] p-5 rounded-2xl border border-white/5 text-center shadow-lg overflow-hidden"
+            >
                {/* Red Gradient Flare */}
               <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-red-500/20 blur-3xl rounded-full pointer-events-none" />
 
@@ -306,12 +378,17 @@ export default function DashboardPage() {
                 </div>
                 <div className="text-xs text-gray-400 font-medium">7일간 이내 <span className="text-blue-400">-0.30%</span></div>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Issue Stocks */}
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="flex justify-between items-center mb-3">
             <div>
               <h2 className="text-lg font-bold text-white">이슈 종목</h2>
@@ -351,10 +428,15 @@ export default function DashboardPage() {
               badge="사상최고치"
             />
           </div>
-        </section>
+        </motion.section>
 
         {/* Real Time Chart */}
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="flex justify-between items-center mb-3">
             <div>
               <h2 className="text-lg font-bold text-white">실시간 차트</h2>
@@ -405,10 +487,15 @@ export default function DashboardPage() {
               isUp={true}
             />
           </div>
-        </section>
+        </motion.section>
 
         {/* Popular Categories */}
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
            <div className="flex justify-between items-center mb-3">
             <div>
               <h2 className="text-lg font-bold text-white">인기 카테고리</h2>
@@ -445,10 +532,15 @@ export default function DashboardPage() {
               bgColor="bg-blue-600/80"
             />
           </div>
-        </section>
+        </motion.section>
 
         {/* Popular Keywords (Bubble Chart Mock) */}
-        <section>
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold text-white">인기 키워드</h2>
             <div className="flex gap-2 text-xs">
@@ -473,7 +565,7 @@ export default function DashboardPage() {
              <Bubble text="지급여력비율" color="#10b981" size="60px" top="60%" left="52%" delay={1.7} />
              <Bubble text="사상최고치 경신" color="#10b981" size="80px" top="70%" left="25%" delay={0.7} />
           </div>
-        </section>
+        </motion.section>
 
       </main>
     </div>
