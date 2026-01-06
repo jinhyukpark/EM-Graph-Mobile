@@ -193,21 +193,52 @@ const CategoryCard = ({
   </Card>
 );
 
-const Bubble = ({ text, color, size, top, left }: { text: string, color: string, size: string, top: string, left: string }) => (
-  <div 
-    className={`absolute rounded-full flex items-center justify-center text-center text-[10px] font-bold text-white shadow-lg animate-float`}
-    style={{ 
-      backgroundColor: color, 
-      width: size, 
-      height: size, 
-      top: top, 
-      left: left,
-      boxShadow: `0 0 20px ${color}40`
-    }}
-  >
-    {text}
-  </div>
-);
+const Bubble = ({ 
+  text, 
+  color, 
+  size, 
+  top, 
+  left, 
+  delay = 0 
+}: { 
+  text: string, 
+  color: string, 
+  size: string, 
+  top: string, 
+  left: string,
+  delay?: number 
+}) => {
+  const isGreen = color === "#10b981";
+  
+  return (
+    <motion.div 
+      className={`absolute rounded-full flex items-center justify-center text-center text-[11px] font-bold text-white z-10 cursor-pointer hover:scale-110 transition-transform duration-300`}
+      style={{ 
+        width: size, 
+        height: size, 
+        top: top, 
+        left: left,
+        background: isGreen 
+          ? `radial-gradient(circle at 30% 30%, #34d399, #059669)` 
+          : `radial-gradient(circle at 30% 30%, #9ca3af, #4b5563)`,
+        boxShadow: isGreen 
+          ? `0 0 15px rgba(16, 185, 129, 0.4), inset 0 2px 4px rgba(255,255,255,0.3)` 
+          : `0 0 5px rgba(107, 114, 128, 0.2), inset 0 2px 4px rgba(255,255,255,0.1)`,
+      }}
+      animate={{ 
+        y: [0, -10, 0],
+      }}
+      transition={{ 
+        duration: 4, 
+        repeat: Infinity, 
+        ease: "easeInOut",
+        delay: delay
+      }}
+    >
+      <span className="px-1 leading-tight drop-shadow-md">{text}</span>
+    </motion.div>
+  );
+};
 
 export default function DashboardPage() {
   return (
@@ -233,12 +264,12 @@ export default function DashboardPage() {
           <FearGreedGauge />
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center">
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center shadow-lg">
               <div className="text-blue-400 text-sm font-bold mb-1">강한매도</div>
               <div className="text-3xl font-bold text-white mb-1">345<span className="text-sm font-normal text-gray-500">개</span></div>
               <div className="text-[10px] text-blue-500/80">7일간 이내 -0.51%</div>
             </div>
-            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center">
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#13161c] p-4 rounded-xl border border-white/5 text-center shadow-lg">
               <div className="text-red-400 text-sm font-bold mb-1">강한매수</div>
               <div className="text-3xl font-bold text-white mb-1">245<span className="text-sm font-normal text-gray-500">개</span></div>
               <div className="text-[10px] text-blue-500/80">7일간 이내 -0.30%</div>
@@ -390,21 +421,24 @@ export default function DashboardPage() {
             <div className="flex gap-2 text-xs">
               <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-red-500"></span>부정</span>
               <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-gray-500"></span>중립</span>
-              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-green-500"></span>긍정</span>
+              <span className="flex items-center gap-1 text-gray-400"><span className="w-2 h-2 rounded-full bg-[#10b981]"></span>긍정</span>
             </div>
           </div>
           
-          <div className="relative h-[300px] w-full bg-[#151921] rounded-2xl overflow-hidden border border-white/5">
-             <Bubble text="사상최고치" color="#10b981" size="80px" top="15%" left="60%" />
-             <Bubble text="코스피지수" color="#10b981" size="70px" top="45%" left="70%" />
-             <Bubble text="목표주가상향" color="#10b981" size="65px" top="55%" left="15%" />
-             <Bubble text="피지컬AI" color="#10b981" size="60px" top="25%" left="10%" />
-             <Bubble text="휴머노이드 로봇" color="#10b981" size="65px" top="35%" left="40%" />
-             <Bubble text="유상증자" color="#6b7280" size="55px" top="20%" left="30%" />
-             <Bubble text="외환보유액 감소" color="#6b7280" size="55px" top="5%" left="45%" />
-             <Bubble text="리스크관리" color="#10b981" size="55px" top="55%" left="35%" />
-             <Bubble text="지급여력비율" color="#10b981" size="55px" top="65%" left="50%" />
-             <Bubble text="사상최고치 경신" color="#10b981" size="75px" top="75%" left="25%" />
+          <div className="relative h-[320px] w-full bg-[#151921] rounded-2xl overflow-hidden border border-white/5 shadow-inner">
+             {/* Background Glow Effect */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#10b981]/5 blur-[60px] rounded-full pointer-events-none" />
+
+             <Bubble text="사상최고치" color="#10b981" size="85px" top="15%" left="60%" delay={0} />
+             <Bubble text="코스피지수" color="#10b981" size="75px" top="40%" left="72%" delay={1} />
+             <Bubble text="목표주가상향" color="#10b981" size="70px" top="55%" left="15%" delay={0.5} />
+             <Bubble text="피지컬AI" color="#10b981" size="65px" top="25%" left="10%" delay={1.5} />
+             <Bubble text="휴머노이드 로봇" color="#10b981" size="70px" top="35%" left="38%" delay={0.2} />
+             <Bubble text="유상증자" color="#6b7280" size="60px" top="20%" left="32%" delay={0.8} />
+             <Bubble text="외환보유액 감소" color="#6b7280" size="60px" top="5%" left="45%" delay={1.2} />
+             <Bubble text="리스크관리" color="#10b981" size="60px" top="52%" left="35%" delay={0.3} />
+             <Bubble text="지급여력비율" color="#10b981" size="60px" top="60%" left="52%" delay={1.7} />
+             <Bubble text="사상최고치 경신" color="#10b981" size="80px" top="70%" left="25%" delay={0.7} />
           </div>
         </section>
 
