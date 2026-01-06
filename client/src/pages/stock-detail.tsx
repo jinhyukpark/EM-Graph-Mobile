@@ -157,6 +157,42 @@ const investorVolumeData = {
   ]
 };
 
+const financialData = {
+  "손익계산서": [
+    { item: "매출액(수익)", values: ["79조 987억", "74조 683억", "71조 9,156억", "67조 7,799억", "67조 4,046억"], isHeader: true },
+    { item: "내수", values: ["-", "-", "-", "-", "-"] },
+    { item: "수출", values: ["-", "-", "-", "-", "-"] },
+    { item: "매출원가", values: ["49조 950억", "44조 3,120억", "45조 8,863억", "46조 1,155억", "46조 6,187억"] },
+    { item: "매출총이익", values: ["30조 36억", "29조 7,562억", "26조 292억", "21조 6,643억", "20조 7,859억"] },
+    { item: "판매비와관리비", values: ["20조 8,202억", "19조 3,123억", "19조 4,232억", "18조 8,396억", "18조 3,523억"] },
+    { item: "영업이익", values: ["9조 1,833억", "10조 4,438억", "6조 6,060억", "2조 8,247억", "2조 4,335억"] },
+    { item: "영업이익(발표기준)", values: ["9조 1,833억", "10조 4,438억", "6조 6,060억", "2조 8,247억", "2조 4,335억"] },
+    { item: "[구 K-IFRS]영업이익", values: ["-", "-", "-", "-", "-"] },
+    { item: "금융수익", values: ["3조 6,175억", "3조 6,161억", "3조 4,845억", "3조 3,030억", "4조 1,121억"] },
+    { item: "금융원가", values: ["2조 8,237억", "2조 7,362억", "2조 6,625억", "2조 5,412억", "2조 9,037억"] },
+    { item: "기타영업외손익", values: ["1,598억 6,200만", "730억 500만", "638억 8,800만", "-2,732억 6,000만", "379억 4,900만"] },
+    { item: "종속기업,공동지배기업및관계기업관련손익", values: ["1,834억 1,100만", "1,985억 1,400만", "2,148억 3,300만", "2,110억 9,100만", "2,626억 7,700만"] },
+    { item: "법인세비용차감전계속사업이익", values: ["10조 3,204억", "11조 5,953억", "7조 7,067억", "3조 5,242억", "3조 9,426억"] },
+    { item: "법인세비용", values: ["2,195억 800만", "1조 7,539억", "9,520억 1,500만", "-2조 8,204억", "-1조 9,015억"] },
+    { item: "계속사업이익", values: ["10조 1,009억", "9조 8,413억", "6조 7,547억", "6조 3,447억", "5조 8,441억"] },
+    { item: "중단사업이익", values: ["-", "-", "-", "-", "-"] },
+    { item: "중단사업법인세효과", values: ["-", "-", "-", "-", "-"] },
+    { item: "당기순이익", values: ["10조 1,009억", "9조 8,413억", "6조 7,547억", "6조 3,447억", "5조 8,441억"] },
+    { item: "기타포괄이익", values: ["-4조 8,451억", "4조 2,893억", "4조 9,949억", "-4조 1,183억", "1조 5,728억"], highlight: true },
+    { item: "총포괄이익", values: ["5조 2,557억", "14조 1,307억", "11조 7,496억", "2조 2,264억", "7조 4,170억"] },
+    { item: "주당계속사업이익", values: ["1,440억", "1,419억", "-", "-", "810억"] },
+    { item: "주당순이익", values: ["1,440억", "1,419억", "-", "-", "810억"] },
+    { item: "희석주당계속사업이익", values: ["-", "-", "-", "-", "-"] },
+    { item: "희석주당순이익", values: ["-", "-", "-", "-", "-"] },
+    { item: "(지배주주지분)주당계속사업이익", values: ["1,440억", "1,419억", "-", "-", "810억"] },
+    { item: "(지배주주지분)주당순이익", values: ["1,440억", "1,419억", "-", "-", "810억"] },
+    { item: "(지배주주지분)희석주당계속사업이익", values: ["-", "-", "-", "-", "-"] },
+    { item: "(지배주주지분)희석주당순이익", values: ["-", "-", "-", "-", "-"] },
+  ]
+};
+
+const financialDates = ["2024년 09월", "2024년 06월", "2024년 03월", "2023년 12월", "2023년 09월"];
+
 import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
 export default function StockDetailPage() {
@@ -186,6 +222,38 @@ export default function StockDetailPage() {
   const [investorChartPeriod, setInvestorChartPeriod] = useState<"주" | "월" | "년">("주");
   const [investorTab, setInvestorTab] = useState("투자자"); // 투자자, 신용, 대차, 공매도, CFD
   const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별, 기관별
+  
+  const [financialSubTab, setFinancialSubTab] = useState("손익계산서");
+  const [financialReportType, setFinancialReportType] = useState("연결");
+  const [financialPeriodType, setFinancialPeriodType] = useState("분기");
+
+  const financialTableRef = useRef<HTMLDivElement>(null);
+  const [isFinancialDragging, setIsFinancialDragging] = useState(false);
+  const [financialStartX, setFinancialStartX] = useState(0);
+  const [financialScrollLeft, setFinancialScrollLeft] = useState(0);
+
+  const handleFinancialMouseDown = (e: React.MouseEvent) => {
+    if (!financialTableRef.current) return;
+    setIsFinancialDragging(true);
+    setFinancialStartX(e.pageX - financialTableRef.current.offsetLeft);
+    setFinancialScrollLeft(financialTableRef.current.scrollLeft);
+  };
+
+  const handleFinancialMouseLeave = () => {
+    setIsFinancialDragging(false);
+  };
+
+  const handleFinancialMouseUp = () => {
+    setIsFinancialDragging(false);
+  };
+
+  const handleFinancialMouseMove = (e: React.MouseEvent) => {
+    if (!isFinancialDragging || !financialTableRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - financialTableRef.current.offsetLeft;
+    const walk = (x - financialStartX) * 2;
+    financialTableRef.current.scrollLeft = financialScrollLeft - walk;
+  };
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -988,6 +1056,111 @@ export default function StockDetailPage() {
                </div>
              </div>
            </div>
+        )}
+
+        {activeTab === "재무분석" && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+               {/* Sub Tabs */}
+               <div className="flex gap-4 border-b border-white/5 px-2">
+                 {["손익계산서", "재무상태표", "현금흐름표"].map((tab) => (
+                   <button
+                     key={tab}
+                     onClick={() => setFinancialSubTab(tab)}
+                     className={`pb-2 text-sm font-medium border-b-2 transition-all ${
+                       financialSubTab === tab
+                         ? "border-[#00E5BC] text-[#00E5BC]"
+                         : "border-transparent text-gray-400 hover:text-gray-200"
+                     }`}
+                   >
+                     {tab}
+                   </button>
+                 ))}
+               </div>
+
+               {/* Controls */}
+               <div className="flex gap-2">
+                  <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                    {["연결", "별도"].map((type) => (
+                      <button 
+                        key={type}
+                        onClick={() => setFinancialReportType(type)}
+                        className={`px-2 py-1 text-[10px] font-medium rounded-md transition-all ${
+                          financialReportType === type 
+                            ? "bg-white/10 text-white shadow-sm" 
+                            : "text-gray-500 hover:text-gray-300"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                    {["분기", "연간"].map((type) => (
+                      <button 
+                        key={type}
+                        onClick={() => setFinancialPeriodType(type)}
+                        className={`px-2 py-1 text-[10px] font-medium rounded-md transition-all ${
+                          financialPeriodType === type 
+                            ? "bg-white/10 text-white shadow-sm" 
+                            : "text-gray-500 hover:text-gray-300"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+               </div>
+            </div>
+
+            {/* Financial Table */}
+            <div className="bg-[#1e232b] rounded-xl overflow-hidden border border-white/5">
+              <div 
+                ref={financialTableRef}
+                className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing"
+                onMouseDown={handleFinancialMouseDown}
+                onMouseLeave={handleFinancialMouseLeave}
+                onMouseUp={handleFinancialMouseUp}
+                onMouseMove={handleFinancialMouseMove}
+              >
+                <div className="min-w-[800px]">
+                  {/* Header */}
+                  <div className="grid grid-cols-[200px_repeat(5,1fr)] bg-[#2a3038] border-b border-white/5 sticky top-0 z-10">
+                    <div className="sticky left-0 bg-[#2a3038] px-4 py-3 text-xs text-gray-400 font-medium z-20 border-r border-white/5">항목</div>
+                    {financialDates.map((date, i) => (
+                      <div key={i} className="px-4 py-3 text-xs text-gray-400 font-medium text-right whitespace-nowrap">{date}</div>
+                    ))}
+                  </div>
+
+                  {/* Body */}
+                  <div className="divide-y divide-white/5">
+                    {(financialData[financialSubTab as keyof typeof financialData] || []).map((row, index) => (
+                      <div key={index} className={`grid grid-cols-[200px_repeat(5,1fr)] hover:bg-white/5 transition-colors group ${row.isHeader ? 'bg-[#252a33]' : ''}`}>
+                         <div className={`sticky left-0 px-4 py-3 text-xs font-medium border-r border-white/5 z-10 flex items-center
+                           ${row.isHeader ? 'text-gray-300 bg-[#252a33]' : 'text-gray-400 bg-[#1e232b] group-hover:bg-[#2a3038] transition-colors'}
+                         `}>
+                           {row.item}
+                         </div>
+                         {row.values.map((val, i) => (
+                           <div key={i} className={`px-4 py-3 text-xs text-right whitespace-nowrap flex items-center justify-end
+                             ${row.highlight ? 'text-blue-400' : 'text-gray-200'}
+                             ${row.isHeader ? 'font-medium' : ''}
+                           `}>
+                             {val}
+                           </div>
+                         ))}
+                      </div>
+                    ))}
+                    {!financialData[financialSubTab as keyof typeof financialData] && (
+                       <div className="p-8 text-center text-gray-500 text-sm">
+                         데이터가 없습니다.
+                       </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
     </div>
