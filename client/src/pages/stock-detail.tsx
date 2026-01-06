@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { Link, useRoute } from "wouter";
-import { ChevronLeft, Star } from "lucide-react";
+import { ChevronLeft, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 const COLORS = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981", "#6b7280"];
 const COLORS_MARKET = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981"];
+
+const performanceData = [
+  { period: "24.09", revenue: 79.1, profit: 9.18, type: "actual" },
+  { period: "24.12", revenue: 70.2, profit: 6.5, type: "estimate" },
+  { period: "25.03", revenue: 72.5, profit: 7.2, type: "estimate" },
+  { period: "25.06", revenue: 75.1, profit: 8.5, type: "estimate" },
+  { period: "25.09", revenue: 81.2, profit: 11.2, type: "estimate" },
+];
 
 const salesData = [
   { name: "DX(가전, 스마트폰 등)", value: 59.69, color: "#3b82f6" },
@@ -157,6 +165,8 @@ export default function StockDetailPage() {
       </div>
 
       <main className="px-4 py-6 space-y-8">
+        {activeTab === "기업소개" && (
+          <>
         {/* Company Info */}
         <section>
           <h3 className="text-lg font-bold text-gray-200 mb-4">기업 소개</h3>
@@ -319,7 +329,122 @@ export default function StockDetailPage() {
              ))}
            </div>
         </section>
+          </>
+        )}
 
+        {activeTab === "실적" && (
+          <div className="space-y-8">
+            {/* Revenue Chart */}
+            <section>
+              <div className="flex justify-between items-start mb-6">
+                 <h3 className="text-lg font-bold text-gray-200">매출액</h3>
+                 <div className="flex gap-2">
+                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                     연결 <ChevronDown className="w-3 h-3" />
+                   </Button>
+                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                     분기 <ChevronDown className="w-3 h-3" />
+                   </Button>
+                 </div>
+              </div>
+
+              <div className="h-[200px] w-full">
+                 <ResponsiveContainer width="100%" height="100%">
+                   <BarChart data={performanceData}>
+                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
+                     <XAxis 
+                       dataKey="period" 
+                       tick={{fontSize: 12, fill: '#6b7280'}} 
+                       axisLine={false}
+                       tickLine={false}
+                       dy={10}
+                     />
+                     <Tooltip 
+                       cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                       contentStyle={{backgroundColor: '#1e232b', borderColor: '#333', color: '#fff'}}
+                     />
+                     <Bar 
+                        dataKey="revenue" 
+                        fill="#3b82f6" 
+                        radius={[4, 4, 0, 0]} 
+                        barSize={20}
+                     >
+                       {performanceData.map((entry, index) => (
+                         <Cell key={`cell-${index}`} fill={entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6'} />
+                       ))}
+                     </Bar>
+                   </BarChart>
+                 </ResponsiveContainer>
+              </div>
+              
+              <div className="flex justify-center gap-4 mt-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6]" />
+                  <span className="text-gray-400">발표치</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6] opacity-50" />
+                  <span className="text-gray-400">추정치</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Operating Profit Chart */}
+            <section className="pt-8 border-t border-white/5">
+              <div className="flex justify-between items-start mb-6">
+                 <h3 className="text-lg font-bold text-gray-200">영업이익</h3>
+                 <div className="flex gap-2">
+                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                     연결 <ChevronDown className="w-3 h-3" />
+                   </Button>
+                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                     분기 <ChevronDown className="w-3 h-3" />
+                   </Button>
+                 </div>
+              </div>
+
+              <div className="h-[200px] w-full">
+                 <ResponsiveContainer width="100%" height="100%">
+                   <BarChart data={performanceData}>
+                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
+                     <XAxis 
+                       dataKey="period" 
+                       tick={{fontSize: 12, fill: '#6b7280'}} 
+                       axisLine={false}
+                       tickLine={false}
+                       dy={10}
+                     />
+                     <Tooltip 
+                       cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                       contentStyle={{backgroundColor: '#1e232b', borderColor: '#333', color: '#fff'}}
+                     />
+                     <Bar 
+                        dataKey="profit" 
+                        fill="#3b82f6" 
+                        radius={[4, 4, 0, 0]} 
+                        barSize={20}
+                     >
+                        {performanceData.map((entry, index) => (
+                         <Cell key={`cell-${index}`} fill={entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6'} />
+                       ))}
+                     </Bar>
+                   </BarChart>
+                 </ResponsiveContainer>
+              </div>
+
+              <div className="flex justify-center gap-4 mt-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6]" />
+                  <span className="text-gray-400">발표치</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6] opacity-50" />
+                  <span className="text-gray-400">추정치</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
       </main>
     </div>
   );
