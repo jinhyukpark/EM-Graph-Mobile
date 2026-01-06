@@ -154,16 +154,45 @@ export default function MomentumDetailPage() {
             </div>
             
             <div className="flex flex-col items-end">
-              <div className="text-xs font-bold text-gray-500 mb-0.5">AI 점수</div>
-              <div className="text-3xl font-black text-[#ff3b30] tracking-tighter">10.00</div>
+              <div className="flex bg-gray-100 rounded-lg p-0.5">
+                {["1일", "1주", "1월", "1년"].map((period) => (
+                  <button 
+                    key={period}
+                    className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                      period === "1주" 
+                        ? "bg-white text-gray-900 shadow-sm" 
+                        : "text-gray-400 hover:text-gray-600"
+                    }`}
+                  >
+                    {period}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           
-          <Link href={`/stock/${code}`}>
-             <Button variant="outline" className="w-full justify-center text-gray-600 border-gray-300 hover:bg-gray-50 h-9 text-sm">
-               종목상세보기
-             </Button>
-          </Link>
+          <div className="mt-6 mb-2">
+            <h3 className="text-sm font-bold text-gray-900 mb-3">AI 점수</h3>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { label: "1주", score: "10.00", high: "14.738", low: "13.427" },
+                { label: "2주", score: "10.00", high: "14.738", low: "13.427" },
+                { label: "4주", score: "10.00", high: "14.738", low: "13.427" },
+                { label: "6주", score: "10.00", high: "14.738", low: "13.427" },
+              ].map((item, i) => (
+                <div key={i} className="text-left">
+                  <div className="text-xs text-gray-500 mb-1">{item.label}</div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-2xl font-bold text-[#ff3b30] leading-none">{item.score}</span>
+                    <div className="text-[9px] text-gray-400 leading-tight mb-0.5">
+                      <div>최고: {item.high}</div>
+                      <div>최저: {item.low}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
           
           {/* Summary Section */}
           <div className="mt-4 bg-gray-50 p-4 rounded-lg border border-gray-100">
