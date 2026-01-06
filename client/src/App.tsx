@@ -36,10 +36,12 @@ function Router() {
 
 function App() {
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground pb-20">
-      <Router />
-      <MobileNav />
-      <Toaster />
+    <div className="min-h-screen w-full flex justify-center bg-[#09090b]">
+      <div className="w-full max-w-md min-h-screen bg-background font-sans text-foreground pb-20 relative shadow-2xl border-x border-white/5">
+        <Router />
+        <MobileNav />
+        <Toaster />
+      </div>
     </div>
   );
 }
