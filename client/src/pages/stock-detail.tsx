@@ -4,7 +4,7 @@ import { ChevronLeft, Star, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from "recharts";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -192,6 +192,21 @@ const financialData = {
 };
 
 const financialDates = ["2024년 09월", "2024년 06월", "2024년 03월", "2023년 12월", "2023년 09월"];
+
+
+const valuationData = [
+  { period: "24년 12월", per: 47.07, pbr: 1.38, psr: 6.57 },
+  { period: "25년 03월", per: 48.50, pbr: 1.42, psr: 6.80 },
+  { period: "25년 06월", per: 82.10, pbr: 1.55, psr: 7.20 },
+  { period: "25년 09월", per: 45.30, pbr: 1.35, psr: 6.40 },
+];
+
+const stabilityData = [
+  { period: "24년 09월", currentRatio: 251.37, debtRatio: 26.36 },
+  { period: "24년 12월", currentRatio: 245.20, debtRatio: 27.50 },
+  { period: "25년 03월", currentRatio: 248.10, debtRatio: 26.80 },
+  { period: "25년 06월", currentRatio: 252.50, debtRatio: 25.90 },
+];
 
 import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
@@ -1184,6 +1199,157 @@ export default function StockDetailPage() {
                        </div>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {activeTab === "투자지표" && (
+          <div className="space-y-6">
+            {/* AI Investment Indicators Summary */}
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#151921] rounded-xl border border-white/10 p-5 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 blur-3xl rounded-full pointer-events-none -mr-10 -mt-10" />
+               
+               <div className="flex items-start gap-3 relative z-10">
+                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/20">
+                   <Star className="w-4 h-4 text-white fill-white" />
+                 </div>
+                 <div className="flex-1">
+                   <div className="flex items-center gap-2 mb-2">
+                     <h4 className="text-sm font-bold text-white">AI 투자지표 분석</h4>
+                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-purple-500/30 text-purple-400 bg-purple-500/10">PREMIUM</Badge>
+                   </div>
+                   <p className="text-xs text-gray-300 leading-relaxed">
+                     현재 주가수익비율(PER)은 <span className="text-[#ff3b30] font-bold">47.07배</span>로 동종 업계 평균 대비 다소 높은 수준이나, 
+                     향후 이익 성장성을 감안할 때 정당화될 수 있는 구간입니다. 유동비율은 <span className="text-blue-400 font-bold">251.37%</span>로 
+                     단기 채무 지급 능력이 매우 우수하며, 부채비율 또한 26.36%로 재무적 안정성이 탁월합니다.
+                   </p>
+                   <div className="mt-3 flex gap-2">
+                      <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">밸류에이션 <span className="text-[#ff3b30]">고평가</span></div>
+                      <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">재무건전성 <span className="text-blue-400">매우 우수</span></div>
+                   </div>
+                 </div>
+               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Valuation Chart */}
+              <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-sm font-bold text-gray-200">가치성</h3>
+                  <div className="flex gap-2">
+                    <span className="text-[10px] text-gray-400 cursor-pointer hover:text-white">연결</span>
+                    <span className="text-[10px] text-white font-bold cursor-pointer">분기</span>
+                  </div>
+                </div>
+                
+                <div className="h-[200px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={valuationData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
+                      <XAxis 
+                        dataKey="period" 
+                        tick={{ fill: '#6b7280', fontSize: 10 }} 
+                        axisLine={false}
+                        tickLine={false}
+                        dy={10}
+                      />
+                      <YAxis 
+                        tick={{ fill: '#6b7280', fontSize: 10 }} 
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={(value) => `${value}%`}
+                      />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', fontSize: '12px' }}
+                        itemStyle={{ color: '#e5e7eb' }}
+                      />
+                      <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
+                      <Line type="monotone" dataKey="per" name="PER" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", strokeWidth: 2, stroke: "#1e232b" }} activeDot={{ r: 6 }} />
+                      <Line type="monotone" dataKey="pbr" name="PBR" stroke="#00E5BC" strokeWidth={2} dot={{ r: 4, fill: "#00E5BC", strokeWidth: 2, stroke: "#1e232b" }} activeDot={{ r: 6 }} />
+                      <Line type="monotone" dataKey="psr" name="PSR" stroke="#a855f7" strokeWidth={2} dot={{ r: 4, fill: "#a855f7", strokeWidth: 2, stroke: "#1e232b" }} activeDot={{ r: 6 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/5">
+                   <div>
+                     <div className="flex items-center gap-1.5 mb-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                       <span className="text-[10px] text-gray-400">PER</span>
+                     </div>
+                     <div className="text-xs font-bold text-white">47.07배</div>
+                   </div>
+                   <div>
+                     <div className="flex items-center gap-1.5 mb-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-[#00E5BC]"></div>
+                       <span className="text-[10px] text-gray-400">PBR</span>
+                     </div>
+                     <div className="text-xs font-bold text-white">1.38배</div>
+                   </div>
+                   <div>
+                     <div className="flex items-center gap-1.5 mb-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+                       <span className="text-[10px] text-gray-400">PSR</span>
+                     </div>
+                     <div className="text-xs font-bold text-white">6.57배</div>
+                   </div>
+                </div>
+              </div>
+
+              {/* Stability Chart */}
+              <div className="bg-[#1e232b] rounded-xl p-5 border border-white/5">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-sm font-bold text-gray-200">안정성</h3>
+                  <div className="flex gap-2">
+                    <span className="text-[10px] text-gray-400 cursor-pointer hover:text-white">연결</span>
+                    <span className="text-[10px] text-white font-bold cursor-pointer">분기</span>
+                  </div>
+                </div>
+                
+                <div className="h-[200px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={stabilityData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
+                      <XAxis 
+                        dataKey="period" 
+                        tick={{ fill: '#6b7280', fontSize: 10 }} 
+                        axisLine={false}
+                        tickLine={false}
+                        dy={10}
+                      />
+                      <YAxis 
+                        tick={{ fill: '#6b7280', fontSize: 10 }} 
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={(value) => `${value}%`}
+                      />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', fontSize: '12px' }}
+                        itemStyle={{ color: '#e5e7eb' }}
+                      />
+                      <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
+                      <Line type="monotone" dataKey="currentRatio" name="유동비율" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: "#3b82f6", strokeWidth: 2, stroke: "#1e232b" }} activeDot={{ r: 6 }} />
+                      <Line type="monotone" dataKey="debtRatio" name="부채비율" stroke="#00E5BC" strokeWidth={2} dot={{ r: 4, fill: "#00E5BC", strokeWidth: 2, stroke: "#1e232b" }} activeDot={{ r: 6 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-white/5">
+                   <div>
+                     <div className="flex items-center gap-1.5 mb-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                       <span className="text-[10px] text-gray-400">유동비율</span>
+                     </div>
+                     <div className="text-xs font-bold text-white">251.37%</div>
+                   </div>
+                   <div>
+                     <div className="flex items-center gap-1.5 mb-1">
+                       <div className="w-1.5 h-1.5 rounded-full bg-[#00E5BC]"></div>
+                       <span className="text-[10px] text-gray-400">부채비율</span>
+                     </div>
+                     <div className="text-xs font-bold text-white">26.36%</div>
+                   </div>
                 </div>
               </div>
             </div>
