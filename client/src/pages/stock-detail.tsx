@@ -333,19 +333,57 @@ export default function StockDetailPage() {
         )}
 
         {activeTab === "실적" && (
-          <div className="space-y-8">
+          <div className="space-y-6">
+            {/* Global Controls */}
+            <div className="flex justify-end gap-2 mb-2">
+              <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                연결 <ChevronDown className="w-3 h-3" />
+              </Button>
+              <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
+                분기 <ChevronDown className="w-3 h-3" />
+              </Button>
+            </div>
+
+            {/* Summary Card */}
+            <div className="bg-[#1e232b] rounded-xl p-6 border border-white/5 text-center">
+               <h3 className="text-xl font-bold text-white mb-6">2024</h3>
+               <div className="grid grid-cols-3 gap-2">
+                 {/* Revenue */}
+                 <div className="flex flex-col items-center">
+                   <div className="flex items-center gap-1.5 mb-2">
+                     <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                     <span className="text-xs text-gray-400">매출액</span>
+                   </div>
+                   <div className="text-lg font-bold text-white mb-1">2,661억</div>
+                   <div className="text-xs text-blue-400 font-medium">YoY -4.82%</div>
+                 </div>
+
+                 {/* Operating Profit */}
+                 <div className="flex flex-col items-center border-x border-white/5">
+                   <div className="flex items-center gap-1.5 mb-2">
+                     <div className="w-2 h-2 rounded-full bg-[#ff3b30]"></div>
+                     <span className="text-xs text-gray-400">영업이익</span>
+                   </div>
+                   <div className="text-lg font-bold text-white mb-1">74.3억</div>
+                   <div className="text-xs text-blue-400 font-medium">YoY -77.48%</div>
+                 </div>
+
+                 {/* Net Profit */}
+                 <div className="flex flex-col items-center">
+                   <div className="flex items-center gap-1.5 mb-2">
+                     <div className="w-2 h-2 rounded-full bg-[#f97316]"></div>
+                     <span className="text-xs text-gray-400">순이익(지배)</span>
+                   </div>
+                   <div className="text-lg font-bold text-white mb-1">97.2억</div>
+                   <div className="text-xs text-blue-400 font-medium">YoY -80.10%</div>
+                 </div>
+               </div>
+            </div>
+
             {/* Revenue Chart */}
-            <section>
+            <section className="pt-4">
               <div className="flex justify-between items-start mb-6">
                  <h3 className="text-lg font-bold text-gray-200">매출액</h3>
-                 <div className="flex gap-2">
-                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                     연결 <ChevronDown className="w-3 h-3" />
-                   </Button>
-                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                     분기 <ChevronDown className="w-3 h-3" />
-                   </Button>
-                 </div>
               </div>
 
               <div className="h-[200px] w-full">
@@ -393,14 +431,6 @@ export default function StockDetailPage() {
             <section className="pt-8 border-t border-white/5">
               <div className="flex justify-between items-start mb-6">
                  <h3 className="text-lg font-bold text-gray-200">영업이익</h3>
-                 <div className="flex gap-2">
-                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                     연결 <ChevronDown className="w-3 h-3" />
-                   </Button>
-                   <Button variant="outline" size="sm" className="h-8 text-xs border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 gap-1 rounded-full px-3">
-                     분기 <ChevronDown className="w-3 h-3" />
-                   </Button>
-                 </div>
               </div>
 
               <div className="h-[200px] w-full">
