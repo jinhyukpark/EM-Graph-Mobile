@@ -12,15 +12,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { Badge } from "@/components/ui/badge";
+
 const COLORS = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981", "#6b7280"];
 const COLORS_MARKET = ["#3b82f6", "#00E5BC", "#eab308", "#f97316", "#10b981"];
 
+// Update mock data with more detailed information
 const performanceData = [
-  { period: "24.09", revenue: 79.1, profit: 9.18, type: "actual" },
-  { period: "24.12", revenue: 70.2, profit: 6.5, type: "estimate" },
-  { period: "25.03", revenue: 72.5, profit: 7.2, type: "estimate" },
-  { period: "25.06", revenue: 75.1, profit: 8.5, type: "estimate" },
-  { period: "25.09", revenue: 81.2, profit: 11.2, type: "estimate" },
+  { period: "24.09", revenue: 79.1, profit: 9.18, netProfit: 10.1, revenueYoY: 17.2, profitYoY: 277.4, netProfitYoY: 72.8, type: "actual" },
+  { period: "24.12", revenue: 70.2, profit: 6.5, netProfit: 7.5, revenueYoY: -4.8, profitYoY: -77.5, netProfitYoY: -80.1, type: "estimate" },
+  { period: "25.03", revenue: 72.5, profit: 7.2, netProfit: 8.1, revenueYoY: 12.5, profitYoY: 45.2, netProfitYoY: 15.3, type: "estimate" },
+  { period: "25.06", revenue: 75.1, profit: 8.5, netProfit: 9.2, revenueYoY: 5.1, profitYoY: 12.8, netProfitYoY: 8.4, type: "estimate" },
+  { period: "25.09", revenue: 81.2, profit: 11.2, netProfit: 12.5, revenueYoY: 2.6, profitYoY: 22.0, netProfitYoY: 23.7, type: "estimate" },
 ];
 
 const salesData = [
@@ -64,6 +67,15 @@ export default function StockDetailPage() {
   const [activeTab, setActiveTab] = useState("기업소개");
   const [reportType, setReportType] = useState("연결"); // 연결 vs 별도
   const [periodType, setPeriodType] = useState("분기"); // 분기 vs 연간
+  
+  // Default to the second item (24.12) as per the design requirement to show 2024 data initially
+  const [selectedPeriod, setSelectedPeriod] = useState(performanceData[1]);
+
+  const handleBarClick = (data: any) => {
+    if (data && data.activePayload && data.activePayload.length > 0) {
+       setSelectedPeriod(data.activePayload[0].payload);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background pb-20 text-white">
@@ -379,7 +391,15 @@ export default function StockDetailPage() {
 
             {/* Summary Card */}
             <div className="bg-[#1e232b] rounded-xl p-6 border border-white/5 text-center">
-               <h3 className="text-xl font-bold text-white mb-6">2024</h3>
+               <div className="flex items-center justify-center gap-2 mb-6">
+                 <h3 className="text-xl font-bold text-white">
+                   {selectedPeriod.period.startsWith("2") ? `20${selectedPeriod.period.split('.')[0]}` : selectedPeriod.period}
+                 </h3>
+                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-blue-500/30 text-blue-400 bg-blue-500/10 rounded-sm">
+                    {periodType}
+                 </Badge>
+               </div>
+
                <div className="grid grid-cols-3 gap-2">
                  {/* Revenue */}
                  <div className="flex flex-col items-center">
@@ -387,8 +407,13 @@ export default function StockDetailPage() {
                      <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                      <span className="text-xs text-gray-400">매출액</span>
                    </div>
-                   <div className="text-lg font-bold text-white mb-1">2,661억</div>
-                   <div className="text-xs text-blue-400 font-medium">YoY -4.82%</div>
+                   <div className="text-lg font-bold text-white mb-1">
+                     {selectedPeriod.revenue >= 10 ? Math.floor(selectedPeriod.revenue * 10).toLocaleString() : (selectedPeriod.revenue * 10).toFixed(1)}억
+                     {selectedPeriod.revenue >= 100 && <span className="text-xs ml-0.5 opacity-0"></span>}
+                   </div>
+                   <div className={`text-xs font-medium ${selectedPeriod.revenueYoY >= 0 ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
+                     YoY {selectedPeriod.revenueYoY > 0 ? '+' : ''}{selectedPeriod.revenueYoY}%
+                   </div>
                  </div>
 
                  {/* Operating Profit */}
@@ -397,8 +422,12 @@ export default function StockDetailPage() {
                      <div className="w-2 h-2 rounded-full bg-[#ff3b30]"></div>
                      <span className="text-xs text-gray-400">영업이익</span>
                    </div>
-                   <div className="text-lg font-bold text-white mb-1">74.3억</div>
-                   <div className="text-xs text-blue-400 font-medium">YoY -77.48%</div>
+                   <div className="text-lg font-bold text-white mb-1">
+                     {(selectedPeriod.profit * 10).toFixed(1)}억
+                   </div>
+                   <div className={`text-xs font-medium ${selectedPeriod.profitYoY >= 0 ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
+                     YoY {selectedPeriod.profitYoY > 0 ? '+' : ''}{selectedPeriod.profitYoY}%
+                   </div>
                  </div>
 
                  {/* Net Profit */}
@@ -407,8 +436,12 @@ export default function StockDetailPage() {
                      <div className="w-2 h-2 rounded-full bg-[#f97316]"></div>
                      <span className="text-xs text-gray-400">순이익(지배)</span>
                    </div>
-                   <div className="text-lg font-bold text-white mb-1">97.2억</div>
-                   <div className="text-xs text-blue-400 font-medium">YoY -80.10%</div>
+                   <div className="text-lg font-bold text-white mb-1">
+                     {(selectedPeriod.netProfit * 10).toFixed(1)}억
+                   </div>
+                   <div className={`text-xs font-medium ${selectedPeriod.netProfitYoY >= 0 ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
+                     YoY {selectedPeriod.netProfitYoY > 0 ? '+' : ''}{selectedPeriod.netProfitYoY}%
+                   </div>
                  </div>
                </div>
             </div>
@@ -421,7 +454,7 @@ export default function StockDetailPage() {
 
               <div className="h-[200px] w-full">
                  <ResponsiveContainer width="100%" height="100%">
-                   <BarChart data={performanceData}>
+                   <BarChart data={performanceData} onClick={handleBarClick}>
                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
                      <XAxis 
                        dataKey="period" 
@@ -436,12 +469,17 @@ export default function StockDetailPage() {
                      />
                      <Bar 
                         dataKey="revenue" 
-                        fill="#3b82f6" 
                         radius={[4, 4, 0, 0]} 
                         barSize={20}
+                        cursor="pointer"
                      >
                        {performanceData.map((entry, index) => (
-                         <Cell key={`cell-${index}`} fill={entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6'} />
+                         <Cell 
+                           key={`cell-${index}`} 
+                           fill={selectedPeriod.period === entry.period ? '#60a5fa' : (entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6')} 
+                           stroke={selectedPeriod.period === entry.period ? '#fff' : 'none'}
+                           strokeWidth={selectedPeriod.period === entry.period ? 2 : 0}
+                         />
                        ))}
                      </Bar>
                    </BarChart>
@@ -468,7 +506,7 @@ export default function StockDetailPage() {
 
               <div className="h-[200px] w-full">
                  <ResponsiveContainer width="100%" height="100%">
-                   <BarChart data={performanceData}>
+                   <BarChart data={performanceData} onClick={handleBarClick}>
                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
                      <XAxis 
                        dataKey="period" 
@@ -483,12 +521,17 @@ export default function StockDetailPage() {
                      />
                      <Bar 
                         dataKey="profit" 
-                        fill="#3b82f6" 
                         radius={[4, 4, 0, 0]} 
                         barSize={20}
+                        cursor="pointer"
                      >
                         {performanceData.map((entry, index) => (
-                         <Cell key={`cell-${index}`} fill={entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6'} />
+                         <Cell 
+                           key={`cell-${index}`} 
+                           fill={selectedPeriod.period === entry.period ? '#60a5fa' : (entry.type === 'estimate' ? 'rgba(59, 130, 246, 0.5)' : '#3b82f6')} 
+                           stroke={selectedPeriod.period === entry.period ? '#fff' : 'none'}
+                           strokeWidth={selectedPeriod.period === entry.period ? 2 : 0}
+                         />
                        ))}
                      </Bar>
                    </BarChart>
