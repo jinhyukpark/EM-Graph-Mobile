@@ -46,6 +46,36 @@ const marketShareData = [
   { name: "스마트폰", value: 21.8, color: "#10b981" },
 ];
 
+const newsItems = [
+  { title: "<< AI 정밀 분석으로 포착 된 \"급등주\" 신청시 즉시 문자 발송 >>", date: "2026-01-06", timeAgo: "4시간 전", source: "인포스탁" },
+  { title: "‘방중’ 재계총수들 잇달아 귀국…한중 경제협력 기대", date: "2026-01-06", timeAgo: "4시간 전", source: "이투데이" },
+  { title: "삼성전자 '갤럭시 북6 시리즈' 공개", date: "2026-01-06", timeAgo: "5시간 전", source: "데이터투자" },
+  { title: "삼성전자, CES 2026서 '라이즈'와 일상 속 AI 경험 확산", date: "2026-01-06", timeAgo: "5시간 전", source: "데이터투자" },
+  { title: "06일, 외국인 거래소에서 삼성전자(+0.58%), 현대차(+1.15%) 등 순매도", date: "2026-01-06", timeAgo: "7시간 전", source: "한경뉴스" },
+  { title: "“아직도 의심해?” 95만닉스·18만전자 장밋빛 전망…함께 웃은 종목은", date: "2026-01-06", timeAgo: "7시간 전", source: "매일경제" },
+];
+
+const newsVolumeData = {
+  "일": [
+    { label: "09:00", volume: 12 }, { label: "10:00", volume: 18 }, { label: "11:00", volume: 15 },
+    { label: "12:00", volume: 8 }, { label: "13:00", volume: 22 }, { label: "14:00", volume: 28 },
+    { label: "15:00", volume: 20 }, { label: "16:00", volume: 14 }
+  ],
+  "주": [
+    { label: "월", volume: 45 }, { label: "화", volume: 52 }, { label: "수", volume: 38 },
+    { label: "목", volume: 65 }, { label: "금", volume: 48 }
+  ],
+  "월": [
+    { label: "1주", volume: 150 }, { label: "2주", volume: 180 }, { label: "3주", volume: 160 }, { label: "4주", volume: 210 }
+  ],
+  "년": [
+    { label: "1월", volume: 450 }, { label: "2월", volume: 520 }, { label: "3월", volume: 480 },
+    { label: "4월", volume: 600 }, { label: "5월", volume: 550 }, { label: "6월", volume: 620 },
+    { label: "7월", volume: 580 }, { label: "8월", volume: 650 }, { label: "9월", volume: 700 },
+    { label: "10월", volume: 750 }, { label: "11월", volume: 800 }, { label: "12월", volume: 850 }
+  ]
+};
+
 import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
 export default function StockDetailPage() {
@@ -70,6 +100,7 @@ export default function StockDetailPage() {
   
   // Default to the second item (24.12) as per the design requirement to show 2024 data initially
   const [selectedPeriod, setSelectedPeriod] = useState(performanceData[1]);
+  const [newsChartPeriod, setNewsChartPeriod] = useState<"일" | "주" | "월" | "년">("일");
 
   const handleBarClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
@@ -533,6 +564,78 @@ export default function StockDetailPage() {
                   <div className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6] opacity-50" />
                   <span className="text-gray-400">추정치</span>
                 </div>
+              </div>
+            </section>
+          </div>
+        )}
+        {activeTab === "뉴스" && (
+          <div className="space-y-6">
+            {/* News Volume Chart */}
+            <section>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-bold text-gray-200">뉴스 발생 추이</h3>
+                <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                  {(["일", "주", "월", "년"] as const).map((period) => (
+                    <button 
+                      key={period}
+                      onClick={() => setNewsChartPeriod(period)}
+                      className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
+                        newsChartPeriod === period 
+                          ? "bg-white text-gray-900 shadow-sm" 
+                          : "text-gray-400 hover:text-gray-200"
+                      }`}
+                    >
+                      {period}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="h-[200px] w-full bg-[#1e232b] rounded-xl p-4 border border-white/5">
+                 <ResponsiveContainer width="100%" height="100%">
+                   <BarChart data={newsVolumeData[newsChartPeriod]}>
+                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
+                     <XAxis 
+                       dataKey="label" 
+                       tick={{fontSize: 12, fill: '#6b7280'}} 
+                       axisLine={false}
+                       tickLine={false}
+                       dy={10}
+                     />
+                     <Tooltip 
+                       cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                       contentStyle={{backgroundColor: '#1e232b', borderColor: '#333', color: '#fff'}}
+                     />
+                     <Bar 
+                        dataKey="volume" 
+                        fill="#3b82f6" 
+                        radius={[4, 4, 0, 0]} 
+                        barSize={newsChartPeriod === "년" ? 10 : 20}
+                     />
+                   </BarChart>
+                 </ResponsiveContainer>
+              </div>
+            </section>
+
+            {/* News List */}
+            <section>
+              <h3 className="text-lg font-bold text-gray-200 mb-4">최신 뉴스</h3>
+              <div className="space-y-3">
+                {newsItems.map((news, index) => (
+                  <div key={index} className="bg-[#1e232b] rounded-xl p-4 border border-white/5 hover:bg-[#2a3038] transition-colors cursor-pointer">
+                    <h4 className="text-sm font-medium text-white mb-3 leading-snug line-clamp-2">
+                      {news.title}
+                    </h4>
+                    <div className="flex justify-between items-center text-xs text-gray-500">
+                      <span>{news.date}</span>
+                      <div className="flex items-center gap-1">
+                        <span>{news.timeAgo}</span>
+                        <span className="w-0.5 h-0.5 bg-gray-500 rounded-full"></span>
+                        <span>{news.source}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </section>
           </div>
