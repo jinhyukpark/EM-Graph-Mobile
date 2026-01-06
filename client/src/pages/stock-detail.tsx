@@ -1060,6 +1060,33 @@ export default function StockDetailPage() {
 
         {activeTab === "재무분석" && (
           <div className="space-y-6">
+            {/* AI Financial Analysis Summary */}
+            <div className="bg-gradient-to-br from-[#1e232b] to-[#151921] rounded-xl border border-white/10 p-5 relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-3xl rounded-full pointer-events-none -mr-10 -mt-10" />
+               
+               <div className="flex items-start gap-3 relative z-10">
+                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/20">
+                   <Star className="w-4 h-4 text-white fill-white" />
+                 </div>
+                 <div className="flex-1">
+                   <div className="flex items-center gap-2 mb-2">
+                     <h4 className="text-sm font-bold text-white">AI 재무 분석 요약</h4>
+                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-blue-500/30 text-blue-400 bg-blue-500/10">PREMIUM</Badge>
+                   </div>
+                   <p className="text-xs text-gray-300 leading-relaxed">
+                     삼성전자의 최근 분기 매출은 <span className="text-[#ff3b30] font-bold">17.2% 증가</span>하며 강력한 성장세를 보이고 있습니다. 
+                     특히 반도체 부문의 영업이익률 개선이 두드러지며, 현금흐름 또한 안정적입니다. 
+                     부채비율은 업계 평균 대비 건전한 수준을 유지하고 있어 재무적 리스크는 제한적으로 판단됩니다.
+                   </p>
+                   <div className="mt-3 flex gap-2">
+                      <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">매출성장성 <span className="text-[#ff3b30]">상위 5%</span></div>
+                      <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">수익성 <span className="text-[#ff3b30]">상위 12%</span></div>
+                      <div className="bg-white/5 px-2 py-1 rounded text-[10px] text-gray-400 border border-white/5">재무안정성 <span className="text-blue-400">적정</span></div>
+                   </div>
+                 </div>
+               </div>
+            </div>
+
             <div className="flex justify-between items-center">
                {/* Sub Tabs */}
                <div className="flex gap-4 border-b border-white/5 px-2">
