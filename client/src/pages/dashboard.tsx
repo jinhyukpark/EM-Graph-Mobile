@@ -170,15 +170,15 @@ const StockCard = ({
         </div>
 
         {aiScore && (
-          <div className="flex flex-col items-end gap-1">
-            <div className="text-[10px] text-gray-400">AI 점수</div>
-            <div className="text-2xl font-bold text-white font-mono flex items-baseline gap-1">
+          <div className="flex flex-col items-end gap-1 bg-black/40 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
+            <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
+            <div className="text-3xl font-bold text-white font-mono flex items-baseline gap-1 shadow-black drop-shadow-md">
                {aiScore}
-               <span className="text-xs text-gray-600 font-normal">/10</span>
+               <span className="text-sm text-gray-400 font-normal">/10</span>
             </div>
-            <div className="h-1.5 w-24 bg-[#252b36] rounded-full overflow-hidden mt-1">
+            <div className="h-2 w-28 bg-[#252b36] rounded-full overflow-hidden mt-2 border border-white/5">
               <div 
-                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full" 
+                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-[#ff3b30] rounded-full shadow-[0_0_10px_rgba(255,59,48,0.5)]" 
                 style={{ width: `${(aiScore / 10) * 100}%` }}
               />
             </div>
