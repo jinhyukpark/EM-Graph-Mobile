@@ -170,7 +170,7 @@ const StockCard = ({
         </div>
 
         {aiScore && (
-          <div className="flex flex-col items-end gap-1 bg-black/40 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
+          <div className="flex flex-col items-end gap-1 bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-white/10 shadow-lg relative z-20">
             <div className="text-[11px] text-gray-300 font-medium">AI 점수</div>
             <div className="text-3xl font-bold text-white font-mono flex items-baseline gap-1 shadow-black drop-shadow-md">
                {aiScore}
