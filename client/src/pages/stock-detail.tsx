@@ -863,7 +863,6 @@ export default function StockDetailPage() {
                    ))}
                 </div>
              </div>
-           </div>
         )}
       </main>
     </div>
