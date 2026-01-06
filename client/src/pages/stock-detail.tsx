@@ -129,6 +129,17 @@ const investorTrendsData = [
   { date: "12.15", individual: 7539547, foreigner: -6659078, institution: -1038292, other: 138920 },
 ];
 
+const investorVolumeData = {
+  "주": [
+    { label: "12월 1주", individual: 10762549, foreigner: 8792026, institution: 3028461 },
+    { label: "12월 2주", individual: -10762549, foreigner: -8792026, institution: 3028461 },
+    { label: "12월 3주", individual: 10762549, foreigner: -8792026, institution: 3028461 },
+    { label: "12월 4주", individual: -10762549, foreigner: 8792026, institution: -3028461 },
+    { label: "1월 1주", individual: 10762549, foreigner: 8792026, institution: 3028461 },
+    { label: "1월 2주", individual: 10762549, foreigner: -8792026, institution: 3028461 },
+  ]
+};
+
 import stockImage from '@assets/stock_images/samsung_logo_icon_bl_d5e3ad2b.jpg';
 
 export default function StockDetailPage() {
@@ -155,7 +166,7 @@ export default function StockDetailPage() {
   const [selectedPeriod, setSelectedPeriod] = useState(performanceData[1]);
   const [newsChartPeriod, setNewsChartPeriod] = useState<"일" | "주" | "월" | "년">("일");
   const [selectedNewsDate, setSelectedNewsDate] = useState<string | null>(null);
-  const [investorSubTab, setInvestorSubTab] = useState("투자자별"); // 투자자별 vs 기관별
+  const [investorChartPeriod, setInvestorChartPeriod] = useState<"주" | "월" | "년">("주");
 
   const handleBarClick = (data: any) => {
     if (data && data.activePayload && data.activePayload.length > 0) {
@@ -752,29 +763,78 @@ export default function StockDetailPage() {
                 ))}
              </div>
 
-             {/* Sub Tabs */}
-             <div>
-                <div className="flex gap-6 border-b border-white/5 px-2 mb-4">
-                  {["투자자별", "기관별"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setInvestorSubTab(tab)}
-                      className={`pb-3 text-sm font-medium transition-all relative ${
-                        investorSubTab === tab 
-                          ? "text-[#00E5BC]" 
-                          : "text-gray-500 hover:text-gray-300"
-                      }`}
-                    >
-                      {tab}
-                      {investorSubTab === tab && (
-                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00E5BC]" />
-                      )}
-                    </button>
-                  ))}
+             {/* Chart Section */}
+             <div className="bg-[#1e232b] rounded-xl p-4 border border-white/5">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-sm font-bold text-gray-200">기간별 거래량</h3>
+                  <div className="flex bg-[#151921] rounded-lg p-0.5 border border-white/5">
+                    {(["주", "월", "년"] as const).map((period) => (
+                      <button 
+                        key={period}
+                        onClick={() => setInvestorChartPeriod(period)}
+                        className={`px-3 py-1 text-[10px] font-medium rounded-md transition-all ${
+                          investorChartPeriod === period 
+                            ? "bg-white/10 text-white shadow-sm" 
+                            : "text-gray-500 hover:text-gray-300"
+                        }`}
+                      >
+                        {period}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Table Header */}
-                <div className="grid grid-cols-5 text-center text-xs text-gray-400 py-2 border-b border-white/5 bg-[#1e232b]">
+                <div className="h-[180px] w-full mb-6">
+                   <ResponsiveContainer width="100%" height="100%">
+                     <BarChart data={investorVolumeData["주"]}>
+                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
+                       <XAxis 
+                         dataKey="label" 
+                         tick={{fontSize: 11, fill: '#6b7280'}} 
+                         axisLine={false}
+                         tickLine={false}
+                         dy={10}
+                       />
+                       <Tooltip 
+                         cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                         contentStyle={{backgroundColor: '#1e232b', borderColor: '#333', color: '#fff'}}
+                         formatter={(value: number) => value.toLocaleString()}
+                       />
+                       <Bar dataKey="individual" fill="#3b82f6" radius={[2, 2, 0, 0]} name="개인" barSize={12} />
+                       <Bar dataKey="foreigner" fill="#f97316" radius={[2, 2, 0, 0]} name="외국인" barSize={12} />
+                       <Bar dataKey="institution" fill="#00E5BC" radius={[2, 2, 0, 0]} name="기관" barSize={12} />
+                     </BarChart>
+                   </ResponsiveContainer>
+                </div>
+
+                {/* Legend & Totals */}
+                <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                   <div>
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-gray-400">
+                        <div className="w-2 h-2 rounded-full bg-[#3b82f6]"></div>
+                        개인
+                      </div>
+                      <div className="font-medium text-white">10,762,549</div>
+                   </div>
+                   <div>
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-gray-400">
+                        <div className="w-2 h-2 rounded-full bg-[#f97316]"></div>
+                        외국인
+                      </div>
+                      <div className="font-medium text-white">-8,792,026</div>
+                   </div>
+                   <div>
+                      <div className="flex items-center justify-center gap-1.5 mb-1 text-gray-400">
+                        <div className="w-2 h-2 rounded-full bg-[#00E5BC]"></div>
+                        기관
+                      </div>
+                      <div className="font-medium text-white">-3,028,461</div>
+                   </div>
+                </div>
+             </div>
+
+             {/* Table Header */}
+             <div className="grid grid-cols-5 text-center text-xs text-gray-400 py-2 border-b border-white/5 bg-[#1e232b] rounded-t-lg mt-6">
                    <div>날짜</div>
                    <div>개인</div>
                    <div>외국인</div>
@@ -783,9 +843,9 @@ export default function StockDetailPage() {
                 </div>
 
                 {/* Table Body */}
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-white/5 border-x border-b border-white/5 rounded-b-lg">
                    {investorTrendsData.map((row, index) => (
-                     <div key={index} className="grid grid-cols-5 text-center py-3 text-xs hover:bg-white/5 transition-colors">
+                     <div key={index} className="grid grid-cols-5 text-center py-3 text-xs hover:bg-white/5 transition-colors bg-[#1e232b]">
                         <div className="text-gray-300 flex items-center justify-center">{row.date}</div>
                         <div className={row.individual > 0 ? "text-[#ff3b30]" : "text-blue-400"}>
                           {row.individual > 0 ? "+" : ""}{row.individual.toLocaleString()}
