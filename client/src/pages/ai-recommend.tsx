@@ -62,8 +62,9 @@ const AIRecommendCard = ({
              </span>
            </div>
          </div>
-         <div className="text-right">
-            <div className="text-4xl font-bold text-[#00E5BC] tracking-tighter">{score}</div>
+         <div className="text-right flex flex-col items-end">
+            <div className="text-5xl font-black text-[#00E5BC] tracking-tighter drop-shadow-[0_0_10px_rgba(0,229,188,0.3)]" style={{ fontFamily: 'var(--font-mono)' }}>{score}</div>
+            <div className="text-[10px] text-[#00E5BC]/80 font-bold -mt-1 mr-1">AI SCORE</div>
          </div>
        </div>
 
