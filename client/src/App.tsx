@@ -8,6 +8,7 @@ import MomentumDetailPage from "@/pages/momentum-detail";
 import StockDetailPage from "@/pages/stock-detail";
 
 import TrendPage from "@/pages/trend";
+import NotificationsPage from "@/pages/notifications";
 
 // Placeholder pages
 const PlaceholderPage = ({ title }: { title: string }) => (
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/momentum/:code" component={MomentumDetailPage} />
       <Route path="/stock/:code" component={StockDetailPage} />
       <Route path="/trends" component={TrendPage} />
+      <Route path="/notifications" component={NotificationsPage} />
       <Route path="/my-page">
         <PlaceholderPage title="마이페이지" />
       </Route>

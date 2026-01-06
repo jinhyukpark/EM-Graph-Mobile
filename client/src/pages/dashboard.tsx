@@ -396,10 +396,12 @@ export default function DashboardPage() {
             <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white">
               <Search className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white relative">
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-[#ff3b30] rounded-full border-2 border-[#151921]" />
-            </Button>
+            <Link href="/notifications">
+              <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full bg-gray-800 text-white relative cursor-pointer">
+                <Bell className="w-4 h-4" />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-[#ff3b30] rounded-full border-2 border-[#151921]" />
+              </Button>
+            </Link>
             <Avatar className="w-8 h-8 border border-white/10">
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
