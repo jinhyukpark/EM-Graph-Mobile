@@ -400,7 +400,7 @@ export default function StockDetailPage() {
                  </Badge>
                </div>
 
-               <div className="grid grid-cols-3 gap-2">
+               <div className="grid grid-cols-2 gap-2">
                  {/* Revenue */}
                  <div className="flex flex-col items-center">
                    <div className="flex items-center gap-1.5 mb-2">
@@ -417,7 +417,7 @@ export default function StockDetailPage() {
                  </div>
 
                  {/* Operating Profit */}
-                 <div className="flex flex-col items-center border-x border-white/5">
+                 <div className="flex flex-col items-center border-l border-white/5">
                    <div className="flex items-center gap-1.5 mb-2">
                      <div className="w-2 h-2 rounded-full bg-[#ff3b30]"></div>
                      <span className="text-xs text-gray-400">영업이익</span>
@@ -427,20 +427,6 @@ export default function StockDetailPage() {
                    </div>
                    <div className={`text-xs font-medium ${selectedPeriod.profitYoY >= 0 ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
                      YoY {selectedPeriod.profitYoY > 0 ? '+' : ''}{selectedPeriod.profitYoY}%
-                   </div>
-                 </div>
-
-                 {/* Net Profit */}
-                 <div className="flex flex-col items-center">
-                   <div className="flex items-center gap-1.5 mb-2">
-                     <div className="w-2 h-2 rounded-full bg-[#f97316]"></div>
-                     <span className="text-xs text-gray-400">순이익(지배)</span>
-                   </div>
-                   <div className="text-lg font-bold text-white mb-1">
-                     {(selectedPeriod.netProfit * 10).toFixed(1)}억
-                   </div>
-                   <div className={`text-xs font-medium ${selectedPeriod.netProfitYoY >= 0 ? 'text-[#ff3b30]' : 'text-blue-400'}`}>
-                     YoY {selectedPeriod.netProfitYoY > 0 ? '+' : ''}{selectedPeriod.netProfitYoY}%
                    </div>
                  </div>
                </div>
