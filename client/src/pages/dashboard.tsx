@@ -272,8 +272,8 @@ const FearGreedGauge = () => (
               체크포인트
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#1e232b] border-white/10 text-white max-w-sm rounded-3xl">
-            <DialogHeader className="mb-4">
+          <DialogContent className="bg-[#1e232b] border-white/10 text-white max-w-sm rounded-3xl pt-12">
+            <DialogHeader className="mb-2">
               <DialogTitle className="text-lg font-bold">공포&탐욕지수</DialogTitle>
             </DialogHeader>
             
