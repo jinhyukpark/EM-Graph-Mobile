@@ -115,8 +115,8 @@ export default function StockDetailPage() {
 
         {/* Bottom Row: Price & Buttons */}
         <div className="flex justify-between items-center">
-           <div className="flex items-baseline gap-2">
-             <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
+           <div className="flex items-baseline gap-2 whitespace-nowrap">
+             <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}<span className="text-2xl">원</span></span>
              <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
            </div>
            
