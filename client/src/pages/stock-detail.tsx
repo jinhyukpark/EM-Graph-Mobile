@@ -66,8 +66,8 @@ export default function StockDetailPage() {
       {/* Basic Info */}
       <div className="px-4 py-6">
         {/* Row 1: Logo & Chart */}
-        <div className="flex items-start justify-between mb-2 h-16 relative">
-          <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white flex items-center justify-center">
+        <div className="flex items-start justify-between mb-2">
+          <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white flex items-center justify-center shrink-0">
             <img 
               src={stockImage}
               alt="SAMSUNG" 
@@ -75,33 +75,51 @@ export default function StockDetailPage() {
             />
           </div>
           
-          {/* Sparkline Chart - Right Aligned */}
-          <div className="h-16 w-32 absolute top-0 right-0">
-            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
-              <defs>
-                <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#ff3b30" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path 
-                d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
-                fill="none" 
-                stroke="#ff3b30" 
-                strokeWidth="2" 
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path 
-                d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
-                fill="url(#sparklineGradient)" 
-                stroke="none" 
-              />
-            </svg>
+          {/* Sparkline Chart & Period Buttons - Right Aligned */}
+          <div className="flex flex-col items-end">
+            <div className="h-24 w-48 mb-2">
+              <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+                <defs>
+                  <linearGradient id="sparklineGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ff3b30" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#ff3b30" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path 
+                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5" 
+                  fill="none" 
+                  stroke="#ff3b30" 
+                  strokeWidth="2" 
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path 
+                  d="M0,35 L5,34 L10,36 L15,32 L20,33 L25,28 L30,30 L35,25 L40,28 L45,20 L50,22 L55,15 L60,18 L65,10 L70,12 L75,8 L80,10 L85,5 L90,8 L95,2 L100,5 V40 H0 Z" 
+                  fill="url(#sparklineGradient)" 
+                  stroke="none" 
+                />
+              </svg>
+            </div>
+            
+            {/* Period Buttons */}
+            <div className="flex bg-[#1e232b] rounded-lg p-0.5 border border-white/5">
+                {["1일", "1주", "1월", "1년"].map((period) => (
+                  <button 
+                    key={period}
+                    className={`px-2 py-0.5 text-[10px] font-medium rounded-md transition-all ${
+                      period === "1주" 
+                        ? "bg-white text-gray-900 shadow-sm" 
+                        : "text-gray-400 hover:text-gray-200"
+                    }`}
+                  >
+                    {period}
+                  </button>
+                ))}
+            </div>
           </div>
         </div>
 
-        <div className="mb-4 mt-4">
+        <div className="mb-4 mt-2">
              <div className="flex items-center gap-2 mb-1">
                <h2 className="text-2xl font-bold text-white">{stockInfo.name}</h2>
                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
@@ -110,7 +128,7 @@ export default function StockDetailPage() {
         </div>
         
         <div className="flex items-baseline gap-2">
-           <span className="text-4xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
+           <span className="text-3xl font-bold text-white tracking-tight">{stockInfo.price}원</span>
            <span className="text-lg font-bold text-[#ff3b30]">▲ {stockInfo.diff} +{stockInfo.percent}%</span>
         </div>
       </div>
