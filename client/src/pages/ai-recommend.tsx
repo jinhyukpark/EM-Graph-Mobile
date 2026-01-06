@@ -64,9 +64,57 @@ const MomentumCard = ({
   }
 }) => {
   const isPositive = !change.startsWith("-");
-  const chartPath = isPositive 
-    ? "M0,35 C20,30 40,32 60,15 C80,5 100,10" 
-    : "M0,5 C20,10 40,8 60,25 C80,35 100,30";
+  
+  // Generate a realistic jagged sparkline path
+  // Using a seeded random approach based on code to keep it consistent but "random"
+  const generateSparkline = (code: string, isUp: boolean) => {
+    // Simple seeded random
+    let seed = code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const random = () => {
+      const x = Math.sin(seed++) * 10000;
+      return x - Math.floor(x);
+    };
+
+    const width = 100;
+    const height = 40;
+    const points = 20; // Number of points for jaggedness
+    const step = width / (points - 1);
+    
+    let path = `M0,${isUp ? height : 0}`;
+    let currentY = isUp ? height : 0;
+    
+    // Generate intermediate points
+    for (let i = 0; i < points; i++) {
+      const x = i * step;
+      // Trend factor: if isUp, generally decrease Y (move up), else increase Y (move down)
+      // Add randomness
+      const trend = isUp ? -1 : 1;
+      const progress = i / points;
+      
+      // Base trend line
+      let targetY = isUp 
+        ? height - (height * 0.8 * progress) // End around 20% from top
+        : (height * 0.8 * progress);         // End around 20% from bottom
+        
+      // Add noise
+      const noise = (random() - 0.5) * 15;
+      currentY = targetY + noise;
+      
+      // Clamp to bounds
+      currentY = Math.max(5, Math.min(height - 5, currentY));
+      
+      if (i === 0) {
+        path = `M${x},${currentY}`;
+      } else {
+        // Use L for jagged lines instead of C/Q for smooth curves
+        path += ` L${x},${currentY}`;
+      }
+    }
+    
+    return path;
+  };
+
+  const chartPath = generateSparkline(code, isPositive);
 
   return (
     <Link href={`/momentum/${code}`}>
