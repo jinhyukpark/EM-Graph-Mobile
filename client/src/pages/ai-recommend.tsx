@@ -161,7 +161,7 @@ const MomentumCard = ({
           <div className="w-[40%] flex flex-col items-end">
              <div className="text-[10px] text-gray-400 mb-1 flex justify-between w-full">
                 <span>AI 점수</span>
-                <span className="text-xs font-bold text-white drop-shadow-md">{score}</span>
+                <span className="text-base font-bold text-white drop-shadow-md">{score}<span className="text-[10px] text-gray-500 font-normal ml-0.5">/10</span></span>
              </div>
              <div className="w-full h-1.5 bg-[#252b36] rounded-full overflow-hidden relative">
                <div 
@@ -402,7 +402,7 @@ const StrongSignalCard = ({
             <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-[#ff3b30]"></span>
             <span className="text-gray-300">AI 점수</span>
           </div>
-          <span className="text-white font-mono font-bold text-xs">{aiScore.toFixed(2)}<span className="text-gray-500 text-[10px] font-normal">/10</span></span>
+          <span className="text-white font-mono font-bold text-base">{aiScore.toFixed(2)}<span className="text-gray-500 text-[10px] font-normal ml-0.5">/10</span></span>
         </div>
         <div className="h-1.5 w-full bg-[#252b36] rounded-full overflow-hidden">
           <div 
